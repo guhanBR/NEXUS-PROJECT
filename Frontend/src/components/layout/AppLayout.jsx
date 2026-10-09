@@ -245,28 +245,16 @@ export function AppLayout() {
             </div>
           </div>
 
-          {/* Bottom Card */}
-          <div className="mt-4 pt-3 border-t border-[#EAEFEA] space-y-2">
-            <div className="p-3 bg-gradient-to-r from-amber-50/90 via-orange-50/70 to-pink-50/60 rounded-2xl border border-amber-200/70 shadow-2xs flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-1.5 text-xs font-extrabold text-slate-900">
-                  <span>Optimizer ⚡</span>
-                </div>
-                <p className="text-[9px] text-slate-500 mt-0.5 leading-tight">
-                  Adaptive scheduling & autonomous recovery.
-                </p>
+          {/* Bottom Section: User Info & Logout */}
+          <div className="mt-4 pt-3 border-t border-[#EAEFEA]">
+            <div className="flex items-center justify-between px-1 py-1 text-xs">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="text-[11px] text-slate-600 font-bold uppercase tracking-wider">{role || 'user'}</span>
               </div>
-              <div className="w-6 h-6 rounded-lg bg-white/80 border border-amber-200 flex items-center justify-center text-amber-500 shadow-2xs">
-                ✨
-              </div>
-            </div>
-
-            {/* Logout / User Info */}
-            <div className="flex items-center justify-between px-1 pt-1 text-xs">
-              <span className="text-[10px] text-slate-400 font-bold uppercase">{role || 'user'}</span>
               <button
                 onClick={handleLogout}
-                className="text-[11px] font-bold text-slate-500 hover:text-red-700 transition"
+                className="text-[11px] font-bold text-slate-500 hover:text-red-600 transition"
               >
                 Sign out
               </button>
