@@ -1,0 +1,1106 @@
+{
+  "projects": {
+    "1": {
+      "id": 1,
+      "name": "FinTech Quantum Core Alpha",
+      "description": "Enterprise-grade high-throughput payment transaction engine with real-time fraud scoring and PCI-DSS certification.",
+      "target_team_size": 4,
+      "deadline_days": 25,
+      "status": "active",
+      "required_skills": [
+        {
+          "skill": "Python",
+          "min_level": 3,
+          "mandatory": true
+        },
+        {
+          "skill": "PostgreSQL",
+          "min_level": 3,
+          "mandatory": true
+        },
+        {
+          "skill": "React",
+          "min_level": 3,
+          "mandatory": true
+        },
+        {
+          "skill": "Docker",
+          "min_level": 2,
+          "mandatory": true
+        },
+        {
+          "skill": "CyberSecurity",
+          "min_level": 3,
+          "mandatory": false
+        }
+      ],
+      "domains": [
+        "FinTech",
+        "Distributed Systems",
+        "Microservices"
+      ],
+      "team_members": [
+        {
+          "candidate_id": 1,
+          "name": "Alex Morgan",
+          "email": "alex.morgan@rebalancex.io",
+          "role_in_project": "Full-Stack Engineer",
+          "skills": {
+            "Python": 5,
+            "React": 4,
+            "PostgreSQL": 4,
+            "Docker": 3,
+            "CyberSecurity": 2
+          },
+          "match_score": 94.5,
+          "match_reasons": [
+            "Python L5 & React L4",
+            "Strong FinTech background",
+            "Available capacity"
+          ],
+          "availability_status": "available",
+          "avatar_color": "#2563EB"
+        },
+        {
+          "candidate_id": 2,
+          "name": "Priya Sharma",
+          "email": "priya.sharma@rebalancex.io",
+          "role_in_project": "Backend Systems Architect",
+          "skills": {
+            "Python": 5,
+            "PostgreSQL": 5,
+            "Docker": 4,
+            "CyberSecurity": 3,
+            "React": 1
+          },
+          "match_score": 98.2,
+          "match_reasons": [
+            "PostgreSQL L5 & Python L5",
+            "Lead database architect",
+            "High experience"
+          ],
+          "availability_status": "available",
+          "avatar_color": "#0D9488"
+        },
+        {
+          "candidate_id": 3,
+          "name": "Marcus Chen",
+          "email": "marcus.chen@rebalancex.io",
+          "role_in_project": "Senior Frontend Engineer",
+          "skills": {
+            "React": 5,
+            "TypeScript": 4,
+            "UI/UX": 4,
+            "Python": 2,
+            "Docker": 1
+          },
+          "match_score": 92.0,
+          "match_reasons": [
+            "React L5 & UI/UX L4",
+            "Dashboard domain alignment"
+          ],
+          "availability_status": "available",
+          "avatar_color": "#7C3AED"
+        },
+        {
+          "candidate_id": 4,
+          "name": "Elena Rostova",
+          "email": "elena.rostova@rebalancex.io",
+          "role_in_project": "DevOps & Cloud Engineer",
+          "skills": {
+            "Docker": 5,
+            "CyberSecurity": 4,
+            "Python": 3,
+            "PostgreSQL": 3,
+            "React": 1
+          },
+          "match_score": 91.8,
+          "match_reasons": [
+            "Docker L5 & CyberSecurity L4",
+            "Infrastructure expertise"
+          ],
+          "availability_status": "available",
+          "avatar_color": "#D97706"
+        }
+      ],
+      "created_at": "2026-10-09T07:22:04.788432",
+      "updated_at": "2026-10-09T07:22:04.788432"
+    }
+  },
+  "members": {
+    "1": {
+      "id": 1,
+      "name": "Alex Morgan",
+      "email": "alex.morgan@rebalancex.io",
+      "role_title": "Full-Stack Engineer",
+      "skills": {
+        "Python": 5,
+        "React": 4,
+        "PostgreSQL": 4,
+        "Docker": 3,
+        "CyberSecurity": 2
+      },
+      "interests": [
+        "FinTech",
+        "API Design",
+        "Distributed Systems"
+      ],
+      "experience_years": 3.5,
+      "weekly_capacity_hours": 40.0,
+      "daily_capacity_hours": 8.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#2563EB"
+    },
+    "2": {
+      "id": 2,
+      "name": "Priya Sharma",
+      "email": "priya.sharma@rebalancex.io",
+      "role_title": "Backend Systems Architect",
+      "skills": {
+        "Python": 5,
+        "PostgreSQL": 5,
+        "Docker": 4,
+        "CyberSecurity": 3,
+        "React": 1
+      },
+      "interests": [
+        "FinTech",
+        "High-Throughput Databases",
+        "Microservices"
+      ],
+      "experience_years": 4.0,
+      "weekly_capacity_hours": 40.0,
+      "daily_capacity_hours": 8.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#0D9488"
+    },
+    "3": {
+      "id": 3,
+      "name": "Marcus Chen",
+      "email": "marcus.chen@rebalancex.io",
+      "role_title": "Senior Frontend Engineer",
+      "skills": {
+        "React": 5,
+        "TypeScript": 4,
+        "UI/UX": 4,
+        "Python": 2,
+        "Docker": 1
+      },
+      "interests": [
+        "FinTech",
+        "Design Systems",
+        "Real-time Dashboards"
+      ],
+      "experience_years": 3.0,
+      "weekly_capacity_hours": 40.0,
+      "daily_capacity_hours": 8.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#7C3AED"
+    },
+    "4": {
+      "id": 4,
+      "name": "Elena Rostova",
+      "email": "elena.rostova@rebalancex.io",
+      "role_title": "DevOps & Cloud Engineer",
+      "skills": {
+        "Docker": 5,
+        "CyberSecurity": 4,
+        "Python": 3,
+        "PostgreSQL": 3,
+        "React": 1
+      },
+      "interests": [
+        "FinTech",
+        "Cloud Infrastructure",
+        "CI/CD Automation"
+      ],
+      "experience_years": 3.2,
+      "weekly_capacity_hours": 40.0,
+      "daily_capacity_hours": 8.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#D97706"
+    },
+    "5": {
+      "id": 5,
+      "name": "Sarah Jenkins",
+      "email": "sarah.jenkins@rebalancex.io",
+      "role_title": "Security & Compliance Lead",
+      "skills": {
+        "CyberSecurity": 5,
+        "PostgreSQL": 3,
+        "Python": 3,
+        "Docker": 2,
+        "React": 1
+      },
+      "interests": [
+        "FinTech",
+        "PCI-DSS",
+        "Threat Modeling"
+      ],
+      "experience_years": 3.8,
+      "weekly_capacity_hours": 40.0,
+      "daily_capacity_hours": 8.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#DC2626"
+    },
+    "6": {
+      "id": 6,
+      "name": "Devon Patel",
+      "email": "devon.patel@rebalancex.io",
+      "role_title": "Junior Backend Developer",
+      "skills": {
+        "Python": 3,
+        "PostgreSQL": 2,
+        "React": 2,
+        "Docker": 1
+      },
+      "interests": [
+        "FinTech",
+        "API Development"
+      ],
+      "experience_years": 1.2,
+      "weekly_capacity_hours": 35.0,
+      "daily_capacity_hours": 7.0,
+      "current_workload_hours": 0.0,
+      "availability_status": "available",
+      "avatar_color": "#059669"
+    }
+  },
+  "team_recommendations": {},
+  "tasks": {
+    "1": {
+      "id": 1,
+      "project_id": 1,
+      "title": "System Threat Model & Architecture Spec",
+      "description": "Define data flow boundaries, tokenization vault architecture, and encryption standards.",
+      "required_skill": "CyberSecurity",
+      "min_skill_level": 3,
+      "estimated_hours": 24.0,
+      "remaining_hours": 24.0,
+      "priority": "high",
+      "status": "completed",
+      "assigned_candidate_id": 4,
+      "start_day": 0.0,
+      "end_day": 3.0,
+      "deadline_day": 5.0,
+      "is_critical_path": false,
+      "dependencies": []
+    },
+    "2": {
+      "id": 2,
+      "project_id": 1,
+      "title": "PostgreSQL Ledger Schema & Partitioning",
+      "description": "Design double-entry ledger database schema, idempotency keys, and migration scripts.",
+      "required_skill": "PostgreSQL",
+      "min_skill_level": 4,
+      "estimated_hours": 32.0,
+      "remaining_hours": 32.0,
+      "priority": "critical",
+      "status": "in_progress",
+      "assigned_candidate_id": 1,
+      "start_day": 3.0,
+      "end_day": 7.0,
+      "deadline_day": 9.0,
+      "is_critical_path": false,
+      "dependencies": [
+        1
+      ]
+    },
+    "3": {
+      "id": 3,
+      "project_id": 1,
+      "title": "Payment Processing API & Webhooks",
+      "description": "Build asynchronous transaction ingestion pipeline with HMAC signature verification.",
+      "required_skill": "Python",
+      "min_skill_level": 4,
+      "estimated_hours": 40.0,
+      "remaining_hours": 40.0,
+      "priority": "critical",
+      "status": "todo",
+      "assigned_candidate_id": 1,
+      "start_day": 7.0,
+      "end_day": 12.0,
+      "deadline_day": 14.0,
+      "is_critical_path": false,
+      "dependencies": [
+        2
+      ]
+    },
+    "4": {
+      "id": 4,
+      "project_id": 1,
+      "title": "Real-time Fraud Detection Engine",
+      "description": "Rule-based velocity filter and anomaly detection for credit authorization.",
+      "required_skill": "Python",
+      "min_skill_level": 3,
+      "estimated_hours": 32.0,
+      "remaining_hours": 32.0,
+      "priority": "high",
+      "status": "todo",
+      "assigned_candidate_id": 1,
+      "start_day": 12.0,
+      "end_day": 16.0,
+      "deadline_day": 15.0,
+      "is_critical_path": true,
+      "dependencies": [
+        2
+      ]
+    },
+    "5": {
+      "id": 5,
+      "project_id": 1,
+      "title": "Merchant Settlement Dashboard UI",
+      "description": "React-based analytics dashboard with responsive transaction tables and payout status.",
+      "required_skill": "React",
+      "min_skill_level": 3,
+      "estimated_hours": 32.0,
+      "remaining_hours": 32.0,
+      "priority": "medium",
+      "status": "todo",
+      "assigned_candidate_id": 3,
+      "start_day": 0.0,
+      "end_day": 4.0,
+      "deadline_day": 12.0,
+      "is_critical_path": false,
+      "dependencies": []
+    },
+    "6": {
+      "id": 6,
+      "project_id": 1,
+      "title": "Frontend API Client & State Management",
+      "description": "Connect UI components with payment gateway REST endpoints, query caching, and live webhooks.",
+      "required_skill": "React",
+      "min_skill_level": 3,
+      "estimated_hours": 24.0,
+      "remaining_hours": 24.0,
+      "priority": "high",
+      "status": "todo",
+      "assigned_candidate_id": 3,
+      "start_day": 12.0,
+      "end_day": 15.0,
+      "deadline_day": 18.0,
+      "is_critical_path": false,
+      "dependencies": [
+        3,
+        5
+      ]
+    },
+    "7": {
+      "id": 7,
+      "project_id": 1,
+      "title": "Container Orchestration & CI/CD Pipeline",
+      "description": "Docker multi-stage builds, automated linting, security scanning, and staging deployments.",
+      "required_skill": "Docker",
+      "min_skill_level": 3,
+      "estimated_hours": 24.0,
+      "remaining_hours": 24.0,
+      "priority": "high",
+      "status": "todo",
+      "assigned_candidate_id": 4,
+      "start_day": 16.0,
+      "end_day": 19.0,
+      "deadline_day": 19.0,
+      "is_critical_path": true,
+      "dependencies": [
+        3,
+        4
+      ]
+    },
+    "8": {
+      "id": 8,
+      "project_id": 1,
+      "title": "PCI-DSS Security Audit & Verification",
+      "description": "Final end-to-end vulnerability scanning, penetration testing, and compliance checklist signoff.",
+      "required_skill": "CyberSecurity",
+      "min_skill_level": 3,
+      "estimated_hours": 24.0,
+      "remaining_hours": 24.0,
+      "priority": "critical",
+      "status": "todo",
+      "assigned_candidate_id": 4,
+      "start_day": 19.0,
+      "end_day": 22.0,
+      "deadline_day": 22.0,
+      "is_critical_path": true,
+      "dependencies": [
+        6,
+        7
+      ]
+    }
+  },
+  "assignments": {},
+  "scenarios": {},
+  "rebalancing_proposals": {
+    "1": {
+      "project_id": 1,
+      "trigger_type": "member_unavailable",
+      "scenario_details": {
+        "candidate_id": 2
+      },
+      "solver_engine": "Deterministic Constraint Heuristic Optimizer",
+      "solver_status": "optimal",
+      "objective_score": 84.8,
+      "original_schedule": {
+        "tasks": [
+          {
+            "id": 1,
+            "project_id": 1,
+            "title": "System Threat Model & Architecture Spec",
+            "description": "Define data flow boundaries, tokenization vault architecture, and encryption standards.",
+            "required_skill": "CyberSecurity",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "completed",
+            "assigned_candidate_id": 4,
+            "start_day": 0.0,
+            "end_day": 3.0,
+            "deadline_day": 5.0,
+            "is_critical_path": true,
+            "dependencies": [],
+            "duration_days": 3.0,
+            "early_start": 0.0,
+            "early_finish": 3.0,
+            "late_finish": 3.0,
+            "late_start": 0.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 2,
+            "project_id": 1,
+            "title": "PostgreSQL Ledger Schema & Partitioning",
+            "description": "Design double-entry ledger database schema, idempotency keys, and migration scripts.",
+            "required_skill": "PostgreSQL",
+            "min_skill_level": 4,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "critical",
+            "status": "in_progress",
+            "assigned_candidate_id": 2,
+            "start_day": 3.0,
+            "end_day": 7.0,
+            "deadline_day": 9.0,
+            "is_critical_path": true,
+            "dependencies": [
+              1
+            ],
+            "duration_days": 4.0,
+            "early_start": 3.0,
+            "early_finish": 7.0,
+            "late_finish": 7.0,
+            "late_start": 3.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 3,
+            "project_id": 1,
+            "title": "Payment Processing API & Webhooks",
+            "description": "Build asynchronous transaction ingestion pipeline with HMAC signature verification.",
+            "required_skill": "Python",
+            "min_skill_level": 4,
+            "estimated_hours": 40.0,
+            "remaining_hours": 40.0,
+            "priority": "critical",
+            "status": "todo",
+            "assigned_candidate_id": 2,
+            "start_day": 7.0,
+            "end_day": 12.0,
+            "deadline_day": 14.0,
+            "is_critical_path": true,
+            "dependencies": [
+              2
+            ],
+            "duration_days": 5.0,
+            "early_start": 7.0,
+            "early_finish": 12.0,
+            "late_finish": 12.0,
+            "late_start": 7.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 4,
+            "project_id": 1,
+            "title": "Real-time Fraud Detection Engine",
+            "description": "Rule-based velocity filter and anomaly detection for credit authorization.",
+            "required_skill": "Python",
+            "min_skill_level": 3,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 1,
+            "start_day": 7.0,
+            "end_day": 11.0,
+            "deadline_day": 15.0,
+            "is_critical_path": false,
+            "dependencies": [
+              2
+            ],
+            "duration_days": 4.0,
+            "early_start": 7.0,
+            "early_finish": 11.0,
+            "late_finish": 12.0,
+            "late_start": 8.0,
+            "slack_days": 1.0
+          },
+          {
+            "id": 5,
+            "project_id": 1,
+            "title": "Merchant Settlement Dashboard UI",
+            "description": "React-based analytics dashboard with responsive transaction tables and payout status.",
+            "required_skill": "React",
+            "min_skill_level": 3,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "medium",
+            "status": "todo",
+            "assigned_candidate_id": 3,
+            "start_day": 0.0,
+            "end_day": 4.0,
+            "deadline_day": 12.0,
+            "is_critical_path": false,
+            "dependencies": [],
+            "duration_days": 4.0,
+            "early_start": 0.0,
+            "early_finish": 4.0,
+            "late_finish": 12.0,
+            "late_start": 8.0,
+            "slack_days": 8.0
+          },
+          {
+            "id": 6,
+            "project_id": 1,
+            "title": "Frontend API Client & State Management",
+            "description": "Connect UI components with payment gateway REST endpoints, query caching, and live webhooks.",
+            "required_skill": "React",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 3,
+            "start_day": 12.0,
+            "end_day": 15.0,
+            "deadline_day": 18.0,
+            "is_critical_path": true,
+            "dependencies": [
+              3,
+              5
+            ],
+            "duration_days": 3.0,
+            "early_start": 12.0,
+            "early_finish": 15.0,
+            "late_finish": 15.0,
+            "late_start": 12.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 7,
+            "project_id": 1,
+            "title": "Container Orchestration & CI/CD Pipeline",
+            "description": "Docker multi-stage builds, automated linting, security scanning, and staging deployments.",
+            "required_skill": "Docker",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 4,
+            "start_day": 12.0,
+            "end_day": 15.0,
+            "deadline_day": 19.0,
+            "is_critical_path": true,
+            "dependencies": [
+              3,
+              4
+            ],
+            "duration_days": 3.0,
+            "early_start": 12.0,
+            "early_finish": 15.0,
+            "late_finish": 15.0,
+            "late_start": 12.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 8,
+            "project_id": 1,
+            "title": "PCI-DSS Security Audit & Verification",
+            "description": "Final end-to-end vulnerability scanning, penetration testing, and compliance checklist signoff.",
+            "required_skill": "CyberSecurity",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "critical",
+            "status": "todo",
+            "assigned_candidate_id": 4,
+            "start_day": 15.0,
+            "end_day": 18.0,
+            "deadline_day": 22.0,
+            "is_critical_path": true,
+            "dependencies": [
+              6,
+              7
+            ],
+            "duration_days": 3.0,
+            "early_start": 15.0,
+            "early_finish": 18.0,
+            "late_finish": 18.0,
+            "late_start": 15.0,
+            "slack_days": 0.0
+          }
+        ],
+        "project_duration_days": 18.0,
+        "project_deadline_days": 25,
+        "is_feasible": true,
+        "deadline_breached": false,
+        "delay_days": 0.0,
+        "critical_path_task_ids": [
+          1,
+          2,
+          3,
+          6,
+          7,
+          8
+        ],
+        "resource_utilization": {
+          "1": {
+            "candidate_id": 1,
+            "name": "Alex Morgan",
+            "assigned_tasks_count": 1,
+            "assigned_hours": 32.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 16.0,
+            "status": "underutilized"
+          },
+          "2": {
+            "candidate_id": 2,
+            "name": "Priya Sharma",
+            "assigned_tasks_count": 2,
+            "assigned_hours": 72.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 36.0,
+            "status": "underutilized"
+          },
+          "3": {
+            "candidate_id": 3,
+            "name": "Marcus Chen",
+            "assigned_tasks_count": 2,
+            "assigned_hours": 56.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 28.0,
+            "status": "underutilized"
+          },
+          "4": {
+            "candidate_id": 4,
+            "name": "Elena Rostova",
+            "assigned_tasks_count": 3,
+            "assigned_hours": 72.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 36.0,
+            "status": "underutilized"
+          },
+          "5": {
+            "candidate_id": 5,
+            "name": "Sarah Jenkins",
+            "assigned_tasks_count": 0,
+            "assigned_hours": 0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 0.0,
+            "status": "underutilized"
+          },
+          "6": {
+            "candidate_id": 6,
+            "name": "Devon Patel",
+            "assigned_tasks_count": 0,
+            "assigned_hours": 0,
+            "capacity_hours": 175.0,
+            "utilization_pct": 0.0,
+            "status": "underutilized"
+          }
+        }
+      },
+      "proposed_schedule": {
+        "tasks": [
+          {
+            "id": 1,
+            "project_id": 1,
+            "title": "System Threat Model & Architecture Spec",
+            "description": "Define data flow boundaries, tokenization vault architecture, and encryption standards.",
+            "required_skill": "CyberSecurity",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "completed",
+            "assigned_candidate_id": 4,
+            "start_day": 0.0,
+            "end_day": 3.0,
+            "deadline_day": 5.0,
+            "is_critical_path": false,
+            "dependencies": [],
+            "duration_days": 3.0,
+            "early_start": 0.0,
+            "early_finish": 3.0,
+            "late_finish": 7.0,
+            "late_start": 4.0,
+            "slack_days": 4.0
+          },
+          {
+            "id": 2,
+            "project_id": 1,
+            "title": "PostgreSQL Ledger Schema & Partitioning",
+            "description": "Design double-entry ledger database schema, idempotency keys, and migration scripts.",
+            "required_skill": "PostgreSQL",
+            "min_skill_level": 4,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "critical",
+            "status": "in_progress",
+            "assigned_candidate_id": 1,
+            "start_day": 3.0,
+            "end_day": 7.0,
+            "deadline_day": 9.0,
+            "is_critical_path": false,
+            "dependencies": [
+              1
+            ],
+            "duration_days": 4.0,
+            "early_start": 3.0,
+            "early_finish": 7.0,
+            "late_finish": 11.0,
+            "late_start": 7.0,
+            "slack_days": 4.0
+          },
+          {
+            "id": 3,
+            "project_id": 1,
+            "title": "Payment Processing API & Webhooks",
+            "description": "Build asynchronous transaction ingestion pipeline with HMAC signature verification.",
+            "required_skill": "Python",
+            "min_skill_level": 4,
+            "estimated_hours": 40.0,
+            "remaining_hours": 40.0,
+            "priority": "critical",
+            "status": "todo",
+            "assigned_candidate_id": 1,
+            "start_day": 7.0,
+            "end_day": 12.0,
+            "deadline_day": 14.0,
+            "is_critical_path": false,
+            "dependencies": [
+              2
+            ],
+            "duration_days": 5.0,
+            "early_start": 7.0,
+            "early_finish": 12.0,
+            "late_finish": 16.0,
+            "late_start": 11.0,
+            "slack_days": 4.0
+          },
+          {
+            "id": 4,
+            "project_id": 1,
+            "title": "Real-time Fraud Detection Engine",
+            "description": "Rule-based velocity filter and anomaly detection for credit authorization.",
+            "required_skill": "Python",
+            "min_skill_level": 3,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 1,
+            "start_day": 12.0,
+            "end_day": 16.0,
+            "deadline_day": 15.0,
+            "is_critical_path": true,
+            "dependencies": [
+              2
+            ],
+            "duration_days": 4.0,
+            "early_start": 12.0,
+            "early_finish": 16.0,
+            "late_finish": 16.0,
+            "late_start": 12.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 5,
+            "project_id": 1,
+            "title": "Merchant Settlement Dashboard UI",
+            "description": "React-based analytics dashboard with responsive transaction tables and payout status.",
+            "required_skill": "React",
+            "min_skill_level": 3,
+            "estimated_hours": 32.0,
+            "remaining_hours": 32.0,
+            "priority": "medium",
+            "status": "todo",
+            "assigned_candidate_id": 3,
+            "start_day": 0.0,
+            "end_day": 4.0,
+            "deadline_day": 12.0,
+            "is_critical_path": false,
+            "dependencies": [],
+            "duration_days": 4.0,
+            "early_start": 0.0,
+            "early_finish": 4.0,
+            "late_finish": 16.0,
+            "late_start": 12.0,
+            "slack_days": 12.0
+          },
+          {
+            "id": 6,
+            "project_id": 1,
+            "title": "Frontend API Client & State Management",
+            "description": "Connect UI components with payment gateway REST endpoints, query caching, and live webhooks.",
+            "required_skill": "React",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 3,
+            "start_day": 12.0,
+            "end_day": 15.0,
+            "deadline_day": 18.0,
+            "is_critical_path": false,
+            "dependencies": [
+              3,
+              5
+            ],
+            "duration_days": 3.0,
+            "early_start": 12.0,
+            "early_finish": 15.0,
+            "late_finish": 19.0,
+            "late_start": 16.0,
+            "slack_days": 4.0
+          },
+          {
+            "id": 7,
+            "project_id": 1,
+            "title": "Container Orchestration & CI/CD Pipeline",
+            "description": "Docker multi-stage builds, automated linting, security scanning, and staging deployments.",
+            "required_skill": "Docker",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "high",
+            "status": "todo",
+            "assigned_candidate_id": 4,
+            "start_day": 16.0,
+            "end_day": 19.0,
+            "deadline_day": 19.0,
+            "is_critical_path": true,
+            "dependencies": [
+              3,
+              4
+            ],
+            "duration_days": 3.0,
+            "early_start": 16.0,
+            "early_finish": 19.0,
+            "late_finish": 19.0,
+            "late_start": 16.0,
+            "slack_days": 0.0
+          },
+          {
+            "id": 8,
+            "project_id": 1,
+            "title": "PCI-DSS Security Audit & Verification",
+            "description": "Final end-to-end vulnerability scanning, penetration testing, and compliance checklist signoff.",
+            "required_skill": "CyberSecurity",
+            "min_skill_level": 3,
+            "estimated_hours": 24.0,
+            "remaining_hours": 24.0,
+            "priority": "critical",
+            "status": "todo",
+            "assigned_candidate_id": 4,
+            "start_day": 19.0,
+            "end_day": 22.0,
+            "deadline_day": 22.0,
+            "is_critical_path": true,
+            "dependencies": [
+              6,
+              7
+            ],
+            "duration_days": 3.0,
+            "early_start": 19.0,
+            "early_finish": 22.0,
+            "late_finish": 22.0,
+            "late_start": 19.0,
+            "slack_days": 0.0
+          }
+        ],
+        "project_duration_days": 22.0,
+        "project_deadline_days": 25,
+        "is_feasible": true,
+        "deadline_breached": false,
+        "delay_days": 0.0,
+        "critical_path_task_ids": [
+          4,
+          7,
+          8
+        ],
+        "resource_utilization": {
+          "1": {
+            "candidate_id": 1,
+            "name": "Alex Morgan",
+            "assigned_tasks_count": 3,
+            "assigned_hours": 104.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 52.0,
+            "status": "optimal"
+          },
+          "2": {
+            "candidate_id": 2,
+            "name": "Priya Sharma",
+            "assigned_tasks_count": 0,
+            "assigned_hours": 0,
+            "capacity_hours": 0.0,
+            "utilization_pct": 0.0,
+            "status": "underutilized"
+          },
+          "3": {
+            "candidate_id": 3,
+            "name": "Marcus Chen",
+            "assigned_tasks_count": 2,
+            "assigned_hours": 56.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 28.0,
+            "status": "underutilized"
+          },
+          "4": {
+            "candidate_id": 4,
+            "name": "Elena Rostova",
+            "assigned_tasks_count": 3,
+            "assigned_hours": 72.0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 36.0,
+            "status": "underutilized"
+          },
+          "5": {
+            "candidate_id": 5,
+            "name": "Sarah Jenkins",
+            "assigned_tasks_count": 0,
+            "assigned_hours": 0,
+            "capacity_hours": 200.0,
+            "utilization_pct": 0.0,
+            "status": "underutilized"
+          },
+          "6": {
+            "candidate_id": 6,
+            "name": "Devon Patel",
+            "assigned_tasks_count": 0,
+            "assigned_hours": 0,
+            "capacity_hours": 175.0,
+            "utilization_pct": 0.0,
+            "status": "underutilized"
+          }
+        }
+      },
+      "reassigned_tasks": [
+        {
+          "task_id": 2,
+          "title": "PostgreSQL Ledger Schema & Partitioning",
+          "required_skill": "PostgreSQL",
+          "priority": "critical",
+          "from_candidate_id": 2,
+          "from_candidate_name": "Priya Sharma",
+          "to_candidate_id": 1,
+          "to_candidate_name": "Alex Morgan",
+          "orig_start_day": 3.0,
+          "orig_end_day": 7.0,
+          "new_start_day": 3.0,
+          "new_end_day": 7.0,
+          "is_new_task": false
+        },
+        {
+          "task_id": 3,
+          "title": "Payment Processing API & Webhooks",
+          "required_skill": "Python",
+          "priority": "critical",
+          "from_candidate_id": 2,
+          "from_candidate_name": "Priya Sharma",
+          "to_candidate_id": 1,
+          "to_candidate_name": "Alex Morgan",
+          "orig_start_day": 7.0,
+          "orig_end_day": 12.0,
+          "new_start_day": 7.0,
+          "new_end_day": 12.0,
+          "is_new_task": false
+        }
+      ],
+      "reassigned_count": 2,
+      "explanations": [
+        {
+          "category": "DISRUPTION_MITIGATION",
+          "title": "Workforce Outage Containment (Priya Sharma)",
+          "text": "Identified 2 orphaned task(s) previously assigned to Priya Sharma. Deterministic Constraint Heuristic Optimizer searched active team members with matching skill competencies and capacity to prevent delivery stall."
+        },
+        {
+          "category": "TASK_REALLOCATION",
+          "task_id": 2,
+          "title": "Reassignment of 'PostgreSQL Ledger Schema & Partitioning' -> Alex Morgan",
+          "text": "Reassigned to Alex Morgan (holds level 4 in PostgreSQL, post-assignment utilization: 52.0%). Scheduled Day 3.0 - Day 7.0 preserving prerequisite dependencies.",
+          "evidence": {
+            "skill": "PostgreSQL",
+            "candidate_level": 4,
+            "post_utilization_pct": 52.0,
+            "new_timeline": "Day 3.0 - 7.0"
+          }
+        },
+        {
+          "category": "TASK_REALLOCATION",
+          "task_id": 3,
+          "title": "Reassignment of 'Payment Processing API & Webhooks' -> Alex Morgan",
+          "text": "Reassigned to Alex Morgan (holds level 5 in Python, post-assignment utilization: 52.0%). Scheduled Day 7.0 - Day 12.0 preserving prerequisite dependencies.",
+          "evidence": {
+            "skill": "Python",
+            "candidate_level": 5,
+            "post_utilization_pct": 52.0,
+            "new_timeline": "Day 7.0 - 12.0"
+          }
+        }
+      ],
+      "risks": [
+        "All tasks successfully re-routed with 0 hard constraint violations and on-time delivery."
+      ],
+      "status": "approved",
+      "id": 1,
+      "created_at": "2026-10-09T07:22:04.819916"
+    }
+  },
+  "decision_history": {
+    "1": {
+      "id": 1,
+      "project_id": 1,
+      "event_title": "Initial Project Baseline Established",
+      "action_taken": "APPROVED",
+      "summary": "Automated CPM schedule baseline computed. 8 tasks scheduled across 4 selected team members with 18.0 days makespan against a 25.0 day deadline.",
+      "affected_tasks_count": 8,
+      "details": {
+        "project_name": "FinTech Quantum Core Alpha",
+        "team_size": 4,
+        "makespan_days": 18.0
+      },
+      "timestamp": "2026-10-09 12:00:00"
+    },
+    "2": {
+      "project_id": 1,
+      "proposal_id": 1,
+      "event_title": "Autonomous Rebalancing Plan Approved (member_unavailable)",
+      "action_taken": "APPROVED",
+      "summary": "Plan applied with 2 task reallocations. Solver Objective Score: 84.8/100.",
+      "affected_tasks_count": 2,
+      "details": {
+        "solver_engine": "Deterministic Constraint Heuristic Optimizer"
+      },
+      "id": 2,
+      "timestamp": "2026-10-09 07:22:04"
+    }
+  }
+}

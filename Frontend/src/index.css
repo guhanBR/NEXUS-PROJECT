@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans;
+  }
+}
+
+/* Custom Gantt Bar & Timeline utilities */
+.gantt-bar-critical {
+  background: linear-gradient(90deg, #e11d48, #be123c);
+  border: 1px solid #9f1239;
+}
+
+.gantt-bar-standard {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  border: 1px solid #1e40af;
+}
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
