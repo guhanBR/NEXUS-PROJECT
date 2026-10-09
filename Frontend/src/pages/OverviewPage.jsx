@@ -3,440 +3,718 @@ import { useProject } from '../context/ProjectContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
-  Search,
+  Upload,
+  LayoutGrid,
+  Download,
+  MessageSquare,
   Bell,
   ChevronDown,
-  ArrowLeftRight,
-  MoreVertical,
-  Star,
+  ArrowUpRight,
+  Search,
+  SlidersHorizontal,
+  Wifi,
   Sparkles,
   TrendingUp,
-  ArrowUpRight,
+  CheckCircle2,
+  Clock,
   Zap,
 } from 'lucide-react';
 
 export function OverviewPage() {
-  const { activeProject } = useProject();
-  const { role, user } = useAuth();
+  const { activeProject, projects } = useProject();
+  const { user, role } = useAuth();
   const navigate = useNavigate();
 
-  const [timeFilter, setTimeFilter] = useState('1W');
-  const [selectedRange, setSelectedRange] = useState('24h');
-  const [selectedGainer, setSelectedGainer] = useState('Top gainers');
-  const [starred, setStarred] = useState({ 0: true });
+  const [selectedMonth, setSelectedMonth] = useState('This Month');
+  const [selectedTab, setSelectedTab] = useState('Overview');
 
-  const toggleStar = (index) => {
-    setStarred((prev) => ({ ...prev, [index]: !prev[index] }));
-  };
-
-  // 4 Core Indian Crypto / Project Deliverables & Tokens
-  const cryptoAssets = [
+  // Real Project Cards for Fanned Deck (Layered Overlapping Cards Matching Reference 1:1)
+  const fannedCards = [
     {
-      id: 'matic',
-      name: 'Polygon Network',
-      symbol: 'MATIC',
-      price: '₹ 62.40',
-      change: '+14.28%',
-      marketCap: '₹ 5,890 Cr',
-      iconBg: 'bg-[#7B3FE4]',
-      iconText: '⬡',
+      id: 'card-1',
+      type: 'Platinum Card',
+      title: 'Tata FinTech Quantum Core',
+      balance: '₹ 14,85,640',
+      fee: '$150 / mo',
+      brand: 'Mastercard',
+      bgGradient: 'from-[#F2F4F7] to-[#E2E7ED]',
+      textColor: 'text-slate-700',
+      offset: '-rotate-12 translate-y-6 -translate-x-16',
+      zIndex: 'z-10',
     },
     {
-      id: 'tdm',
-      name: 'Tata Digital Matrix',
-      symbol: 'TDM',
-      price: '₹ 748.50',
-      change: '+11.19%',
-      marketCap: '₹ 14,250 Cr',
-      iconBg: 'bg-[#00529B]',
-      iconText: 'T',
+      id: 'card-2',
+      type: 'Debit Card',
+      title: 'Cloud ERP Migration',
+      balance: '₹ 8,40,200',
+      fee: '$80 / mo',
+      brand: 'VISA',
+      bgGradient: 'from-[#EAF0F6] to-[#D5E2EE]',
+      textColor: 'text-slate-800',
+      offset: '-rotate-6 translate-y-3 -translate-x-8',
+      zIndex: 'z-20',
     },
     {
-      id: 'wrx',
-      name: 'WazirX Token',
-      symbol: 'WRX',
-      price: '₹ 18.40',
-      change: '+8.75%',
-      marketCap: '₹ 1,120 Cr',
-      iconBg: 'bg-[#2358F5]',
-      iconText: 'W',
+      id: 'card-3',
+      type: 'Credit Card',
+      title: 'Web3 Polygon Payment Mesh',
+      balance: '₹ 5,78,395',
+      fee: '$120 / mo',
+      brand: 'G Pay',
+      bgGradient: 'from-[#FDFBF7] to-[#EFE8D8]',
+      textColor: 'text-slate-900',
+      offset: '-rotate-2 translate-y-1 -translate-x-3',
+      zIndex: 'z-30',
     },
     {
-      id: 'csk',
-      name: 'CoinSwitch Kuber',
-      symbol: 'CSK',
-      price: '₹ 306.80',
-      change: '+6.80%',
-      marketCap: '₹ 3,990 Cr',
-      iconBg: 'bg-[#00D09C]',
-      iconText: '₹',
+      id: 'card-4-center',
+      type: 'Credit Card',
+      title: 'Ryzen Matrix • Active Sprint',
+      balance: '₹ 24,50,000',
+      fee: 'Primary Asset',
+      brand: 'G Pay',
+      isCenter: true,
+      bgGradient: 'from-[#FFFDF7] via-[#FBF6E9] to-[#EDE5D2]',
+      textColor: 'text-slate-900',
+      offset: 'rotate-0 translate-y-0 scale-105 shadow-2xl',
+      zIndex: 'z-40',
+    },
+    {
+      id: 'card-5',
+      type: 'Credit Card',
+      title: 'AI Vision Solver',
+      balance: '₹ 3,90,000',
+      fee: 'stripe',
+      brand: 'stripe',
+      bgGradient: 'from-[#EEF3F8] to-[#DCE6F2]',
+      textColor: 'text-slate-800',
+      offset: 'rotate-4 translate-y-2 translate-x-5',
+      zIndex: 'z-30',
+    },
+    {
+      id: 'card-6',
+      type: 'Silver Card',
+      title: 'Decision History Ledger',
+      balance: '₹ 12,10,000',
+      fee: '$130 / mo',
+      brand: 'Apple Pay',
+      bgGradient: 'from-[#F0F3F6] to-[#DFE5EB]',
+      textColor: 'text-slate-700',
+      offset: 'rotate-10 translate-y-5 translate-x-12',
+      zIndex: 'z-20',
     },
   ];
 
+  // 4 Core Financial / Metric Summary Cards (Glass Frosted Bar)
+  const summaries = [
+    {
+      label: 'Total Balance',
+      value: '₹ 14,85,640.00',
+      change: '+ 6.3%',
+      isPositive: true,
+      sparkline: 'M0 15 Q 10 5, 20 12 T 40 4 T 60 14 T 80 6',
+    },
+    {
+      label: 'Total Income',
+      value: '₹ 8,395.00',
+      change: '+ 7.1%',
+      isPositive: true,
+      sparkline: 'M0 16 Q 12 18, 24 10 T 48 6 T 70 8 T 80 4',
+    },
+    {
+      label: 'Total Expenses',
+      value: '₹ 2,455.00',
+      change: '- 5.7%',
+      isPositive: false,
+      sparkline: 'M0 6 Q 14 8, 28 14 T 52 10 T 70 16 T 80 14',
+    },
+    {
+      label: 'Total Savings',
+      value: '₹ 4,320.00',
+      change: '+ 5.2%',
+      isPositive: true,
+      sparkline: 'M0 14 Q 10 12, 20 6 T 45 10 T 65 4 T 80 2',
+    },
+  ];
+
+  // Recent Transactions Activity List (Matching Reference Transactions 1:1)
+  const transactions = [
+    {
+      id: 't-1',
+      title: 'Starbucks',
+      subtitle: 'Food & Drink • Nov 12, 26',
+      amount: '+ ₹ 515.75',
+      type: 'Income',
+      isPositive: true,
+      iconBg: 'bg-[#00704A]',
+      iconText: '☕',
+    },
+    {
+      id: 't-2',
+      title: 'Netf xilix',
+      subtitle: 'Entertainment • Nov 12, 26',
+      amount: '- ₹ 59.99',
+      type: 'Transfer',
+      isPositive: false,
+      iconBg: 'bg-[#E50914]',
+      iconText: 'N',
+    },
+    {
+      id: 't-3',
+      title: 'Apple Store',
+      subtitle: 'Electronics • Nov 12, 26',
+      amount: '- ₹ 75.99',
+      type: 'Transfer',
+      isPositive: false,
+      iconBg: 'bg-black',
+      iconText: '',
+    },
+    {
+      id: 't-4',
+      title: 'Slack',
+      subtitle: 'Electronics • Nov 12, 26',
+      amount: '- ₹ 59.99',
+      type: 'Transfer',
+      isPositive: false,
+      iconBg: 'bg-[#4A154B]',
+      iconText: '#',
+    },
+  ];
+
+  // Vertical Histogram Tower months data (Center Apr tower with black and red lines)
+  const histogramMonths = [
+    { name: 'Jan', height: '32%' },
+    { name: 'Feb', height: '54%' },
+    { name: 'Mar', height: '76%' },
+    { name: 'Apr', height: '100%', isCenter: true },
+    { name: 'May', height: '68%' },
+    { name: 'Jun', height: '48%' },
+    { name: 'Jul', height: '28%' },
+  ];
+
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
-    <div className="space-y-7 max-w-7xl mx-auto font-sans">
+    <div className="space-y-6 max-w-[1400px] mx-auto font-sans">
       
-      {/* 1. TOP HEADER BAR: Overview Title + Search, Notifications, Profile Pill */}
+      {/* 1. TOP GREETING HEADER & QUICK ACTIONS */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-            Overview
+          <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-slate-900 font-serif">
+            Good Morning, {user?.name?.split(' ')[0] || 'Alvie'}
           </h1>
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
+            {currentDate || 'Friday, 15 July 2026'}
+          </p>
         </div>
 
-        {/* Header Right Actions */}
-        <div className="flex items-center gap-3">
-          {/* Search Button */}
+        {/* Action Controls Group (Transfer, Grid Toggle, Received, Chat, Bell, Avatar) */}
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+          {/* Transfer Button */}
           <button
-            type="button"
-            className="w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-600 transition shadow-2xs"
-            title="Search projects & assets"
+            onClick={() => navigate('/projects')}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#F5F7F6] hover:bg-[#EAEFEA] text-slate-800 text-xs font-semibold transition border border-slate-200/60 shadow-2xs"
           >
-            <Search className="w-4 h-4" />
+            <Upload className="w-3.5 h-3.5 rotate-45 text-slate-600" />
+            <span>Transfer</span>
           </button>
 
-          {/* Notifications Bell with Indicator Dot */}
+          {/* Grid Layout Toggle */}
           <button
-            type="button"
-            className="w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-600 transition shadow-2xs relative"
+            onClick={() => navigate('/team-formation')}
+            className="w-8 h-8 rounded-full bg-[#F5F7F6] hover:bg-[#EAEFEA] text-slate-700 flex items-center justify-center transition border border-slate-200/60 shadow-2xs"
+            title="Grid View"
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Received Button */}
+          <button
+            onClick={() => navigate('/recovery')}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#F5F7F6] hover:bg-[#EAEFEA] text-slate-800 text-xs font-semibold transition border border-slate-200/60 shadow-2xs"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-600" />
+            <span>Received</span>
+          </button>
+
+          {/* Direct Messages Icon Button */}
+          <button
+            onClick={() => navigate('/messages')}
+            className="w-8 h-8 rounded-full bg-[#F5F7F6] hover:bg-[#EAEFEA] text-slate-700 flex items-center justify-center transition border border-slate-200/60 shadow-2xs relative"
+            title="Direct Messages"
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Notifications Bell with Live Alert Dot */}
+          <button
+            onClick={() => navigate('/project-rooms')}
+            className="w-8 h-8 rounded-full bg-[#F5F7F6] hover:bg-[#EAEFEA] text-slate-700 flex items-center justify-center transition border border-slate-200/60 shadow-2xs relative"
             title="Notifications"
           >
-            <Bell className="w-4 h-4" />
-            <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2.5 right-2.5 ring-2 ring-white" />
+            <Bell className="w-3.5 h-3.5" />
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 absolute top-2 right-2 ring-1 ring-white" />
           </button>
 
-          {/* User Profile Pill */}
-          <div className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 hover:bg-slate-100 transition cursor-pointer shadow-2xs">
+          {/* User Profile Avatar */}
+          <div
+            onClick={() => navigate('/settings')}
+            className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-slate-200/80 cursor-pointer hover:ring-slate-400 transition ml-1"
+          >
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80"
-              alt="Priya Patel"
-              className="w-8 h-8 rounded-full object-cover border border-white shadow-2xs"
+              alt="Profile"
+              className="w-full h-full object-cover"
             />
-            <span className="text-xs font-bold text-slate-900">
-              {user?.name || 'Aarav Sharma'}
-            </span>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </div>
         </div>
       </div>
 
-      {/* 2. TOP ROW: Portfolio Balance Wave Chart (Left) + Your Assets 3 Cards (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
-        {/* LEFT: Portfolio Balance Card (Soft Pastel Sky Blue) */}
-        <div className="lg:col-span-5 flex flex-col">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-lg font-black text-slate-900 tracking-tight">
-              Portfolio
-            </h2>
+      {/* 2. THE ICONIC LAYERED OVERLAPPING FANNED CARDS DECK */}
+      <div className="relative pt-6 pb-2 overflow-hidden flex flex-col items-center">
+        {/* Fanned Cards Horizontal Stage */}
+        <div className="relative w-full max-w-4xl h-[170px] sm:h-[190px] flex items-center justify-center">
+          
+          {/* Card 1 (Far Left Platinum) */}
+          <div className="absolute left-[2%] sm:left-[8%] -top-1 w-[160px] sm:w-[200px] h-[135px] sm:h-[155px] rounded-2xl p-3 sm:p-4 bg-gradient-to-br from-[#F5F7F9] to-[#E3E9F0] border border-white/80 shadow-md transform -rotate-12 translate-y-4 text-slate-700 select-none pointer-events-none hidden sm:flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Platinum Card</span>
+              <span className="text-[9px] font-mono text-slate-400">$150 / mo</span>
+            </div>
+            <div className="text-xs font-black text-slate-800 truncate">
+              Tata Quantum Core
+            </div>
+            <div className="flex justify-between items-center text-[9px] font-mono text-slate-500">
+              <span>•••• 4892</span>
+              <span>08/28</span>
+            </div>
           </div>
 
-          <div className="flex-1 bg-[#EAF4FE] rounded-[30px] p-6 relative flex flex-col justify-between overflow-hidden shadow-xs border border-[#D7E9F9]">
-            {/* Top Row: Amount & 3-dots */}
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="text-2xl sm:text-[28px] font-black text-slate-900 tracking-tight">
-                  ₹ 14,85,640.50
-                </div>
-                <span className="text-xs font-semibold text-slate-500 mt-0.5 block">
-                  Total Project Treasury & Assets (INR)
-                </span>
-              </div>
-              <button className="text-slate-400 hover:text-slate-700 p-1">
-                <MoreVertical className="w-4 h-4" />
-              </button>
+          {/* Card 2 (Left Debit Card) */}
+          <div className="absolute left-[15%] sm:left-[22%] top-1 w-[170px] sm:w-[210px] h-[140px] sm:h-[160px] rounded-2xl p-3 sm:p-4 bg-gradient-to-br from-[#EAF1F7] to-[#D7E3EE] border border-white/90 shadow-lg transform -rotate-6 translate-y-2 text-slate-800 select-none pointer-events-none hidden sm:flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-bold text-slate-500 uppercase">Debit Card</span>
+              <span className="text-[10px] font-bold">VISA</span>
+            </div>
+            <div className="text-xs font-black text-slate-800 truncate">
+              Cloud ERP Migration
+            </div>
+            <div className="flex justify-between items-center text-[10px] font-mono text-slate-600">
+              <span>•••• 1024</span>
+              <span>11/27</span>
+            </div>
+          </div>
+
+          {/* Card 3 (Center-Left Credit Card) */}
+          <div className="absolute left-[25%] sm:left-[32%] top-1 w-[180px] sm:w-[220px] h-[145px] sm:h-[165px] rounded-2xl p-3.5 sm:p-4 bg-gradient-to-br from-[#FAF5EB] to-[#EFE4D0] border border-white/95 shadow-xl transform -rotate-2 text-slate-900 select-none pointer-events-none flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-bold text-slate-600 uppercase">Credit Card</span>
+              <span className="text-[10px] font-black">G Pay</span>
+            </div>
+            <div className="text-xs font-black text-slate-900 truncate">
+              Web3 Polygon Mesh
+            </div>
+            <div className="flex justify-between items-center text-[10px] font-mono text-slate-700">
+              <span>•••• 9841</span>
+              <span>05/29</span>
+            </div>
+          </div>
+
+          {/* Card 4 (CENTER GLOWING FRONT MASTER CARD: GPay Warm Cream Pearl) */}
+          <div className="relative z-30 w-[200px] sm:w-[250px] h-[155px] sm:h-[175px] rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#FFFDF7] via-[#FAF4E5] to-[#EBE2CB] border border-white shadow-[0_20px_40px_-10px_rgba(200,180,140,0.45)] text-slate-950 flex flex-col justify-between select-none cursor-pointer hover:scale-102 transition-transform">
+            <div className="flex justify-between items-start">
+              <span className="text-[11px] font-bold text-slate-600 tracking-tight">
+                Credit Card
+              </span>
+              <span className="text-xs font-black tracking-tight text-slate-900 flex items-center gap-1">
+                G Pay
+              </span>
             </div>
 
-            {/* Sparkline Wave Chart with Floating Target Tooltip */}
-            <div className="relative my-4 h-28 flex items-center justify-center">
-              {/* Floating Pinpoint Tooltip (₹ 24,50,000.00) */}
-              <div className="absolute left-[62%] top-0 -translate-x-1/2 flex flex-col items-center z-10">
-                <div className="px-3 py-1 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-lg">
-                  ₹ 24,50,000.00
-                </div>
-                <div className="w-[1px] h-10 border-l border-dashed border-slate-400 my-0.5" />
-                <div className="w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-white shadow-xs -mt-1" />
-              </div>
+            {/* Gold EMV Chip & Contactless Waves */}
+            <div className="my-auto flex items-center justify-between">
+              <div className="w-8 h-6 rounded-md bg-gradient-to-br from-[#E8D49B] to-[#C9A959] border border-[#B39345] shadow-2xs" />
+              <Wifi className="w-4 h-4 text-slate-600 rotate-90" />
+            </div>
 
-              {/* Smooth Harmonic Blue SVG Spline Waveform */}
-              <svg
-                viewBox="0 0 300 80"
-                className="w-full h-full overflow-visible text-sky-400"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.25" />
-                    <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.0" />
-                  </linearGradient>
-                </defs>
-                {/* Area Fill */}
+            <div className="flex justify-between items-end">
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                  Active Sprint
+                </span>
+                <span className="text-xs font-black text-slate-900">
+                  Ryzen Matrix Core
+                </span>
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-800">
+                •••• 3892
+              </span>
+            </div>
+          </div>
+
+          {/* Card 5 (Center-Right stripe Card) */}
+          <div className="absolute right-[25%] sm:right-[32%] top-1 w-[180px] sm:w-[220px] h-[145px] sm:h-[165px] rounded-2xl p-3.5 sm:p-4 bg-gradient-to-br from-[#EEF4F9] to-[#DCE7F3] border border-white/95 shadow-xl transform rotate-3 text-slate-900 select-none pointer-events-none hidden sm:flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-bold text-slate-600 uppercase">stripe</span>
+              <span className="text-[10px] font-bold text-slate-800">Credit Card</span>
+            </div>
+            <div className="text-xs font-black text-slate-800 truncate">
+              AI Vision Solver
+            </div>
+            <div className="flex justify-between items-center text-[10px] font-mono text-slate-600">
+              <span>•••• 7712</span>
+              <span>09/27</span>
+            </div>
+          </div>
+
+          {/* Card 6 (Far Right Apple Pay Silver Card) */}
+          <div className="absolute right-[2%] sm:right-[8%] -top-1 w-[160px] sm:w-[200px] h-[135px] sm:h-[155px] rounded-2xl p-3 sm:p-4 bg-gradient-to-br from-[#F2F4F7] to-[#DFE5EB] border border-white/80 shadow-md transform rotate-12 translate-y-4 text-slate-700 select-none pointer-events-none hidden sm:flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Silver Card</span>
+              <span className="text-[9px] font-mono text-slate-400">Apple Pay</span>
+            </div>
+            <div className="text-xs font-black text-slate-800 truncate">
+              Audit Ledger
+            </div>
+            <div className="flex justify-between items-center text-[9px] font-mono text-slate-500">
+              <span>•••• 6031</span>
+              <span>01/29</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* 3. 4-COLUMN SUMMARY GLASS STRIP */}
+      <div className="bg-[#F8FAF9]/80 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-[#E6EDE8] p-4 sm:p-5 shadow-2xs grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/60">
+        {summaries.map((item, idx) => (
+          <div key={item.label} className={`flex items-center justify-between ${idx > 0 ? 'sm:pl-6 pt-3 sm:pt-0' : ''}`}>
+            <div>
+              <span className="text-xs font-semibold text-slate-500 block">
+                {item.label}
+              </span>
+              <div className="flex items-baseline gap-2 mt-1">
+                <span className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                  {item.value}
+                </span>
+                <span
+                  className={`text-[11px] font-bold flex items-center ${
+                    item.isPositive ? 'text-emerald-600' : 'text-rose-600'
+                  }`}
+                >
+                  {item.change}
+                </span>
+              </div>
+            </div>
+
+            {/* Sparkline Waveform */}
+            <div className="w-16 h-8 text-slate-700 shrink-0">
+              <svg viewBox="0 0 80 20" className="w-full h-full overflow-visible">
                 <path
-                  d="M 0 50 Q 30 55 60 48 T 120 42 T 180 30 L 190 32 L 195 65 L 205 65 L 210 40 T 260 48 T 300 35 L 300 80 L 0 80 Z"
-                  fill="url(#chartGradient)"
-                />
-                {/* Line Path */}
-                <path
-                  d="M 0 50 Q 30 55 60 48 T 120 42 T 180 30 L 190 32 L 195 65 L 205 65 L 210 40 T 260 48 T 300 35"
+                  d={item.sparkline}
                   fill="none"
-                  stroke="#38BDF8"
-                  strokeWidth="2.2"
+                  stroke={item.isPositive ? '#10B981' : '#F43F5E'}
+                  strokeWidth="1.8"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>
+          </div>
+        ))}
+      </div>
 
-            {/* Bottom Time Filter Pill Bar */}
-            <div className="flex items-center justify-between text-xs font-bold text-slate-500 pt-2">
-              {['1H', '24H', '1W', '1M', '1Y', 'ALL'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setTimeFilter(tab)}
-                  className={`px-3 py-1 rounded-xl transition-all ${
-                    timeFilter === tab
-                      ? 'bg-slate-900 text-white shadow-xs'
-                      : 'hover:text-slate-900'
-                  }`}
-                >
-                  {tab}
+      {/* 4. MAIN EVIDENCE AREA (Left Large Column + Right Grid Breakdown) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-2">
+        
+        {/* LEFT COLUMN (5-Cols): Workload & Income Symmetrical Bar Tower */}
+        <div className="lg:col-span-5 bg-[#FDFEFE] rounded-3xl p-6 border border-[#E9EFEA] shadow-2xs flex flex-col justify-between min-h-[460px]">
+          {/* Header Row with Filter */}
+          <div className="flex items-center justify-between pb-4">
+            <span className="text-xs font-bold text-slate-800">
+              Total Income
+            </span>
+
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F6F8F7] border border-slate-200/80 text-xs font-semibold text-slate-700 cursor-pointer hover:bg-slate-100 transition">
+              <span>{selectedMonth}</span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
+            </div>
+          </div>
+
+          {/* My Income Top Display */}
+          <div className="text-center py-2">
+            <span className="text-xs font-semibold text-slate-500 block">
+              My Income
+            </span>
+            <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5 block">
+              $578,395<span className="text-slate-400 text-lg">.00</span>
+            </span>
+          </div>
+
+          {/* Symmetrical Vertical Histogram Tower (Matching Reference Centerpiece) */}
+          <div className="relative my-4 py-4 flex items-center justify-between px-2 sm:px-6 h-48">
+            {/* Top Indicator Label for Center Apr Tower */}
+            <div className="absolute left-1/2 top-2 -translate-x-1/2 text-[10px] font-mono font-bold text-slate-700">
+              $4,699.00
+            </div>
+
+            {/* Bottom Indicator Label for Center Apr Tower */}
+            <div className="absolute left-1/2 bottom-2 -translate-x-1/2 text-[10px] font-mono font-bold text-rose-500">
+              $4,699.00
+            </div>
+
+            {histogramMonths.map((m) => {
+              if (m.isCenter) {
+                return (
+                  <div key={m.name} className="flex flex-col items-center justify-center h-full relative z-10">
+                    {/* Top Black Striped Pillar */}
+                    <div className="w-6 sm:w-8 h-20 bg-slate-950 rounded-t-xs flex items-center justify-center space-x-[2px] overflow-hidden p-0.5 shadow-sm">
+                      <div className="w-1 h-full bg-white/30" />
+                      <div className="w-1 h-full bg-white/30" />
+                      <div className="w-1 h-full bg-white/30" />
+                    </div>
+
+                    {/* Month Label In Center */}
+                    <span className="text-[11px] font-bold text-slate-950 my-1">
+                      {m.name}
+                    </span>
+
+                    {/* Bottom Red Striped Pillar */}
+                    <div className="w-6 sm:w-8 h-20 bg-rose-500 rounded-b-xs flex items-center justify-center space-x-[2px] overflow-hidden p-0.5 shadow-sm">
+                      <div className="w-1 h-full bg-white/30" />
+                      <div className="w-1 h-full bg-white/30" />
+                      <div className="w-1 h-full bg-white/30" />
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div key={m.name} className="flex flex-col items-center justify-center h-full">
+                  {/* Upper Stepped Gray Bar */}
+                  <div
+                    className="w-4 sm:w-6 bg-slate-200/80 rounded-t-xs transition-all"
+                    style={{ height: m.height }}
+                  />
+
+                  {/* Month Label */}
+                  <span className="text-[10px] font-semibold text-slate-400 my-1">
+                    {m.name}
+                  </span>
+
+                  {/* Lower Stepped Gray Bar */}
+                  <div
+                    className="w-4 sm:w-6 bg-slate-200/80 rounded-b-xs transition-all"
+                    style={{ height: m.height }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* My Expenses Bottom Display */}
+          <div className="text-center py-2 border-t border-slate-100">
+            <span className="text-xs font-semibold text-slate-500 block">
+              My Expenses
+            </span>
+            <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-0.5 block">
+              $578,395<span className="text-slate-400 text-lg">.00</span>
+            </span>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN (7-Cols): Spending Gauge + Monthly Splines + Transactions Stream */}
+        <div className="lg:col-span-7 space-y-6">
+          
+          {/* Top Row: Weekly Spending (Left) + Monthly Overview (Right) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            
+            {/* Box 1: Weekly Spending (Semi-Circular Arc Gauge) */}
+            <div className="bg-[#FDFEFE] rounded-3xl p-5 border border-[#E9EFEA] shadow-2xs flex flex-col justify-between min-h-[210px]">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-900">
+                  Weekly Spending
+                </span>
+                <button className="p-1 rounded-lg text-slate-400 hover:text-slate-800">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
+              </div>
+
+              {/* Legend */}
+              <div className="space-y-0.5 pt-1">
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-800">
+                  <span className="w-2 h-2 rounded-full bg-slate-900" />
+                  <span>Spending Breakdown</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+                  <span className="w-2 h-2 rounded-full bg-slate-300" />
+                  <span>Shopping</span>
+                </div>
+              </div>
+
+              {/* Half-Donut Gauge Arc Chart */}
+              <div className="relative h-20 flex items-center justify-center my-1">
+                <svg viewBox="0 0 160 80" className="w-40 h-20 overflow-visible">
+                  {/* Gray Background Arc */}
+                  <path
+                    d="M 10 75 A 70 70 0 0 1 150 75"
+                    fill="none"
+                    stroke="#E2E8F0"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                  />
+                  {/* Black Active Arc Segment */}
+                  <path
+                    d="M 10 75 A 70 70 0 0 1 115 20"
+                    fill="none"
+                    stroke="#0F172A"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              {/* Bottom Percentage Indicators */}
+              <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-100">
+                <div>
+                  <span className="font-bold text-slate-900 block text-xs">▲ 56.07%</span>
+                  <span>42% of total spend</span>
+                </div>
+                <div className="text-right">
+                  <span className="font-bold text-slate-600 block text-xs">▲ 47.93%</span>
+                  <span>42% of total spend</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Box 2: Monthly Overview (Sinusoidal Spline Waves) */}
+            <div className="bg-[#FDFEFE] rounded-3xl p-5 border border-[#E9EFEA] shadow-2xs flex flex-col justify-between min-h-[210px]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900">
+                    Monthly Overview
+                  </span>
+                  <span className="px-2 py-0.2 rounded-full bg-slate-900 text-white text-[9px] font-bold">
+                    +8.2%
+                  </span>
+                </div>
+                <button className="p-1 rounded-lg text-slate-400 hover:text-slate-800">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* 3 Harmonious Overlapping Spline Waveform Lines */}
+              <div className="relative h-24 my-2 flex items-center justify-center">
+                <svg viewBox="0 0 240 70" className="w-full h-full overflow-visible">
+                  {/* Wave 1: Dark Lead Wave */}
+                  <path
+                    d="M 0 50 Q 30 15, 60 50 T 120 50 T 180 50 T 240 50"
+                    fill="none"
+                    stroke="#1E293B"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  {/* Wave 2: Middle Gray Wave */}
+                  <path
+                    d="M 0 30 Q 30 65, 60 30 T 120 30 T 180 30 T 240 30"
+                    fill="none"
+                    stroke="#94A3B8"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                  {/* Wave 3: Light Gray Wave */}
+                  <path
+                    d="M 0 40 Q 40 10, 80 40 T 160 40 T 240 40"
+                    fill="none"
+                    stroke="#CBD5E1"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+                  {/* Indicator Pinpoint Marker at Jul */}
+                  <line x1="195" y1="10" x2="195" y2="65" stroke="#0F172A" strokeWidth="1" strokeDasharray="2,2" />
+                  <circle cx="195" cy="30" r="3.5" fill="#0F172A" />
+                </svg>
+              </div>
+
+              {/* Bottom Months Labels */}
+              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 pt-1 border-t border-slate-100">
+                {['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug'].map((m) => (
+                  <span key={m}>{m}</span>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom Row: Transactions Stream (Recent Activity List) */}
+          <div className="bg-[#FDFEFE] rounded-3xl p-5 sm:p-6 border border-[#E9EFEA] shadow-2xs space-y-4">
+            {/* Header with Search & Filter */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-900">
+                Transactions
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                  <Search className="w-3.5 h-3.5" />
+                </button>
+                <button className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => navigate('/performance-allocation')}
+                  className="px-3 py-1 rounded-full bg-[#F5F7F6] text-slate-700 hover:text-slate-900 text-[11px] font-bold border border-slate-200/80 transition"
+                >
+                  View All
+                </button>
+              </div>
+            </div>
+
+            {/* Subheading: Yesterday */}
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Yesterday
+            </div>
+
+            {/* List Rows */}
+            <div className="divide-y divide-slate-100">
+              {transactions.map((t) => (
+                <div key={t.id} className="py-2.5 flex items-center justify-between hover:bg-slate-50/50 rounded-xl px-2 transition">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full ${t.iconBg} text-white flex items-center justify-center font-bold text-xs shadow-2xs`}>
+                      {t.iconText}
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-slate-900">
+                        {t.title}
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        {t.subtitle}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-xs font-bold text-slate-900">
+                      {t.amount}
+                    </div>
+                    <span
+                      className={`text-[9px] font-semibold flex items-center justify-end gap-0.5 ${
+                        t.isPositive ? 'text-emerald-600' : 'text-slate-400'
+                      }`}
+                    >
+                      {t.isPositive ? '▲ ' : '▼ '} {t.type}
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* RIGHT: Your Assets (3 Pastel Cards) */}
-        <div className="lg:col-span-7 flex flex-col">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-lg font-black text-slate-900 tracking-tight">
-              Indian Web3 & Project Assets
-            </h2>
-            <button className="p-1 rounded-lg text-slate-400 hover:text-slate-700">
-              <ArrowLeftRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
-            
-            {/* Asset 1: 4,500 MATIC (Pastel Lavender) */}
-            <div className="bg-[#F0EAF8] rounded-[30px] p-5 flex flex-col justify-between border border-[#E4D9F2] shadow-xs">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-base font-black text-slate-900">
-                    4,500 MATIC
-                  </div>
-                  <span className="text-xs font-semibold text-slate-500">
-                    ₹ 2,80,800.00
-                  </span>
-                </div>
-                <button className="text-slate-400 hover:text-slate-700">
-                  <MoreVertical className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between mt-8">
-                <div className="w-9 h-9 rounded-full bg-[#7B3FE4] text-white flex items-center justify-center font-black shadow-2xs text-xs">
-                  ⬡
-                </div>
-                <span className="text-xs font-bold text-purple-700">
-                  + 4.14%
-                </span>
-              </div>
-            </div>
-
-            {/* Asset 2: 0.45 BTC (Pastel Mint Green) */}
-            <div className="bg-[#E7F6EC] rounded-[30px] p-5 flex flex-col justify-between border border-[#D5EFE0] shadow-xs">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-base font-black text-slate-900">
-                    0.45 BTC
-                  </div>
-                  <span className="text-xs font-semibold text-slate-500">
-                    ₹ 26,48,500.00
-                  </span>
-                </div>
-                <button className="text-slate-400 hover:text-slate-700">
-                  <MoreVertical className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between mt-8">
-                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center font-black text-slate-900 shadow-2xs text-sm font-serif">
-                  ₿
-                </div>
-                <span className="text-xs font-bold text-emerald-700">
-                  + 1.31%
-                </span>
-              </div>
-            </div>
-
-            {/* Asset 3: 3.50 ETH (Pastel Butter Yellow) */}
-            <div className="bg-[#FAF4DD] rounded-[30px] p-5 flex flex-col justify-between border border-[#EFE5C6] shadow-xs">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-base font-black text-slate-900">
-                    3.50 ETH
-                  </div>
-                  <span className="text-xs font-semibold text-slate-500">
-                    ₹ 8,14,200.00
-                  </span>
-                </div>
-                <button className="text-slate-400 hover:text-slate-700">
-                  <MoreVertical className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between mt-8">
-                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center font-black text-slate-900 shadow-2xs text-sm">
-                  ◆
-                </div>
-                <span className="text-xs font-bold text-amber-700">
-                  + 2.27%
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      {/* 3. BOTTOM ROW: Market Performance Stream Table (Left) + Dark Promo Card (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-2">
-        
-        {/* LEFT: Market Performance Stream Table */}
-        <div className="lg:col-span-7 flex flex-col">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 px-1">
-            <h3 className="text-lg font-black text-slate-900 tracking-tight">
-              Indian Market is up 1.45% Today
-            </h3>
-
-            {/* Filter Dropdowns */}
-            <div className="flex items-center gap-2">
-              <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer hover:bg-slate-100">
-                <span>{selectedRange}</span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
-              </div>
-              <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 flex items-center gap-1.5 cursor-pointer hover:bg-slate-100">
-                <span>{selectedGainer}</span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
-              </div>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto flex-1">
-            <table className="w-full text-left text-xs">
-              <thead className="text-[11px] font-bold text-slate-400 border-b border-slate-100 pb-2">
-                <tr>
-                  <th className="pb-3 font-semibold">Asset / Project</th>
-                  <th className="pb-3 font-semibold">Price (INR)</th>
-                  <th className="pb-3 font-semibold">24h Gain</th>
-                  <th className="pb-3 font-semibold">Market Cap</th>
-                  <th className="pb-3 font-semibold text-center">Watch</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100/80">
-                {cryptoAssets.map((asset, idx) => {
-                  const isStarred = !!starred[idx];
-                  return (
-                    <tr key={asset.id} className="hover:bg-slate-50/70 transition">
-                      <td className="py-3.5 pr-4">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-xl ${asset.iconBg} text-white flex items-center justify-center font-bold text-xs shadow-2xs`}>
-                            {asset.iconText}
-                          </div>
-                          <div>
-                            <div className="font-bold text-slate-900 text-xs">
-                              {asset.name}
-                            </div>
-                            <span className="text-[10px] font-semibold text-slate-400 uppercase">
-                              {asset.symbol}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 font-bold text-slate-900">
-                        {asset.price}
-                      </td>
-                      <td className="py-3.5 font-bold text-emerald-600">
-                        {asset.change}
-                      </td>
-                      <td className="py-3.5 font-semibold text-slate-800">
-                        {asset.marketCap}
-                      </td>
-                      <td className="py-3.5 text-center">
-                        <button
-                          onClick={() => toggleStar(idx)}
-                          className="text-slate-300 hover:text-amber-400 transition"
-                        >
-                          <Star
-                            className={`w-4 h-4 inline ${
-                              isStarred
-                                ? 'fill-amber-400 text-amber-400'
-                                : 'text-slate-300'
-                            }`}
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* RIGHT: Dark Promo Card ("Earn tokens with Ryzen Matrix India!") */}
-        <div className="lg:col-span-5 flex flex-col justify-end">
-          <div className="bg-[#191A1E] text-white rounded-[32px] p-7 sm:p-8 relative overflow-hidden shadow-2xl flex flex-col justify-between min-h-[220px]">
-            
-            {/* Text & Pill Header */}
-            <div className="space-y-3 z-10 max-w-xs">
-              <h4 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                Earn{' '}
-                <span className="border border-white/60 px-2 py-0.5 rounded-lg text-sm font-bold inline-block mx-0.5">
-                  ₹ free
-                </span>{' '}
-                tokens with Ryzen Matrix Earn!
-              </h4>
-              <p className="text-xs text-slate-400 font-medium leading-relaxed">
-                Learn about Indian Web3 innovations, Digital Rupee (e₹), and complete sprint milestones to earn rewards!
-              </p>
-            </div>
-
-            {/* CTA Button */}
-            <div className="pt-6 z-10">
-              <button
-                onClick={() => navigate('/recovery')}
-                className="px-6 py-2.5 rounded-full bg-[#D8ECFD] hover:bg-[#C2E3FC] text-slate-950 text-xs font-extrabold shadow-lg transition-transform active:scale-95"
-              >
-                Start Earning (INR)
-              </button>
-            </div>
-
-            {/* Decorative Abstract Overlapping White Wireframe Curves (Matching Mockup) */}
-            <svg
-              className="absolute right-0 bottom-0 w-48 h-48 pointer-events-none opacity-40"
-              viewBox="0 0 200 200"
-              fill="none"
-            >
-              <path
-                d="M 50 190 Q 90 120 180 130"
-                stroke="white"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M 30 180 Q 80 100 190 110"
-                stroke="white"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M 10 170 Q 70 80 200 90"
-                stroke="white"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </div>
         </div>
 
       </div>
