@@ -119,9 +119,6 @@ export function AppLayout() {
       {/* Top Outer Micro Bar */}
       <header className="flex items-center justify-between px-3 py-1 shrink-0 z-10">
         <NavLink to="/" className="flex items-center gap-2 group">
-          <div className="w-6 h-6 rounded-lg border border-white/30 bg-white/10 flex items-center justify-center backdrop-blur-md shadow-xs group-hover:border-white/50 transition">
-            <Compass className="w-3.5 h-3.5 text-amber-300" />
-          </div>
           <span className="font-bold text-sm tracking-tight text-white font-sans block leading-none">
             RebalanceX
           </span>
@@ -163,9 +160,6 @@ export function AppLayout() {
                 className="flex items-center gap-2.5 group"
                 title="RebalanceX Workspace"
               >
-                <div className="w-9 h-9 rounded-2xl border border-white/30 bg-white/15 flex items-center justify-center text-amber-300 shadow-sm group-hover:scale-105 transition-transform">
-                  <Compass className="w-5 h-5 stroke-[2]" />
-                </div>
                 {!isSidebarCollapsed && (
                   <div>
                     <span className="font-bold text-base tracking-tight text-white leading-none block">
