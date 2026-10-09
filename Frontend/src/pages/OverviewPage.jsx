@@ -3,288 +3,306 @@ import { useProject } from '../context/ProjectContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
-  Calendar,
-  Gauge,
-  GitCommit,
-  ShieldCheck,
-  Sparkles,
-  Clock,
-  Users,
-  AlertTriangle,
-  ArrowRight,
-  Plus,
-  CheckCircle2,
-  Layers,
-  ArrowUpRight,
-  TrendingUp,
   Search,
   SlidersHorizontal,
-  Zap,
-  Activity,
+  ArrowUpRight,
+  TrendingUp,
   CreditCard,
+  ChevronDown,
+  Wifi,
 } from 'lucide-react';
-import { AddTaskModal } from '../components/modals/AddTaskModal';
 
 export function OverviewPage() {
-  const { activeProject, isProjectLoading, activeProposal } = useProject();
+  const { activeProject, isProjectLoading } = useProject();
   const { role, user } = useAuth();
   const navigate = useNavigate();
-  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+
   const [selectedRange, setSelectedRange] = useState('This Month');
-
-  if (isProjectLoading || !activeProject) {
-    return (
-      <div className="flex items-center justify-center h-64 text-sm text-slate-500">
-        Loading project intelligence briefing...
-      </div>
-    );
-  }
-
-  const sm = activeProject.schedule_metrics || {};
-  const tasks = activeProject.tasks || [];
-  const teamMembers = activeProject.team_members || [];
-  const critIds = new Set(sm.critical_path_task_ids || []);
-  const critTasks = tasks.filter((t) => critIds.has(t.id));
-
-  const projectDuration = sm.project_duration_days || 28;
-  const deadlineDays = activeProject.deadline_days || 30;
-  const totalHours = tasks.reduce((acc, t) => acc + (t.estimated_hours || 0), 0) || 144;
-  const isOverDeadline = projectDuration > deadlineDays;
-
-  // 4 Layered Milestones for the Fanned 3D Deck (Matching Card Reference Deck)
-  const milestoneCards = [
-    {
-      id: 1,
-      type: 'Platinum Milestone',
-      label: 'Core Architecture',
-      duration: '8 Days',
-      skills: 'Python, Docker',
-      status: 'Completed',
-      offsetClass: 'translate-x-0 rotate-[-8deg] z-10 opacity-70 scale-90',
-      bgClass: 'from-slate-200 to-slate-300 text-slate-800',
-    },
-    {
-      id: 2,
-      type: 'Debit Deliverable',
-      label: 'AI Constraint Solver',
-      duration: '14 Days',
-      skills: 'Optimization, FastAPI',
-      status: 'On Track',
-      offsetClass: 'translate-x-8 rotate-[-4deg] z-20 opacity-85 scale-95',
-      bgClass: 'from-amber-100 to-orange-100 text-amber-950',
-    },
-    {
-      id: 3,
-      type: 'G-Pay Sprint',
-      label: 'Zero-Slack CPM Engine',
-      duration: '6 Days',
-      skills: 'React, Analytics',
-      status: 'In Progress',
-      offsetClass: 'translate-x-16 rotate-[0deg] z-30 opacity-100 scale-100 ring-2 ring-white/80 shadow-2xl',
-      bgClass: 'from-emerald-50 via-teal-50 to-white text-slate-900',
-    },
-    {
-      id: 4,
-      type: 'Silver Card',
-      label: 'Autonomous Rebalance',
-      duration: '28 Days Target',
-      skills: 'Governance & Recovery',
-      status: 'Pending Gate',
-      offsetClass: 'translate-x-24 rotate-[4deg] z-10 opacity-75 scale-90',
-      bgClass: 'from-slate-100 to-slate-200 text-slate-700',
-    },
-  ];
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* 1. HERO SPOTLIGHT: FANNED-OUT 3D CARD DECK & FLOATING STATS RIBBON */}
-      <div className="relative pt-4 pb-2 px-2 overflow-hidden">
-        {/* Fanned Layered Cards Display */}
-        <div className="flex justify-center items-center h-48 sm:h-56 relative max-w-2xl mx-auto mb-4">
-          {milestoneCards.map((card, idx) => (
-            <div
-              key={card.id}
-              className={`absolute w-64 sm:w-72 h-36 sm:h-44 p-4 rounded-3xl border border-white/60 bg-gradient-to-br ${card.bgClass} shadow-xl flex flex-col justify-between transition-all duration-300 ${card.offsetClass}`}
-              style={{
-                boxShadow: '0 20px 35px -10px rgba(0, 0, 0, 0.12), 0 0 1px 1px rgba(255, 255, 255, 0.8)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                  {card.type}
-                </span>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/70 text-slate-800 backdrop-blur-xs border border-white/60">
-                  {card.status}
-                </span>
-              </div>
+      
+      {/* 1. HERO SPOTLIGHT: 3D FANNED-OUT HORIZONTAL CARD DECK & FLOATING STATS RIBBON */}
+      <div className="relative pt-2 pb-2 overflow-visible">
+        
+        {/* Fanned Layered Cards Stack (Exact Match to Juice Lab / 2IXO Reference) */}
+        <div className="flex justify-center items-center h-48 sm:h-52 relative max-w-4xl mx-auto mb-2 select-none">
+          
+          {/* Card 1: Far Left - Platinum Card ($150/...) */}
+          <div className="absolute left-4 sm:left-12 top-8 text-left z-0 hidden md:block">
+            <span className="text-[11px] font-bold text-slate-700 block">Platinum Card</span>
+            <span className="text-[10px] text-slate-400 font-mono block">$ 150 / ....</span>
+          </div>
 
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-snug">
-                  {card.label}
-                </h3>
-                <p className="text-[10px] text-slate-600 font-medium mt-0.5">
-                  {card.skills}
-                </p>
-              </div>
+          {/* Card 2: Mid Left - Debit Card */}
+          <div
+            className="absolute w-52 sm:w-60 h-32 sm:h-36 p-3.5 rounded-2xl bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 border border-white/70 shadow-lg flex flex-col justify-between -translate-x-32 sm:-translate-x-44 -rotate-12 z-10 opacity-75 transition-transform hover:scale-105"
+            style={{ boxShadow: '0 15px 30px -8px rgba(0,0,0,0.12)' }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-slate-800">Debit Card</span>
+              <div className="w-5 h-3.5 rounded bg-slate-400/40" />
+            </div>
+            <div className="w-6 h-4 rounded bg-amber-400/60" />
+          </div>
 
-              <div className="flex items-center justify-between text-xs font-bold text-slate-900 pt-2 border-t border-black/5">
-                <span className="font-tabular">{card.duration}</span>
-                <span className="text-[10px] text-slate-500 font-mono">ID #0{card.id}</span>
+          {/* Card 3: Center Left - Credit Card (Pearl White) */}
+          <div
+            className="absolute w-56 sm:w-64 h-36 sm:h-40 p-4 rounded-2xl bg-gradient-to-br from-white via-slate-50 to-slate-200 border border-white/90 shadow-xl flex flex-col justify-between -translate-x-16 sm:-translate-x-20 -rotate-6 z-20 opacity-90 transition-transform hover:scale-105"
+            style={{ boxShadow: '0 20px 35px -10px rgba(0,0,0,0.15)' }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-800">Credit Card</span>
+              <div className="flex -space-x-1">
+                <span className="w-3.5 h-3.5 rounded-full bg-red-400/70 inline-block" />
+                <span className="w-3.5 h-3.5 rounded-full bg-amber-400/70 inline-block" />
               </div>
             </div>
-          ))}
+            <div className="w-7 h-5 rounded bg-slate-300/60" />
+          </div>
+
+          {/* Card 4: CENTER FRONT - Credit Card with G Pay (Warm Gold / Champagne Metallic) */}
+          <div
+            className="absolute w-60 sm:w-72 h-38 sm:h-44 p-4 rounded-3xl bg-gradient-to-br from-[#F5EFE6] via-[#EFE7DA] to-[#E5DBCB] border border-white/95 shadow-2xl flex flex-col justify-between z-30 transition-transform hover:scale-105 cursor-pointer ring-1 ring-white"
+            style={{
+              boxShadow: '0 25px 45px -10px rgba(70, 50, 30, 0.20), 0 0 0 1px rgba(255,255,255,0.9)',
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-900">Credit Card</span>
+              <div className="flex items-center gap-1 font-bold text-xs text-slate-900">
+                <span className="text-[11px] font-black">G Pay</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-6">
+              <div className="w-8 h-6 rounded-md bg-amber-600/20 border border-amber-600/30" />
+              <Wifi className="w-4 h-4 text-slate-700 rotate-90" />
+            </div>
+          </div>
+
+          {/* Card 5: Center Right - Credit Card with stripe */}
+          <div
+            className="absolute w-56 sm:w-64 h-36 sm:h-40 p-4 rounded-2xl bg-gradient-to-br from-white via-slate-100 to-slate-200 border border-white/90 shadow-xl flex flex-col justify-between translate-x-16 sm:translate-x-20 rotate-6 z-20 opacity-90 transition-transform hover:scale-105"
+            style={{ boxShadow: '0 20px 35px -10px rgba(0,0,0,0.15)' }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-800">Credit Card</span>
+              <span className="text-[11px] font-black text-slate-900 font-mono tracking-tighter">stripe</span>
+            </div>
+            <div className="w-7 h-5 rounded bg-slate-300/60 self-end" />
+          </div>
+
+          {/* Card 6: Mid Right - Credit Card with Apple Pay */}
+          <div
+            className="absolute w-52 sm:w-60 h-32 sm:h-36 p-3.5 rounded-2xl bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 border border-white/70 shadow-lg flex flex-col justify-between translate-x-32 sm:translate-x-44 rotate-12 z-10 opacity-75 transition-transform hover:scale-105"
+            style={{ boxShadow: '0 15px 30px -8px rgba(0,0,0,0.12)' }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-slate-800">Credit Card</span>
+              <span className="text-[10px] font-bold text-slate-900"> Pay</span>
+            </div>
+            <div className="w-6 h-4 rounded bg-slate-400/40" />
+          </div>
+
+          {/* Far Right Label: Silver Card ($130/...) */}
+          <div className="absolute right-4 sm:right-12 top-8 text-right z-0 hidden md:block">
+            <span className="text-[11px] font-bold text-slate-700 block">Silver Card</span>
+            <span className="text-[10px] text-slate-400 font-mono block">$ 130 / ....</span>
+          </div>
         </div>
 
-        {/* Floating Translucent Stat Metric Ribbon (Matching Reference Overlay Strip) */}
-        <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#E2E8E4] p-4 sm:p-5 shadow-lg grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Stat 1: Total Duration */}
-          <div className="p-2 space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Project Duration
+        {/* Floating Translucent Stat Ribbon Overlay (Exact Match to Reference) */}
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#E8EEEB] p-4 sm:p-5 shadow-lg grid grid-cols-2 md:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+          
+          {/* Stat 1: Total Balance */}
+          <div className="px-3 py-1 space-y-1">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Total Balance
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
-                {projectDuration} Days
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xl sm:text-2xl font-black font-tabular text-slate-900">
+                $5,465.00
               </span>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
-                ▲ +6.3%
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">
+                ▲ 6.3%
               </span>
             </div>
-            {/* Mini SVG Sparkline */}
+            {/* Jagged Sparkline */}
             <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
-              <path d="M0 15 L20 12 L40 18 L60 8 L80 14 L100 5" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M0 12 L15 8 L30 15 L45 5 L60 14 L75 7 L90 12 L100 4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
-          {/* Stat 2: Total Effort */}
-          <div className="p-2 space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Total Planned Effort
+          {/* Stat 2: Total Income */}
+          <div className="px-3 py-1 space-y-1">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Total Income
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
-                {totalHours} hrs
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xl sm:text-2xl font-black font-tabular text-slate-900">
+                $8,395.00
               </span>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
-                ▲ +7.1%
-              </span>
-            </div>
-            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
-              <path d="M0 18 L25 10 L45 15 L70 5 L85 11 L100 2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-
-          {/* Stat 3: Risk / Slack */}
-          <div className="p-2 space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Critical Slack
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
-                0.0 Days
-              </span>
-              <span className="text-[10px] font-bold text-red-800 bg-red-100 px-1.5 py-0.5 rounded-full border border-red-300">
-                ▼ -5.7%
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">
+                ▲ 7.1%
               </span>
             </div>
             <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
-              <path d="M0 8 L20 14 L40 6 L65 16 L85 10 L100 12" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M0 14 L20 6 L35 15 L55 4 L70 12 L85 6 L100 2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
-          {/* Stat 4: Solver Confidence */}
-          <div className="p-2 space-y-1">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-              Solver Confidence
+          {/* Stat 3: Total Expenses */}
+          <div className="px-3 py-1 space-y-1">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Total Expenses
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-xl sm:text-2xl font-bold font-tabular text-emerald-800">
-                98.4%
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xl sm:text-2xl font-black font-tabular text-slate-900">
+                $2,455.00
               </span>
-              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
-                ▲ +5.2%
+              <span className="text-[10px] font-bold text-red-800 bg-red-100 px-1.5 py-0.2 rounded-full">
+                ▼ 5.7%
               </span>
             </div>
-            <svg className="w-full h-4 stroke-emerald-700 fill-none" viewBox="0 0 100 20">
-              <path d="M0 16 L30 12 L50 8 L75 11 L90 4 L100 2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
+              <path d="M0 6 L20 14 L40 5 L60 16 L80 8 L100 13" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* Stat 4: Total Savings */}
+          <div className="px-3 py-1 space-y-1">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Total Savings
+            </div>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-xl sm:text-2xl font-black font-tabular text-slate-900">
+                $4,320.00
+              </span>
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded-full">
+                ▲ 5.2%
+              </span>
+            </div>
+            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
+              <path d="M0 15 L25 10 L45 16 L65 5 L85 11 L100 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         </div>
       </div>
 
-      {/* 2. MAIN VISUAL GRID (BIPOLAR HISTOGRAM + ARC GAUGE + SINE SPLINE + TRANSACTIONS) */}
+      {/* 2. MAIN 4-WIDGET DASHBOARD GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         
-        {/* LEFT 5-COL: BIPOLAR MIRRORED WORKLOAD HISTOGRAM (My Income / My Expenses Reference) */}
-        <div className="lg:col-span-5 bg-white rounded-3xl border border-[#E2E8E4] p-6 shadow-xs flex flex-col justify-between space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                Deliverable Velocity
-              </span>
-              <h3 className="text-sm font-bold text-slate-900">Workload Allocation</h3>
-            </div>
-            <select
-              value={selectedRange}
-              onChange={(e) => setSelectedRange(e.target.value)}
-              className="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-slate-700 focus:outline-none"
+        {/* WIDGET 1 (LEFT 5-COL): TOTAL INCOME & BIPOLAR MIRRORED HISTOGRAM */}
+        <div className="lg:col-span-5 bg-white rounded-3xl border border-[#E8EEEB] p-6 shadow-xs flex flex-col justify-between space-y-6">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <h3 className="text-xs font-bold text-slate-900">Total Income</h3>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-[11px] font-bold text-slate-700 transition"
             >
-              <option>This Month</option>
-              <option>Sprint Cycle</option>
-              <option>Full Baseline</option>
-            </select>
+              <span>{selectedRange}</span>
+              <ChevronDown className="w-3 h-3 text-slate-500" />
+            </button>
           </div>
 
-          {/* Center Bipolar Mirrored Bars */}
           <div className="text-center space-y-4 my-auto">
+            {/* Top Value */}
             <div>
-              <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Planned Effort</div>
-              <div className="text-3xl sm:text-4xl font-extrabold font-tabular text-slate-900 tracking-tight mt-0.5">
-                {totalHours}.0 hrs
+              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">My Income</div>
+              <div className="text-3xl sm:text-4xl font-black font-tabular text-slate-900 tracking-tight mt-0.5">
+                $578,395<span className="text-slate-400 font-medium">.00</span>
               </div>
             </div>
 
-            {/* Symmetrical Mirrored Bar Chart SVG */}
-            <div className="relative py-2 px-4 flex items-center justify-center">
-              <svg className="w-full h-40 max-w-xs" viewBox="0 0 240 160">
-                {/* Horizontal Center Axis */}
-                <line x1="10" y1="80" x2="230" y2="80" stroke="#E2E8E4" strokeWidth="1" strokeDasharray="3 3" />
+            {/* Bipolar Mirrored Symmetrical Pinstripe Histogram */}
+            <div className="relative py-2 px-2 flex items-center justify-center">
+              <svg className="w-full h-44 max-w-sm" viewBox="0 0 260 170">
+                {/* Jan Background Pinstripes */}
+                <g opacity="0.35" fill="#CBD5E1">
+                  <rect x="20" y="60" width="2" height="25" />
+                  <rect x="25" y="55" width="2" height="30" />
+                  <rect x="30" y="60" width="2" height="25" />
+                  <rect x="20" y="85" width="2" height="25" />
+                  <rect x="25" y="85" width="2" height="30" />
+                  <rect x="30" y="85" width="2" height="25" />
+                </g>
 
-                {/* Mirrored Bars */}
-                {/* Jan */}
-                <rect x="20" y="55" width="12" height="25" fill="#E2E8E4" rx="3" />
-                <rect x="20" y="80" width="12" height="25" fill="#E2E8E4" rx="3" />
+                {/* Feb Pinstripes */}
+                <g opacity="0.45" fill="#CBD5E1">
+                  <rect x="50" y="45" width="2" height="40" />
+                  <rect x="55" y="40" width="2" height="45" />
+                  <rect x="60" y="45" width="2" height="40" />
+                  <rect x="50" y="85" width="2" height="40" />
+                  <rect x="55" y="85" width="2" height="45" />
+                  <rect x="60" y="85" width="2" height="40" />
+                </g>
 
-                {/* Feb */}
-                <rect x="50" y="45" width="12" height="35" fill="#CBD5E1" rx="3" />
-                <rect x="50" y="80" width="12" height="35" fill="#CBD5E1" rx="3" />
+                {/* Mar Pinstripes */}
+                <g opacity="0.6" fill="#94A3B8">
+                  <rect x="80" y="30" width="2" height="55" />
+                  <rect x="85" y="25" width="2" height="60" />
+                  <rect x="90" y="30" width="2" height="55" />
+                  <rect x="80" y="85" width="2" height="55" />
+                  <rect x="85" y="85" width="2" height="60" />
+                  <rect x="90" y="85" width="2" height="55" />
+                </g>
 
-                {/* Mar */}
-                <rect x="80" y="30" width="12" height="50" fill="#94A3B8" rx="3" />
-                <rect x="80" y="80" width="12" height="50" fill="#94A3B8" rx="3" />
+                {/* Apr (CENTER HIGHLIGHTED DENSE PINSTRIPES) */}
+                {/* Top Black Bars */}
+                <g fill="#1C1F22">
+                  <rect x="110" y="8" width="3" height="77" rx="1" />
+                  <rect x="115" y="8" width="3" height="77" rx="1" />
+                  <rect x="120" y="8" width="3" height="77" rx="1" />
+                  <rect x="125" y="8" width="3" height="77" rx="1" />
+                  <rect x="130" y="8" width="3" height="77" rx="1" />
+                </g>
+                <text x="140" y="22" fontSize="9" fill="#1C1F22" fontWeight="bold">$4,699.00</text>
 
-                {/* Apr (Highlighted Center Peak) */}
-                <rect x="110" y="10" width="20" height="70" fill="#18211D" rx="4" />
-                <rect x="110" y="80" width="20" height="70" fill="#EF4444" rx="4" opacity="0.85" />
-                <text x="135" y="25" fontSize="9" fill="#0F172A" fontWeight="bold">40.0h peak</text>
-                <text x="135" y="145" fontSize="9" fill="#EF4444" fontWeight="bold">Crit Path</text>
+                {/* Bottom Red / Salmon Bars */}
+                <g fill="#F87171">
+                  <rect x="110" y="88" width="3" height="77" rx="1" />
+                  <rect x="115" y="88" width="3" height="77" rx="1" />
+                  <rect x="120" y="88" width="3" height="77" rx="1" />
+                  <rect x="125" y="88" width="3" height="77" rx="1" />
+                  <rect x="130" y="88" width="3" height="77" rx="1" />
+                </g>
+                <text x="75" y="152" fontSize="9" fill="#EF4444" fontWeight="bold">$4,699.00</text>
 
-                {/* May */}
-                <rect x="145" y="35" width="12" height="45" fill="#94A3B8" rx="3" />
-                <rect x="145" y="80" width="12" height="45" fill="#94A3B8" rx="3" />
+                {/* May Pinstripes */}
+                <g opacity="0.6" fill="#94A3B8">
+                  <rect x="150" y="30" width="2" height="55" />
+                  <rect x="155" y="25" width="2" height="60" />
+                  <rect x="160" y="30" width="2" height="55" />
+                  <rect x="150" y="85" width="2" height="55" />
+                  <rect x="155" y="85" width="2" height="60" />
+                  <rect x="160" y="85" width="2" height="55" />
+                </g>
 
-                {/* Jun */}
-                <rect x="175" y="50" width="12" height="30" fill="#CBD5E1" rx="3" />
-                <rect x="175" y="80" width="12" height="30" fill="#CBD5E1" rx="3" />
+                {/* Jun Pinstripes */}
+                <g opacity="0.45" fill="#CBD5E1">
+                  <rect x="180" y="45" width="2" height="40" />
+                  <rect x="185" y="40" width="2" height="45" />
+                  <rect x="190" y="45" width="2" height="40" />
+                  <rect x="180" y="85" width="2" height="40" />
+                  <rect x="185" y="85" width="2" height="45" />
+                  <rect x="190" y="85" width="2" height="40" />
+                </g>
 
-                {/* Jul */}
-                <rect x="205" y="60" width="12" height="20" fill="#E2E8E4" rx="3" />
-                <rect x="205" y="80" width="12" height="20" fill="#E2E8E4" rx="3" />
+                {/* Jul Pinstripes */}
+                <g opacity="0.35" fill="#CBD5E1">
+                  <rect x="210" y="60" width="2" height="25" />
+                  <rect x="215" y="55" width="2" height="30" />
+                  <rect x="220" y="60" width="2" height="25" />
+                  <rect x="210" y="85" width="2" height="25" />
+                  <rect x="215" y="85" width="2" height="30" />
+                  <rect x="220" y="85" width="2" height="25" />
+                </g>
               </svg>
             </div>
 
-            {/* Labels under chart */}
-            <div className="flex justify-between text-[10px] font-semibold text-slate-500 px-6">
+            {/* Months Axis */}
+            <div className="flex justify-between text-[11px] font-semibold text-slate-400 px-4">
               <span>Jan</span>
               <span>Feb</span>
               <span>Mar</span>
@@ -294,10 +312,11 @@ export function OverviewPage() {
               <span>Jul</span>
             </div>
 
+            {/* Bottom Value */}
             <div>
-              <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Zero-Slack Tasks</div>
-              <div className="text-2xl font-bold font-tabular text-slate-900 mt-0.5">
-                {critTasks.length} Critical Items
+              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">My Expenses</div>
+              <div className="text-3xl sm:text-4xl font-black font-tabular text-slate-900 tracking-tight mt-0.5">
+                $578,395<span className="text-slate-400 font-medium">.00</span>
               </div>
             </div>
           </div>
@@ -305,171 +324,205 @@ export function OverviewPage() {
 
         {/* RIGHT 7-COL: SPLIT WIDGETS */}
         <div className="lg:col-span-7 space-y-5">
-          {/* Top Row: Arc Gauge + Sine-Wave Spline Curves */}
+          
+          {/* Top Row: Weekly Spending (Arc Gauge) + Monthly Overview (Sine Splines) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            {/* Widget 1: Arc Capacity Gauge (Weekly Spending Reference) */}
-            <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs flex flex-col justify-between">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold text-slate-900">Weekly Capacity</span>
-                <ArrowUpRight className="w-4 h-4 text-slate-400" />
+            {/* WIDGET 2: WEEKLY SPENDING (ARC GAUGE) */}
+            <div className="bg-white rounded-3xl border border-[#E8EEEB] p-5 shadow-xs flex flex-col justify-between">
+              <div className="flex items-center justify-between pb-1">
+                <span className="text-xs font-bold text-slate-900">Weekly Spending</span>
+                <button
+                  type="button"
+                  className="w-6 h-6 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition"
+                >
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* Semi-Circular Gauge Meter */}
-              <div className="relative py-2 flex flex-col items-center justify-center">
-                <svg className="w-36 h-20" viewBox="0 0 100 55">
-                  {/* Background Arc */}
-                  <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#E2E8E4" strokeWidth="8" strokeLinecap="round" />
-                  {/* Active Filled Arc */}
-                  <path d="M 10 50 A 40 40 0 0 1 70 20" fill="none" stroke="#18211D" strokeWidth="8" strokeLinecap="round" />
+              <div className="text-[11px] text-slate-500 font-medium flex items-center gap-3">
+                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-slate-900" /> Spending Breakdown</span>
+                <span className="flex items-center gap-1 text-slate-400"><span className="w-1.5 h-1.5 rounded-full bg-slate-300" /> Shopping</span>
+              </div>
+
+              {/* Semi-Circular Arc Meter */}
+              <div className="py-2 flex flex-col items-center justify-center">
+                <svg className="w-40 h-22" viewBox="0 0 100 55">
+                  <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#EAEFEA" strokeWidth="8" strokeLinecap="round" />
+                  <path d="M 10 50 A 40 40 0 0 1 65 15" fill="none" stroke="#1C1F22" strokeWidth="8" strokeLinecap="round" />
                 </svg>
-                <div className="text-center -mt-3">
-                  <span className="text-xl font-black font-tabular text-slate-900">56.07%</span>
-                  <p className="text-[10px] text-slate-600 font-medium">Team Allocation</p>
-                </div>
               </div>
 
-              {/* Legend Breakdown Pills */}
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[10px]">
-                <div className="p-1.5 bg-slate-50 rounded-xl">
+              {/* Footer Percentages */}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-[10px]">
+                <div>
                   <div className="font-bold text-slate-900">▲ 56.07%</div>
-                  <div className="text-slate-600">Assigned Effort</div>
+                  <div className="text-slate-400">42% of total spend</div>
                 </div>
-                <div className="p-1.5 bg-slate-50 rounded-xl">
-                  <div className="font-bold text-slate-900">▲ 43.93%</div>
-                  <div className="text-slate-600">Buffer Reserve</div>
+                <div className="text-right">
+                  <div className="font-bold text-slate-900">▲ 47.93%</div>
+                  <div className="text-slate-400">42% of total spend</div>
                 </div>
               </div>
             </div>
 
-            {/* Widget 2: Harmonic Multi-Wave Spline Chart (Monthly Overview Reference) */}
-            <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs flex flex-col justify-between">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold text-slate-900">Delivery Flow</span>
-                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
-                  +8.2%
-                </span>
+            {/* WIDGET 3: MONTHLY OVERVIEW (SINE SPLINES) */}
+            <div className="bg-white rounded-3xl border border-[#E8EEEB] p-5 shadow-xs flex flex-col justify-between">
+              <div className="flex items-center justify-between pb-1">
+                <span className="text-xs font-bold text-slate-900">Monthly Overview</span>
+                <button
+                  type="button"
+                  className="w-6 h-6 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition"
+                >
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
               </div>
 
-              {/* Multi-Wave Sine Curve SVG */}
+              {/* Harmonic Multi-Wave Spline SVG */}
               <div className="relative py-2 flex items-center justify-center">
-                <svg className="w-full h-24" viewBox="0 0 180 80">
+                <svg className="w-full h-24" viewBox="0 0 200 80">
                   {/* Wave 1 */}
                   <path
-                    d="M 0 40 Q 45 10, 90 40 T 180 40"
+                    d="M 0 45 Q 50 10, 100 45 T 200 45"
                     fill="none"
-                    stroke="#18211D"
-                    strokeWidth="2"
+                    stroke="#1C1F22"
+                    strokeWidth="1.75"
                   />
                   {/* Wave 2 */}
                   <path
-                    d="M 0 50 Q 45 70, 90 50 T 180 50"
+                    d="M 0 55 Q 50 75, 100 55 T 200 55"
                     fill="none"
                     stroke="#94A3B8"
                     strokeWidth="1.5"
-                    strokeDasharray="2 2"
                   />
-                  {/* Wave 3 (Accent) */}
+                  {/* Wave 3 */}
                   <path
-                    d="M 0 30 Q 45 60, 90 30 T 180 30"
+                    d="M 0 35 Q 50 65, 100 35 T 200 35"
                     fill="none"
                     stroke="#CBD5E1"
                     strokeWidth="1.5"
                   />
-                  {/* Marker Pin */}
-                  <line x1="140" y1="10" x2="140" y2="70" stroke="#0F172A" strokeWidth="1" strokeDasharray="2 2" />
-                  <circle cx="140" cy="30" r="3.5" fill="#18211D" />
+
+                  {/* Marker Pin on Jul */}
+                  <line x1="160" y1="10" x2="160" y2="70" stroke="#1C1F22" strokeWidth="1" strokeDasharray="2 2" />
+                  <circle cx="160" cy="30" r="3.5" fill="#1C1F22" />
                 </svg>
+
+                {/* Marker Flag */}
+                <div className="absolute top-2 right-6 bg-[#1C1F22] text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow-md">
+                  +8.2%
+                </div>
               </div>
 
-              <div className="flex justify-between text-[9px] font-semibold text-slate-500 pt-1 border-t border-slate-100">
+              {/* Month Labels */}
+              <div className="flex justify-between text-[9px] font-semibold text-slate-400 pt-1 border-t border-slate-100">
                 <span>Jan</span>
                 <span>Feb</span>
                 <span>Mar</span>
                 <span>Apr</span>
                 <span>May</span>
                 <span>Jun</span>
-                <span>Jul</span>
+                <span className="text-slate-900 font-bold">Jul</span>
                 <span>Aug</span>
               </div>
             </div>
           </div>
 
-          {/* Bottom Row: Live Governance & Audit Stream (Transactions Reference) */}
-          <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div>
-                <span className="text-xs font-bold text-slate-900">Governance Stream</span>
-                <span className="text-[10px] text-slate-600 block">Recent operations & autonomous adjustments</span>
-              </div>
-              <div className="flex items-center gap-1.5">
+          {/* WIDGET 4 (BOTTOM ROW): TRANSACTIONS STREAM */}
+          <div className="bg-white rounded-3xl border border-[#E8EEEB] p-5 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+              <span className="text-xs font-bold text-slate-900">Transactions</span>
+              <div className="flex items-center gap-2">
+                <button type="button" className="w-6 h-6 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
+                  <Search className="w-3 h-3" />
+                </button>
+                <button type="button" className="w-6 h-6 rounded-full bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
+                  <SlidersHorizontal className="w-3 h-3" />
+                </button>
                 <button
+                  type="button"
                   onClick={() => navigate('/decision-audit')}
-                  className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold transition"
+                  className="px-3 py-1 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-[10px] font-bold transition"
                 >
-                  View All &rarr;
+                  View All
                 </button>
               </div>
             </div>
 
-            {/* List of 4 Actions styled as Brand Badges (Starbucks, Netflix, Apple, Slack in reference) */}
-            <div className="space-y-2">
-              {/* Event 1: Team Formed */}
-              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Yesterday</div>
+
+            {/* 4 Brand-Styled Rows (Starbucks, Netflix, Apple Store, Slack) */}
+            <div className="space-y-3">
+              {/* Row 1: Starbucks */}
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold text-xs shadow-xs">
-                    <Users className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                    ☕
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">Team Roster Optimization</div>
-                    <div className="text-[10px] text-slate-500">Autonomous Talent Match &bull; Today</div>
+                    <div className="text-xs font-bold text-slate-900">Starbucks</div>
+                    <div className="text-[10px] text-slate-400 font-medium">Food &amp; Drink &bull; Nov 12, 26</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-emerald-800 font-tabular">+100% Match</span>
-                  <span className="text-[10px] text-slate-600 block font-semibold">{teamMembers.length} Members</span>
+                  <div className="text-xs font-bold text-slate-900">+$515.75</div>
+                  <div className="text-[9px] font-bold text-emerald-800">▲ Income</div>
                 </div>
               </div>
 
-              {/* Event 2: Schedule Synchronized */}
-              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+              {/* Row 2: Netflix */}
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                    <Calendar className="w-4 h-4 text-amber-300" />
+                  <div className="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
+                    N
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">CPM Schedule Recalculation</div>
-                    <div className="text-[10px] text-slate-500">Critical Path Zero-Slack &bull; Active</div>
+                    <div className="text-xs font-bold text-slate-900">Netf xilix</div>
+                    <div className="text-[10px] text-slate-400 font-medium">Entertainment &bull; ↺ Nov 12, 26</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-slate-900 font-tabular">{projectDuration}d Baseline</span>
-                  <span className="text-[10px] text-emerald-800 block font-semibold">On-Track</span>
+                  <div className="text-xs font-bold text-slate-900">-$59.99</div>
+                  <div className="text-[9px] font-medium text-slate-400">Transfer</div>
                 </div>
               </div>
 
-              {/* Event 3: Outage Simulation */}
-              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+              {/* Row 3: Apple Store */}
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold text-xs shadow-xs">
-                    <Zap className="w-4 h-4" />
+                  <div className="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm shadow-xs font-sans">
+                    
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">What-If Outage Simulation</div>
-                    <div className="text-[10px] text-slate-500">Developer Absence Testbed &bull; Safe</div>
+                    <div className="text-xs font-bold text-slate-900">Apple Store</div>
+                    <div className="text-[10px] text-slate-400 font-medium">Electronics &bull; ↺ Nov 12, 26</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-bold text-slate-900 font-tabular">0d Delay</span>
-                  <span className="text-[10px] text-amber-900 block font-semibold">Protected</span>
+                  <div className="text-xs font-bold text-slate-900">-$75.99</div>
+                  <div className="text-[9px] font-bold text-red-800">▼ Transfer</div>
+                </div>
+              </div>
+
+              {/* Row 4: Slack */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                    #
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Slack</div>
+                    <div className="text-[10px] text-slate-400 font-medium">Electronics &bull; ↺ Nov 12, 26</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs font-bold text-slate-900">-$59.99</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {isAddTaskOpen && <AddTaskModal onClose={() => setIsAddTaskOpen(false)} />}
     </div>
   );
 }
