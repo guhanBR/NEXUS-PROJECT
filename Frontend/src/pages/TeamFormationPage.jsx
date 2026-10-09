@@ -11,11 +11,17 @@ import {
   Grid,
   GitBranch,
   UserPlus,
+  ShieldCheck,
+  Layers,
+  Zap,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  AlertCircle,
 } from 'lucide-react';
 import { api } from '../api/client';
 import { useQueryClient } from '@tanstack/react-query';
 import { AddMemberModal } from '../components/modals/AddMemberModal';
-
 
 const teamFormationSchema = z.object({
   target_team_size: z.coerce.number().min(1).max(10),
@@ -27,7 +33,9 @@ export function TeamFormationPage() {
   const queryClient = useQueryClient();
   const [recommendation, setRecommendation] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [isMathScoreOpen, setIsMathScoreOpen] = useState(false);
 
   const { register, handleSubmit } = useForm({
     resolver: zodResolver(teamFormationSchema),
@@ -39,7 +47,7 @@ export function TeamFormationPage() {
 
   const onCalculate = async (data) => {
     setIsCalculating(true);
-    showToast('Calculating optimal team configuration (PS#11)...');
+    showToast('Finding best team match for project requirements (PS#11)...');
     try {
       const domainsList = data.domains
         ? data.domains.split(',').map((s) => s.trim()).filter(Boolean)
@@ -52,7 +60,7 @@ export function TeamFormationPage() {
       });
 
       setRecommendation(res);
-      showToast('Team recommendation generated successfully!', 'success');
+      showToast('Optimal team recommendation generated!', 'success');
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
@@ -62,6 +70,7 @@ export function TeamFormationPage() {
 
   const onConfirmTeam = async () => {
     if (!recommendation?.recommended_team) return;
+    setIsConfirming(true);
     try {
       await api.confirmTeam(activeProjectId, {
         team_members: recommendation.recommended_team,
@@ -70,6 +79,8 @@ export function TeamFormationPage() {
       showToast('Team confirmed and assigned to active project!', 'success');
     } catch (err) {
       showToast(err.message, 'error');
+    } finally {
+      setIsConfirming(false);
     }
   };
 
@@ -78,20 +89,29 @@ export function TeamFormationPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Smart Team Formation Engine</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Multi-objective talent selection with skill matrix, proficiency validation, and complementary synergy (PS#11).
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-google-blue bg-google-blueSurface px-2.5 py-0.5 rounded-full">
+              Plan &bull; Build a Team (PS#11)
+            </span>
+            <span className="text-xs text-google-textMuted font-mono">
+              {activeProject?.name}
+            </span>
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight text-google-text">Smart Team Formation</h2>
+          <p className="text-xs text-google-textSecondary mt-0.5">
+            Assemble the best team based on skills, proficiency ratings, domain fit, and weekly availability.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsAddMemberOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 text-xs font-semibold rounded-lg shadow-xs transition"
+            className="google-btn-secondary"
           >
-            <UserPlus className="w-4 h-4" /> Add Candidate
+            <UserPlus className="w-4 h-4" />
+            <span>Add Candidate</span>
           </button>
         </div>
       </div>
@@ -100,50 +120,52 @@ export function TeamFormationPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Requirements Controls */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4">
-              <Filter className="w-4 h-4 text-blue-600" /> Project Criteria & Constraints
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+              <Filter className="w-4 h-4 text-google-blue" />
+              Project Skill Requirements
             </h3>
 
             <form onSubmit={handleSubmit(onCalculate)} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1.5">
                   Target Team Size
                 </label>
                 <input
                   type="number"
                   {...register('target_team_size')}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-semibold text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1.5">
                   Domain Focus Areas
                 </label>
                 <input
                   {...register('domains')}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="e.g. FinTech, Microservices"
+                  className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                  Required Skill Constraints
+                <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-2">
+                  Mandatory Skill Constraints
                 </label>
                 <div className="space-y-2">
                   {(activeProject?.required_skills || []).map((req, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 flex items-center justify-between text-xs"
+                      className="p-3 bg-google-subtle/70 rounded-xl border border-google-border flex items-center justify-between text-xs"
                     >
-                      <span className="font-semibold text-slate-800">
+                      <span className="font-semibold text-google-text">
                         {req.skill}{' '}
                         {req.mandatory && (
-                          <span className="text-[10px] text-rose-600 font-bold ml-1">*Mandatory</span>
+                          <span className="text-[10px] text-google-red font-bold ml-1">*Required</span>
                         )}
                       </span>
-                      <span className="text-slate-500 font-mono">Level {req.min_level}+</span>
+                      <span className="text-google-textMuted font-mono">Level {req.min_level}+</span>
                     </div>
                   ))}
                 </div>
@@ -152,67 +174,70 @@ export function TeamFormationPage() {
               <button
                 type="submit"
                 disabled={isCalculating}
-                className="w-full mt-2 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-50 transition"
+                className="w-full google-btn-primary py-2.5 shadow-google-xs"
               >
                 <Sparkles className="w-4 h-4" />
-                {isCalculating ? 'Computing Team...' : 'Calculate Optimal Team'}
+                <span>{isCalculating ? 'Matching Best Candidates...' : 'Find Best Team Match'}</span>
               </button>
             </form>
           </div>
         </div>
 
-        {/* Right: Recommendation & Scorecard */}
+        {/* Right: Recommendation & Roster */}
         <div className="lg:col-span-8 space-y-6">
-          {/* Compatibility Scorecard Banner */}
-          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-teal-50 border border-blue-200/80 rounded-xl p-6 shadow-xs flex items-center justify-between">
+          {/* Match Score Banner */}
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
-                Composite Compatibility Score
+              <span className="text-[11px] font-bold uppercase tracking-wider text-google-blue">
+                Team Compatibility Score
               </span>
-              <div className="text-3xl font-extrabold text-slate-900 mt-0.5">
+              <div className="text-3xl font-extrabold text-google-text mt-0.5 font-tabular">
                 {recommendation?.compatibility_score || 94.8}
-                <span className="text-lg font-normal text-slate-500">/100</span>
+                <span className="text-base font-normal text-google-textMuted"> / 100</span>
               </div>
-              <p className="text-xs text-slate-600 mt-1 max-w-xl">
+              <p className="text-xs text-google-textSecondary mt-1 max-w-xl">
                 {recommendation?.selection_reasons?.join(' ') ||
-                  'Achieves 100% skill coverage with balanced capacity and domain alignment.'}
+                  'Achieves 100% skill coverage with balanced capacity across all required domains.'}
               </p>
             </div>
 
             {recommendation && (
               <button
                 onClick={onConfirmTeam}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition"
+                disabled={isConfirming}
+                className="google-btn-primary bg-google-teal hover:bg-emerald-700 py-2.5 px-4 self-start sm:self-auto shadow-google-xs"
               >
-                <Check className="w-4 h-4" /> Confirm & Assign Team
+                <Check className="w-4 h-4" />
+                <span>{isConfirming ? 'Assigning...' : 'Confirm & Save Team'}</span>
               </button>
             )}
           </div>
 
           {/* Roster Cards */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4">
-              <Award className="w-4 h-4 text-blue-600" /> Recommended Team Roster & Competency Proof
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+              <Award className="w-4 h-4 text-google-blue" />
+              {recommendation ? 'Recommended Candidates' : 'Current Confirmed Team'}
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {displayedTeam.map((m, idx) => {
                 const skills = m.skills || {};
                 return (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white transition space-y-3"
+                    className="p-4 rounded-xl border border-google-border bg-google-subtle/40 hover:bg-white transition-all space-y-3"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                        style={{ backgroundColor: m.avatar_color || '#2563EB' }}
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-google-xs"
+                        style={{ backgroundColor: m.avatar_color || '#0B57D0' }}
                       >
                         {m.name?.charAt(0)}
                       </div>
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900">{m.name}</h4>
-                        <p className="text-xs text-slate-500">{m.role_in_project || m.role_title}</p>
+                        <h4 className="text-sm font-bold text-google-text">{m.name}</h4>
+                        <p className="text-xs text-google-textMuted">{m.role_in_project || m.role_title}</p>
                       </div>
                     </div>
 
@@ -220,18 +245,18 @@ export function TeamFormationPage() {
                       {Object.entries(skills).map(([s, lvl]) => (
                         <span
                           key={s}
-                          className="text-[11px] font-medium bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-700"
+                          className="text-[11px] font-medium bg-white px-2 py-0.5 rounded-md border border-google-border text-google-text"
                         >
-                          {s} <strong className="text-blue-600">L{lvl}</strong>
+                          {s} <strong className="text-google-blue">L{lvl}</strong>
                         </span>
                       ))}
                     </div>
 
-                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs">
-                      <span className="text-slate-500">
-                        Match Score: <strong className="text-blue-600">{m.match_score || 95}%</strong>
+                    <div className="pt-2 border-t border-google-border flex items-center justify-between text-xs">
+                      <span className="text-google-textMuted">
+                        Match Score: <strong className="text-google-blue font-tabular">{m.match_score || 95}%</strong>
                       </span>
-                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      <span className="text-[10px] font-bold text-google-teal bg-google-tealSurface px-2 py-0.2 rounded-full">
                         Selected
                       </span>
                     </div>
@@ -243,43 +268,48 @@ export function TeamFormationPage() {
 
           {/* Skill Coverage Matrix */}
           {recommendation?.coverage_matrix && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-              <div className="p-4 px-6 border-b border-slate-100 flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <Grid className="w-4 h-4 text-blue-600" /> Skill Coverage Matrix & Lead Experts
+            <div className="bg-white rounded-2xl border border-google-border shadow-google-xs overflow-hidden">
+              <div className="px-6 py-4 border-b border-google-border flex items-center justify-between">
+                <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+                  <Grid className="w-4 h-4 text-google-blue" />
+                  Skill Coverage & Lead Experts
                 </h3>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-bold border-b border-slate-200">
+                  <thead className="bg-google-subtle text-google-textSecondary uppercase tracking-wider font-bold border-b border-google-border">
                     <tr>
                       <th className="p-3.5 px-6">Skill Requirement</th>
                       <th className="p-3.5 px-6">Required Level</th>
                       <th className="p-3.5 px-6">Status</th>
                       <th className="p-3.5 px-6">Lead Expert</th>
-                      <th className="p-3.5 px-6">Qualified Depth</th>
+                      <th className="p-3.5 px-6">Team Depth</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-800">
+                  <tbody className="divide-y divide-google-border text-google-text">
                     {Object.entries(recommendation.coverage_matrix).map(([skill, info]) => (
-                      <tr key={skill} className="hover:bg-slate-50/50">
+                      <tr key={skill} className="hover:bg-google-subtle/50 transition-colors">
                         <td className="p-3.5 px-6 font-semibold">
                           {skill}{' '}
                           {info.mandatory && (
-                            <span className="text-rose-600 font-bold text-[10px]">*Mandatory</span>
+                            <span className="text-google-red font-bold text-[10px]">*Required</span>
                           )}
                         </td>
-                        <td className="p-3.5 px-6 font-mono">Level {info.required_level}+</td>
+                        <td className="p-3.5 px-6 font-mono text-google-textSecondary">
+                          Level {info.required_level}+
+                        </td>
                         <td className="p-3.5 px-6">
-                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-google-tealSurface text-google-teal">
                             100% Covered
                           </span>
                         </td>
                         <td className="p-3.5 px-6 font-medium">
                           <strong>{info.lead_expert}</strong> (L{info.best_level})
                         </td>
-                        <td className="p-3.5 px-6 text-slate-500">{info.qualified_count} candidate(s) in team</td>
+                        <td className="p-3.5 px-6 text-google-textMuted">
+                          {info.qualified_count} person(s) qualified
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -288,32 +318,32 @@ export function TeamFormationPage() {
             </div>
           )}
 
-          {/* Alternative Runner-ups */}
-          {recommendation?.alternative_candidates && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-3">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <GitBranch className="w-4 h-4 text-slate-500" /> Alternative Candidates & Trade-offs
-              </h3>
+          {/* Expandable Score Breakdown Section */}
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
+            <button
+              onClick={() => setIsMathScoreOpen(!isMathScoreOpen)}
+              className="w-full flex items-center justify-between text-xs font-bold text-google-textSecondary hover:text-google-text"
+            >
+              <span className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-google-textMuted" />
+                Explain Compatibility Score Formula (PS#11)
+              </span>
+              {isMathScoreOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
 
-              <div className="space-y-2">
-                {recommendation.alternative_candidates.map((alt) => (
-                  <div
-                    key={alt.id}
-                    className="p-3 bg-slate-50 rounded-lg border border-slate-200/80 flex items-center justify-between text-xs"
-                  >
-                    <div>
-                      <strong className="text-slate-900 font-semibold">{alt.name}</strong> ({alt.role_title}) &bull;{' '}
-                      <span className="text-slate-500">{alt.experience_years} yrs exp</span>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{alt.reasons?.join(', ')}</p>
-                    </div>
-                    <span className="text-xs font-bold text-slate-700 bg-white px-2.5 py-1 rounded border border-slate-200">
-                      Match: {alt.match_score}%
-                    </span>
-                  </div>
-                ))}
+            {isMathScoreOpen && (
+              <div className="pt-3 border-t border-google-border text-xs text-google-textSecondary space-y-2 animate-in fade-in duration-150">
+                <p>
+                  The compatibility score is calculated using weighted Multi-Objective Optimization:
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-google-text">
+                  <li><strong>Skill Coverage (50%):</strong> Verifies every mandatory skill threshold is satisfied.</li>
+                  <li><strong>Domain Synergy (25%):</strong> Evaluates past experience in matching domain keywords.</li>
+                  <li><strong>Capacity Balance (25%):</strong> Ensures total team capacity safely exceeds estimated workload without burning out individual engineers.</li>
+                </ul>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

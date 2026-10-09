@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useProject } from '../context/ProjectContext';
-import { Plus, RefreshCw, Calendar, ListChecks } from 'lucide-react';
+import { Plus, RefreshCw, Calendar, ListChecks, GitCommit, Clock, ArrowRight, HelpCircle } from 'lucide-react';
 import { api } from '../api/client';
 import { useQueryClient } from '@tanstack/react-query';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
-
-
 
 export function TaskPlanningPage() {
   const { activeProject, activeProjectId, members, showToast } = useProject();
@@ -18,11 +16,11 @@ export function TaskPlanningPage() {
 
   const handleRecalculate = async () => {
     setIsRecalculating(true);
-    showToast('Recalculating CPM schedule...');
+    showToast('Recalculating Critical Path Method (CPM) schedule...');
     try {
       await api.generateSchedule(activeProjectId);
       await queryClient.invalidateQueries(['project', activeProjectId]);
-      showToast('CPM schedule updated successfully!', 'success');
+      showToast('Schedule recalculated successfully!', 'success');
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
@@ -30,7 +28,7 @@ export function TaskPlanningPage() {
     }
   };
 
-  // Header days marks
+  // Day marks for header
   const dayMarks = [];
   for (let d = 0; d <= maxDays; d += 2) {
     dayMarks.push(d);
@@ -39,53 +37,64 @@ export function TaskPlanningPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Task Planning & Critical Path Gantt</h2>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Interactive CPM scheduling with dependency chains, float slack calculations, and zero-float critical paths.
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-google-blue bg-google-blueSurface px-2.5 py-0.5 rounded-full">
+              Plan &bull; Tasks & Schedule
+            </span>
+            <span className="text-xs text-google-textMuted font-mono">
+              {activeProject?.name}
+            </span>
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight text-google-text">Tasks & Timeline Schedule</h2>
+          <p className="text-xs text-google-textSecondary mt-0.5">
+            Manage work items, view dependency chains, and see critical path deliverables that determine project completion.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsAddTaskOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-lg shadow-xs transition"
+            className="google-btn-secondary"
           >
-            <Plus className="w-4 h-4" /> Add Task
+            <Plus className="w-4 h-4" />
+            <span>Add Task</span>
           </button>
           <button
             onClick={handleRecalculate}
             disabled={isRecalculating}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold rounded-lg shadow-sm disabled:opacity-50 transition"
+            className="google-btn-primary"
           >
-            <RefreshCw className={`w-4 h-4 ${isRecalculating ? 'animate-spin' : ''}`} /> Recalculate CPM Schedule
+            <RefreshCw className={`w-4 h-4 ${isRecalculating ? 'animate-spin' : ''}`} />
+            <span>Recalculate Schedule</span>
           </button>
         </div>
       </div>
 
       {/* Gantt Chart Container */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 px-6 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-blue-600" /> Project Timeline Schedule (Days 0 to {maxDays})
+      <div className="bg-white rounded-2xl border border-google-border shadow-google-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-google-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-google-blue" />
+            Visual Timeline (Day 0 to Day {maxDays})
           </h3>
           <div className="flex items-center gap-3 text-xs">
-            <span className="flex items-center gap-1.5 font-semibold text-rose-700">
-              <span className="w-3 h-3 rounded bg-rose-600" /> Critical Path (0 Slack)
+            <span className="flex items-center gap-1.5 font-semibold text-google-red">
+              <span className="w-2.5 h-2.5 rounded bg-google-red" /> Critical Path (Zero Slack)
             </span>
-            <span className="flex items-center gap-1.5 font-semibold text-blue-700">
-              <span className="w-3 h-3 rounded bg-blue-600" /> Standard Deliverable
+            <span className="flex items-center gap-1.5 font-semibold text-google-blue">
+              <span className="w-2.5 h-2.5 rounded bg-google-blue" /> Standard Deliverable
             </span>
           </div>
         </div>
 
         <div className="p-6 overflow-x-auto">
-          <div className="min-w-[760px]">
+          <div className="min-w-[780px]">
             {/* Day Header */}
-            <div className="flex border-b border-slate-200 pb-2 text-[11px] font-bold text-slate-400 uppercase">
-              <div className="w-64 flex-shrink-0">Task & Assignee</div>
-              <div className="flex-1 flex justify-between px-2">
+            <div className="flex border-b border-google-border pb-2 text-[11px] font-bold text-google-textMuted uppercase">
+              <div className="w-64 flex-shrink-0">Task & Assigned Owner</div>
+              <div className="flex-1 flex justify-between px-2 font-mono">
                 {dayMarks.map((d) => (
                   <span key={d}>D{d}</span>
                 ))}
@@ -93,103 +102,118 @@ export function TaskPlanningPage() {
             </div>
 
             {/* Task Rows */}
-            <div className="divide-y divide-slate-100 mt-2">
-              {tasks.map((t) => {
-                const assignedCand = members.find((m) => m.id === t.assigned_candidate_id);
-                const assigneeName = assignedCand ? assignedCand.name : 'Unassigned';
+            <div className="divide-y divide-google-border/60 mt-2">
+              {tasks.length === 0 ? (
+                <div className="py-8 text-center text-xs text-google-textMuted">
+                  No tasks created yet. Click "Add Task" to get started.
+                </div>
+              ) : (
+                tasks.map((t) => {
+                  const assignedCand = members.find((m) => m.id === t.assigned_candidate_id);
+                  const assigneeName = assignedCand ? assignedCand.name : 'Unassigned';
 
-                const leftPct = ((t.start_day || 0) / maxDays) * 100;
-                const dur = Math.max(0.5, (t.end_day || 1) - (t.start_day || 0));
-                const widthPct = Math.min(100 - leftPct, (dur / maxDays) * 100);
+                  const leftPct = ((t.start_day || 0) / maxDays) * 100;
+                  const dur = Math.max(0.5, (t.end_day || 1) - (t.start_day || 0));
+                  const widthPct = Math.min(100 - leftPct, (dur / maxDays) * 100);
 
-                const isCrit = t.is_critical_path;
+                  const isCrit = t.is_critical_path;
 
-                return (
-                  <div key={t.id} className="flex items-center py-2.5 hover:bg-slate-50/60 transition group">
-                    <div className="w-64 flex-shrink-0 pr-4">
-                      <div className="text-xs font-bold text-slate-900 truncate">
-                        #{t.id}: {t.title}
+                  return (
+                    <div key={t.id} className="flex items-center py-2.5 hover:bg-google-subtle/50 transition-colors group">
+                      <div className="w-64 flex-shrink-0 pr-4">
+                        <div className="text-xs font-bold text-google-text truncate">
+                          #{t.id}: {t.title}
+                        </div>
+                        <div className="text-[11px] text-google-textMuted truncate">
+                          {assigneeName} &bull; {t.required_skill} (L{t.min_skill_level})
+                        </div>
                       </div>
-                      <div className="text-[11px] text-slate-500 truncate">
-                        {assigneeName} &bull; {t.required_skill} (L{t.min_skill_level})
+
+                      <div className="flex-1 relative h-6 bg-google-subtle rounded-md overflow-hidden">
+                        <div
+                          className={`absolute top-0.5 bottom-0.5 rounded px-2 text-[10px] font-bold text-white flex items-center justify-between transition-all ${
+                            isCrit ? 'gantt-bar-critical' : 'gantt-bar-standard'
+                          }`}
+                          style={{ left: `${leftPct}%`, width: `${widthPct}%` }}
+                          title={`#${t.id} ${t.title}: Day ${t.start_day} - ${t.end_day}`}
+                        >
+                          <span className="truncate">{dur}d</span>
+                          {isCrit && <span className="text-[9px] uppercase tracking-wider opacity-95">Critical</span>}
+                        </div>
                       </div>
                     </div>
-
-                    <div className="flex-1 relative h-7 bg-slate-100/60 rounded overflow-hidden">
-                      <div
-                        className={`absolute top-1 bottom-1 rounded px-2 text-[11px] font-bold text-white flex items-center justify-between transition-all ${
-                          isCrit ? 'gantt-bar-critical shadow-xs' : 'gantt-bar-standard shadow-xs'
-                        }`}
-                        style={{ left: `${leftPct}%`, width: `${widthPct}%` }}
-                        title={`#${t.id} ${t.title}: Day ${t.start_day} - ${t.end_day}`}
-                      >
-                        <span className="truncate">{dur}d</span>
-                        {isCrit && <span className="text-[9px] uppercase tracking-wider opacity-90">Crit</span>}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* WBS Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 px-6 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <ListChecks className="w-4 h-4 text-blue-600" /> Work Breakdown Structure (WBS) Table
-          </h3>
+      {/* Readable Tasks Table */}
+      <div className="bg-white rounded-2xl border border-google-border shadow-google-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-google-border flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+              <ListChecks className="w-4 h-4 text-google-blue" />
+              All Project Tasks & Ownership
+            </h3>
+            <p className="text-xs text-google-textSecondary mt-0.5">
+              Detailed list with effort, owner, dependencies, and schedule window.
+            </p>
+          </div>
+          <span className="text-xs text-google-textMuted font-mono">
+            {tasks.length} task(s)
+          </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider font-bold border-b border-slate-200">
+            <thead className="bg-google-subtle text-google-textSecondary uppercase tracking-wider font-bold border-b border-google-border">
               <tr>
                 <th className="p-3.5 px-6">ID</th>
                 <th className="p-3.5 px-6">Task Title</th>
-                <th className="p-3.5 px-6">Required Skill</th>
+                <th className="p-3.5 px-6">Skill Needed</th>
                 <th className="p-3.5 px-6">Effort</th>
-                <th className="p-3.5 px-6">Assignee</th>
-                <th className="p-3.5 px-6">Timeline</th>
-                <th className="p-3.5 px-6">Slack</th>
+                <th className="p-3.5 px-6">Assigned Owner</th>
+                <th className="p-3.5 px-6">Schedule Window</th>
                 <th className="p-3.5 px-6">Dependencies</th>
                 <th className="p-3.5 px-6">Priority</th>
                 <th className="p-3.5 px-6">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-800">
+            <tbody className="divide-y divide-google-border text-google-text">
               {tasks.map((t) => {
                 const assignedCand = members.find((m) => m.id === t.assigned_candidate_id);
                 const assigneeName = assignedCand ? assignedCand.name : 'Unassigned';
                 const deps =
-                  (t.dependencies || []).length > 0 ? t.dependencies.map((d) => `#${d}`).join(', ') : 'None';
+                  (t.dependencies || []).length > 0
+                    ? `Depends on #${t.dependencies.join(', #')}`
+                    : 'None (Can start immediately)';
 
                 return (
-                  <tr key={t.id} className="hover:bg-slate-50/50">
-                    <td className="p-3.5 px-6 font-bold text-slate-900">#{t.id}</td>
+                  <tr key={t.id} className="hover:bg-google-subtle/50 transition-colors">
+                    <td className="p-3.5 px-6 font-bold text-google-text font-mono">#{t.id}</td>
                     <td className="p-3.5 px-6 font-semibold">{t.title}</td>
                     <td className="p-3.5 px-6">
-                      <span className="text-[11px] font-medium bg-slate-100 px-2 py-0.5 rounded border border-slate-200 text-slate-700">
+                      <span className="text-[11px] font-medium bg-google-subtle px-2 py-0.5 rounded-md border border-google-border text-google-text">
                         {t.required_skill} L{t.min_skill_level}
                       </span>
                     </td>
-                    <td className="p-3.5 px-6 font-mono">{t.estimated_hours}h</td>
-                    <td className="p-3.5 px-6 font-medium text-slate-900">{assigneeName}</td>
-                    <td className="p-3.5 px-6 text-slate-600 font-mono">
+                    <td className="p-3.5 px-6 font-mono text-google-textSecondary">{t.estimated_hours}h</td>
+                    <td className="p-3.5 px-6 font-medium text-google-text">{assigneeName}</td>
+                    <td className="p-3.5 px-6 text-google-textSecondary font-mono">
                       Day {t.start_day} - {t.end_day}
                     </td>
-                    <td className="p-3.5 px-6 font-mono">{t.slack_days || 0}d</td>
-                    <td className="p-3.5 px-6 text-slate-500">{deps}</td>
+                    <td className="p-3.5 px-6 text-google-textMuted">{deps}</td>
                     <td className="p-3.5 px-6">
                       <span
-                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                        className={`text-[10px] font-bold uppercase px-2 py-0.2 rounded-full ${
                           t.priority === 'critical'
-                            ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                            ? 'bg-google-redSurface text-google-red'
                             : t.priority === 'high'
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                            : 'bg-blue-50 text-blue-700 border border-blue-200'
+                            ? 'bg-google-amberSurface text-google-amber'
+                            : 'bg-google-blueSurface text-google-blue'
                         }`}
                       >
                         {t.priority}
@@ -197,11 +221,11 @@ export function TaskPlanningPage() {
                     </td>
                     <td className="p-3.5 px-6">
                       {t.is_critical_path ? (
-                        <span className="text-[11px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                        <span className="text-[10px] font-bold text-google-red bg-google-redSurface px-2 py-0.2 rounded-full">
                           Critical Path
                         </span>
                       ) : (
-                        <span className="text-[11px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                        <span className="text-[10px] font-medium text-google-textMuted bg-google-subtle px-2 py-0.2 rounded-full">
                           Standard
                         </span>
                       )}

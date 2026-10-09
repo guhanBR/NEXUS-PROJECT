@@ -1,6 +1,6 @@
 import React from 'react';
 import { useProject } from '../context/ProjectContext';
-import { Activity, PieChart, BarChart3 } from 'lucide-react';
+import { Activity, PieChart, BarChart3, Users, AlertCircle, Info, HelpCircle } from 'lucide-react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -14,7 +14,7 @@ import {
   Legend,
 } from 'recharts';
 
-const COLORS = ['#2563EB', '#0D9488', '#7C3AED', '#D97706', '#E11D48', '#059669'];
+const GOOGLE_CHART_COLORS = ['#0B57D0', '#006A60', '#7A4100', '#BA1A1A', '#6750A4', '#00639B'];
 
 export function ResourceMatrixPage() {
   const { activeProject } = useProject();
@@ -23,7 +23,7 @@ export function ResourceMatrixPage() {
   const sm = activeProject?.schedule_metrics?.resource_utilization || {};
   const tasks = activeProject?.tasks || [];
 
-  // Prepare skill distribution data for Recharts
+  // Skill effort breakdown
   const skillCounts = {};
   tasks.forEach((t) => {
     const s = t.required_skill || 'Other';
@@ -35,7 +35,7 @@ export function ResourceMatrixPage() {
     value,
   }));
 
-  // Prepare bar chart data for member workload
+  // Bar chart data
   const barData = teamMembers.map((m) => {
     const util = sm[m.candidate_id] || { assigned_hours: 0, capacity_hours: 160 };
     return {
@@ -49,91 +49,128 @@ export function ResourceMatrixPage() {
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Resource Command Center & Heatmap</h2>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Capacity vs assigned effort, workload bottleneck detection, and skill distribution telemetry.
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-google-blue bg-google-blueSurface px-2.5 py-0.5 rounded-full">
+            Plan &bull; Workload & Capacity
+          </span>
+          <span className="text-xs text-google-textMuted font-mono">
+            {activeProject?.name}
+          </span>
+        </div>
+        <h2 className="text-2xl font-bold tracking-tight text-google-text">Team Workload & Capacity</h2>
+        <p className="text-xs text-google-textSecondary mt-0.5">
+          Ensure fair task distribution, detect overworked team members early, and view skill allocation.
         </p>
+      </div>
+
+      {/* Period Notice */}
+      <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-4 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-2 text-google-textSecondary">
+          <Info className="w-4 h-4 text-google-blue" />
+          <span>
+            <strong>Calculation Period:</strong> Active 4-Week Sprint (Standard 160 Available Hours per Engineer).
+          </span>
+        </div>
+        <span className="text-[11px] font-bold text-google-teal bg-google-tealSurface px-2.5 py-0.5 rounded-full">
+          Safe Capacity Threshold: ≤95%
+        </span>
       </div>
 
       {/* 2-Column Workload Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Workload Heatmap Card */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-4">
-          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-blue-600" /> Team Utilization Heatmap
-          </h3>
+        <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
+              <Activity className="w-4 h-4 text-google-blue" />
+              Member Workload Status
+            </h3>
+            <span className="text-xs text-google-textMuted font-mono">
+              {teamMembers.length} team members
+            </span>
+          </div>
 
           <div className="space-y-3">
-            {teamMembers.map((m) => {
-              const util = sm[m.candidate_id] || {
-                assigned_hours: 0,
-                capacity_hours: 160,
-                utilization_pct: 0,
-                assigned_tasks_count: 0,
-              };
-              const pct = Math.min(100, util.utilization_pct || 0);
+            {teamMembers.length === 0 ? (
+              <p className="text-xs text-google-textMuted">No team members assigned to this project yet.</p>
+            ) : (
+              teamMembers.map((m) => {
+                const util = sm[m.candidate_id] || {
+                  assigned_hours: 0,
+                  capacity_hours: 160,
+                  utilization_pct: 0,
+                  assigned_tasks_count: 0,
+                };
+                const pct = Math.min(100, util.utilization_pct || 0);
 
-              let statusTag = (
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  Optimal
-                </span>
-              );
-              let fillBg = 'bg-emerald-500';
-
-              if (pct > 95) {
-                statusTag = (
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-                    Overloaded
+                let statusTag = (
+                  <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-google-tealSurface text-google-teal">
+                    Optimal Load
                   </span>
                 );
-                fillBg = 'bg-rose-500';
-              } else if (pct < 40) {
-                statusTag = (
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                    High Headroom
-                  </span>
-                );
-                fillBg = 'bg-blue-500';
-              }
+                let fillBg = 'bg-google-teal';
 
-              return (
-                <div key={m.candidate_id} className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">{m.name}</h4>
-                      <p className="text-xs text-slate-500">
-                        {m.role_in_project} &bull; {util.assigned_tasks_count} deliverable(s)
-                      </p>
+                if (pct > 95) {
+                  statusTag = (
+                    <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-google-redSurface text-google-red">
+                      High Load / Overloaded
+                    </span>
+                  );
+                  fillBg = 'bg-google-red';
+                } else if (pct < 40) {
+                  statusTag = (
+                    <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-google-blueSurface text-google-blue">
+                      Available Bandwidth
+                    </span>
+                  );
+                  fillBg = 'bg-google-blue';
+                }
+
+                return (
+                  <div
+                    key={m.candidate_id}
+                    className="p-4 bg-google-subtle/50 rounded-xl border border-google-border space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-sm font-bold text-google-text">{m.name}</h4>
+                        <p className="text-xs text-google-textMuted">
+                          {m.role_in_project || 'Specialist'} &bull; {util.assigned_tasks_count || 0} deliverable(s)
+                        </p>
+                      </div>
+                      {statusTag}
                     </div>
-                    {statusTag}
-                  </div>
 
-                  <div className="w-full h-2.5 bg-slate-200/70 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${fillBg}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
+                    <div className="w-full h-2 bg-google-border/60 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${fillBg}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
 
-                  <div className="flex justify-between text-xs text-slate-500 font-medium pt-1">
-                    <span>Assigned: {util.assigned_hours}h</span>
-                    <span>Max Available: {util.capacity_hours}h ({util.utilization_pct}%)</span>
+                    <div className="flex justify-between text-xs text-google-textSecondary font-tabular pt-1">
+                      <span>Assigned: <strong>{util.assigned_hours}h</strong></span>
+                      <span>
+                        Capacity: <strong>{util.capacity_hours}h</strong> ({util.utilization_pct}%)
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
-        {/* Workload Visualizer (Recharts Bar & Pie) */}
+        {/* Visual Charts */}
         <div className="space-y-6">
-          {/* Skill Distribution Doughnut */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4">
-              <PieChart className="w-4 h-4 text-blue-600" /> Skill Effort Distribution (Hours)
+          {/* Skill Breakdown */}
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6">
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2 mb-4">
+              <PieChart className="w-4 h-4 text-google-blue" />
+              Skill Effort Distribution (Total Hours)
             </h3>
 
-            <div className="h-64">
+            <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsPie>
                   <Pie
@@ -146,7 +183,10 @@ export function ResourceMatrixPage() {
                     dataKey="value"
                   >
                     {pieData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={GOOGLE_CHART_COLORS[index % GOOGLE_CHART_COLORS.length]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -156,21 +196,22 @@ export function ResourceMatrixPage() {
             </div>
           </div>
 
-          {/* Member Capacity Comparison Bar */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4">
-              <BarChart3 className="w-4 h-4 text-blue-600" /> Assigned vs Capacity Comparison
+          {/* Assigned vs Available Hours Bar */}
+          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6">
+            <h3 className="text-sm font-bold text-google-text flex items-center gap-2 mb-4">
+              <BarChart3 className="w-4 h-4 text-google-blue" />
+              Assigned vs Available Capacity
             </h3>
 
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <XAxis dataKey="name" fontSize={11} stroke="#94a3b8" />
-                  <YAxis fontSize={11} stroke="#94a3b8" />
+                  <XAxis dataKey="name" fontSize={11} stroke="#747775" />
+                  <YAxis fontSize={11} stroke="#747775" />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="assigned" fill="#2563EB" name="Assigned Hours" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="capacity" fill="#E2E8F0" name="Total Capacity" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="assigned" fill="#0B57D0" name="Assigned Hours" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="capacity" fill="#E0E3E7" name="Total Capacity" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

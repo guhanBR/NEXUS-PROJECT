@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { X } from 'lucide-react';
+import { X, Plus, FolderPlus } from 'lucide-react';
 import { api } from '../../api/client';
 import { useProject } from '../../context/ProjectContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -53,7 +53,7 @@ export function NewProjectModal({ onClose }) {
       };
 
       const res = await api.createProject(payload);
-      showToast('Project created successfully!', 'success');
+      showToast('Project workspace created successfully!', 'success');
       await queryClient.invalidateQueries(['projects']);
       if (res.project?.id) {
         setActiveProjectId(res.project.id);
@@ -65,87 +65,95 @@ export function NewProjectModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-150 border border-slate-200">
-        <div className="p-4 px-6 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="font-bold text-slate-900 text-base">Create New Project</h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-150">
+      <div className="bg-white rounded-2xl shadow-google-modal w-full max-w-lg overflow-hidden border border-google-border">
+        <div className="px-6 py-4 border-b border-google-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-google-blueSurface text-google-blue flex items-center justify-center">
+              <FolderPlus className="w-4 h-4" />
+            </div>
+            <h3 className="font-bold text-google-text text-sm">Create New Project Workspace</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1 rounded-full text-google-textMuted hover:bg-google-subtle hover:text-google-text transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
               Project Name
             </label>
             <input
               {...register('name')}
               placeholder="e.g. HealthTech AI Nexus"
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
             />
-            {errors.name && <p className="text-xs text-rose-600 mt-1">{errors.name.message}</p>}
+            {errors.name && <p className="text-[11px] text-google-red mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
               Mission Description
             </label>
             <textarea
               {...register('description')}
               rows={2}
-              placeholder="Scope and deliverables"
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Scope, deliverables, and engineering goals"
+              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
                 Target Team Size
               </label>
               <input
                 type="number"
                 {...register('target_team_size')}
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
                 Deadline (Days)
               </label>
               <input
                 type="number"
                 {...register('deadline_days')}
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-              Domain Tags (Comma-separated)
+            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              Domain Focus Areas (Comma-separated)
             </label>
             <input
               {...register('domains')}
-              placeholder="e.g. FinTech, Cloud, AI"
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g. FinTech, Cloud, Microservices"
+              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
             />
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex justify-end gap-2">
+          <div className="pt-4 border-t border-google-border flex justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="google-btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 disabled:opacity-50"
+              className="google-btn-primary"
             >
               {isSubmitting ? 'Creating...' : 'Create Project'}
             </button>

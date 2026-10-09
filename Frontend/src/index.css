@@ -1,22 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans;
+    @apply bg-google-bg text-google-text font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
+
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+}
+
+/* Google-inspired Material 3 / Workspace design tokens */
+.google-card {
+  @apply bg-white border border-google-border rounded-2xl shadow-google-xs transition-shadow duration-200 hover:shadow-google-sm;
+}
+
+.google-card-header {
+  @apply px-6 py-4 border-b border-google-border flex items-center justify-between;
+}
+
+.google-pill {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+}
+
+.google-btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-google-blue hover:bg-google-blueHover text-white text-xs font-semibold rounded-full shadow-google-xs transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-google-blue focus:ring-offset-2;
+}
+
+.google-btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-google-subtle text-google-text text-xs font-semibold rounded-full border border-google-border shadow-google-xs transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-google-blue focus:ring-offset-2;
+}
+
+.google-btn-danger {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-google-red hover:bg-red-800 text-white text-xs font-semibold rounded-full shadow-google-xs transition-colors duration-150;
 }
 
 /* Custom Gantt Bar & Timeline utilities */
 .gantt-bar-critical {
-  background: linear-gradient(90deg, #e11d48, #be123c);
-  border: 1px solid #9f1239;
+  background: #BA1A1A;
+  border-radius: 6px;
 }
 
 .gantt-bar-standard {
-  background: linear-gradient(90deg, #2563eb, #1d4ed8);
-  border: 1px solid #1e40af;
+  background: #0B57D0;
+  border-radius: 6px;
 }
 
 /* Scrollbar refinement */
@@ -25,12 +58,13 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #F8FAFD;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #C4C7C5;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #8E918F;
 }
+
