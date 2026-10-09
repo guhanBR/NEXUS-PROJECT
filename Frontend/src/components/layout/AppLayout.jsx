@@ -78,32 +78,30 @@ export function AppLayout() {
     projects.find((p) => p.id === activeProjectId)?.name ||
     (projects.length > 0 ? projects[0].name : 'Loading workspace...');
 
-  // 6 Squircle Navigation Tiles (Matching 2IXO Reference 2x3 Grid)
+  // 6 Primary Project Navigation Squircle Tiles (Simple & Needed Workspaces Only)
   const squircleTiles = [
-    { to: '/overview', label: 'Home', icon: LayoutDashboard },
-    { to: '/team-formation', label: 'Cards', icon: CreditCard },
-    { to: role === 'member' ? '/member/my-tasks' : '/admin/task-planning', label: 'Analytics', icon: CalendarDays },
-    { to: '/recovery', label: 'Transfers', icon: ArrowLeftRight },
-    { to: '/crisis-simulator', label: 'Swap Coins', icon: Repeat },
-    { to: '/decision-audit', label: 'Payments', icon: Receipt },
+    { to: '/overview', label: 'Overview', icon: LayoutDashboard },
+    { to: '/team-formation', label: 'Team', icon: Users },
+    { to: role === 'member' ? '/member/my-tasks' : '/admin/task-planning', label: 'Tasks & CPM', icon: CalendarDays },
+    { to: '/recovery', label: 'Rebalance', icon: Sliders },
+    { to: '/projects', label: 'Projects', icon: FolderKanban },
+    { to: '/decision-audit', label: 'Audit Trail', icon: History },
   ];
 
-  // Secondary Vertical Settings & Directory Links
+  // Secondary Essential Workspace Links (Needed items only)
   const secondaryLinks = [
-    { to: '/task-planning', label: 'Freeze Card', icon: Snowflake },
-    { to: '/settings', label: 'Set Spending Limit', icon: Clock },
-    { to: '/settings', label: 'View Card PIN', icon: Key },
-    { to: '/projects', label: 'Manage Subscriptions', icon: Layers },
-    { to: '/settings', label: 'Security Settings', icon: Shield },
+    { to: '/settings', label: 'Project Settings', icon: Settings },
+    { to: '/task-planning', label: 'Gantt Timeline', icon: Layers },
+    { to: '/recovery', label: 'Outage Simulator', icon: Zap },
   ];
 
   return (
     <div className="workspace-canvas min-h-screen p-3 sm:p-6 lg:p-8 flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
       
-      {/* Top Right Ambient Label (Matching Juice Lab Reference) */}
+      {/* Top Right Ambient Label */}
       <div className="hidden lg:flex justify-end max-w-7xl mx-auto w-full pb-3 px-3">
         <span className="text-xs font-bold text-slate-500 tracking-wide">
-          Analytics Dashboard
+          Project Workspace
         </span>
       </div>
 
@@ -113,8 +111,8 @@ export function AppLayout() {
         {/* Mobile Header Bar */}
         <div className="lg:hidden bg-white px-5 py-4 flex items-center justify-between border-b border-slate-100">
           <NavLink to="/" className="flex items-center gap-2.5">
-            <span className="font-extrabold text-xl text-slate-900 tracking-tighter">2IXO</span>
-            <span className="text-[10px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded">RebalanceX</span>
+            <span className="font-extrabold text-xl text-slate-900 tracking-tight">RebalanceX</span>
+            <span className="text-[10px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded">Workspace</span>
           </NavLink>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -124,18 +122,21 @@ export function AppLayout() {
           </button>
         </div>
 
-        {/* LEFT SIDEBAR - 100% Matching 2IXO Squircle Tile Grid */}
+        {/* LEFT SIDEBAR - Clean, Intuitive Navigation */}
         <aside
           className={`fixed lg:static top-0 left-0 h-full lg:h-auto w-64 bg-[#F8FAF9] border-r border-[#EAEFEA] flex flex-col justify-between p-4 sm:p-5 z-40 transition-transform duration-300 ease-in-out shrink-0 ${
             isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'
           }`}
         >
           <div className="space-y-4 overflow-y-auto pr-0.5">
-            {/* Top Brand Header (2IXO Logo & Layout Divider Button) */}
+            {/* Top Brand Header */}
             <div className="flex items-center justify-between px-1 pt-1">
               <NavLink to="/" className="flex items-center gap-2 group">
-                <span className="text-2xl font-black tracking-tighter text-slate-900 block leading-none font-mono">
-                  2IXO
+                <div className="w-7 h-7 rounded-xl bg-slate-900 text-amber-300 flex items-center justify-center font-bold text-xs shadow-xs">
+                  <Compass className="w-4 h-4" />
+                </div>
+                <span className="text-lg font-bold tracking-tight text-slate-900 block leading-none">
+                  RebalanceX
                 </span>
               </NavLink>
 
@@ -203,7 +204,7 @@ export function AppLayout() {
               )}
             </div>
 
-            {/* 2x3 Squircle Tile Navigation Grid (Exact Match to Reference) */}
+            {/* 2x3 Squircle Tile Navigation Grid (Simple & Essential Workspaces) */}
             <div className="grid grid-cols-2 gap-2 pt-1">
               {squircleTiles.map((tile) => {
                 const Icon = tile.icon;
@@ -234,7 +235,7 @@ export function AppLayout() {
               })}
             </div>
 
-            {/* Secondary Vertical Navigation Menu (Exact Match to Reference) */}
+            {/* Secondary Vertical Navigation Menu */}
             <div className="space-y-0.5 pt-2 border-t border-[#EAEFEA]">
               {secondaryLinks.map((link, idx) => {
                 const Icon = link.icon;
@@ -253,15 +254,15 @@ export function AppLayout() {
             </div>
           </div>
 
-          {/* Bottom Pro Floating Card (Exact Match to Juice Lab Reference) */}
+          {/* Bottom Card */}
           <div className="mt-4 pt-3 border-t border-[#EAEFEA] space-y-2">
             <div className="p-3 bg-gradient-to-r from-amber-50/90 via-orange-50/70 to-pink-50/60 rounded-2xl border border-amber-200/70 shadow-2xs flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-1.5 text-xs font-extrabold text-slate-900">
-                  <span>Pro 🚀</span>
+                  <span>Optimizer ⚡</span>
                 </div>
                 <p className="text-[9px] text-slate-500 mt-0.5 leading-tight">
-                  Everything you need for smart personal finance.
+                  Adaptive scheduling & autonomous recovery.
                 </p>
               </div>
               <div className="w-6 h-6 rounded-lg bg-white/80 border border-amber-200 flex items-center justify-center text-amber-500 shadow-2xs">
@@ -355,10 +356,10 @@ export function AppLayout() {
         </main>
       </div>
 
-      {/* Bottom Left Ambient Label (Matching Juice Lab Reference) */}
+      {/* Bottom Left Ambient Label */}
       <div className="hidden lg:flex justify-start max-w-7xl mx-auto w-full pt-3 px-3">
         <span className="text-xs font-bold text-slate-500 tracking-wide">
-          Juice Lab
+          RebalanceX Platform
         </span>
       </div>
 
