@@ -14,54 +14,80 @@ rebalance_router = APIRouter(tags=["Crisis Simulator & Rebalancing"])
 @rebalance_router.post("/api/projects/{project_id}/scenarios")
 @rebalance_router.post("/api/projects/{project_id}/rebalance")
 def run_crisis_rebalancing(project_id: int, payload: ScenarioCreate):
-    project = project_repo.get_by_id(project_id)
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found")
+    try:
+        project = project_repo.get_by_id(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
 
-    tasks = task_repo.list_by_project(project_id)
-    members = member_repo.list_all()
+        tasks = task_repo.list_by_project(project_id)
+        if not tasks and project.get("tasks"):
+            tasks = project.get("tasks", [])
 
-    disruption_event = payload.model_dump()
-    rebalance_result = solve_rebalancing(
-        original_tasks=tasks,
-        members=members,
-        project_deadline_days=project.get("deadline_days", 30),
-        disruption_event=disruption_event
-    )
+        members = member_repo.list_all()
+        if not members and project.get("team_members"):
+            members = [
+                {
+                    "id": m.get("candidate_id") or m.get("member_id") or (idx + 1),
+                    "name": m.get("name", f"Member {idx+1}"),
+                    "email": m.get("email", ""),
+                    "role_title": m.get("role_in_project", "Software Engineer"),
+                    "skills": m.get("skills", {}),
+                    "experience_years": 3.0,
+                    "weekly_capacity_hours": 40.0,
+                    "daily_capacity_hours": 8.0,
+                    "availability_status": m.get("availability_status", "available"),
+                    "avatar_color": m.get("avatar_color", "#2563EB")
+                }
+                for idx, m in enumerate(project.get("team_members", []))
+            ]
 
-    explanations = generate_decision_explanations(rebalance_result, members, disruption_event)
+        disruption_event = payload.model_dump()
+        rebalance_result = solve_rebalancing(
+            original_tasks=tasks,
+            members=members,
+            project_deadline_days=project.get("deadline_days", 30),
+            disruption_event=disruption_event
+        )
 
-    # Save proposal
-    proposal_data = {
-        "project_id": project_id,
-        "trigger_type": disruption_event["type"],
-        "scenario_details": disruption_event["params"],
-        "solver_engine": rebalance_result.get("solver_engine"),
-        "solver_status": rebalance_result.get("solver_status"),
-        "objective_score": rebalance_result.get("objective_score"),
-        "original_schedule": rebalance_result.get("original_schedule"),
-        "proposed_schedule": rebalance_result.get("proposed_schedule"),
-        "reassigned_tasks": rebalance_result.get("reassigned_tasks"),
-        "reassigned_count": rebalance_result.get("reassigned_count"),
-        "explanations": explanations,
-        "risks": rebalance_result.get("risks"),
-        "status": "pending"
-    }
-    saved_proposal = proposal_repo.save(proposal_data)
+        explanations = generate_decision_explanations(rebalance_result, members, disruption_event)
 
-    return {
-        "proposal_id": saved_proposal["id"],
-        "solver_engine": rebalance_result.get("solver_engine"),
-        "solver_status": rebalance_result.get("solver_status"),
-        "objective_score": rebalance_result.get("objective_score"),
-        "metrics": rebalance_result.get("metrics"),
-        "original_schedule": rebalance_result.get("original_schedule"),
-        "proposed_schedule": rebalance_result.get("proposed_schedule"),
-        "reassigned_tasks": rebalance_result.get("reassigned_tasks"),
-        "reassigned_count": rebalance_result.get("reassigned_count"),
-        "explanations": explanations,
-        "risks": rebalance_result.get("risks")
-    }
+        # Save proposal
+        proposal_data = {
+            "project_id": project_id,
+            "trigger_type": disruption_event.get("type", "member_unavailable"),
+            "scenario_details": disruption_event.get("params", {}),
+            "solver_engine": rebalance_result.get("solver_engine"),
+            "solver_status": rebalance_result.get("solver_status"),
+            "objective_score": rebalance_result.get("objective_score"),
+            "original_schedule": rebalance_result.get("original_schedule"),
+            "proposed_schedule": rebalance_result.get("proposed_schedule"),
+            "reassigned_tasks": rebalance_result.get("reassigned_tasks"),
+            "reassigned_count": rebalance_result.get("reassigned_count"),
+            "explanations": explanations,
+            "risks": rebalance_result.get("risks"),
+            "status": "pending"
+        }
+        saved_proposal = proposal_repo.save(proposal_data)
+
+        return {
+            "proposal_id": saved_proposal.get("id", 1),
+            "solver_engine": rebalance_result.get("solver_engine"),
+            "solver_status": rebalance_result.get("solver_status"),
+            "objective_score": rebalance_result.get("objective_score"),
+            "metrics": rebalance_result.get("metrics"),
+            "original_schedule": rebalance_result.get("original_schedule"),
+            "proposed_schedule": rebalance_result.get("proposed_schedule"),
+            "reassigned_tasks": rebalance_result.get("reassigned_tasks"),
+            "reassigned_count": rebalance_result.get("reassigned_count"),
+            "explanations": explanations,
+            "risks": rebalance_result.get("risks")
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        import logging
+        logging.getLogger("rebalancex").error(f"Crisis rebalancing error for project {project_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Rebalancing computation failed: {str(e)}")
 
 @rebalance_router.get("/api/proposals/{proposal_id}")
 def get_proposal(proposal_id: int):

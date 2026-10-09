@@ -99,15 +99,18 @@ class ProposalRepository:
 
     def save(self, proposal_data: Dict[str, Any]) -> Dict[str, Any]:
         p_id = proposal_data.get("id")
+        col = self.db_mgr.get_collection("rebalancing_proposals")
         if not p_id:
-            existing = list(self.db_mgr._local_store.get("rebalancing_proposals", {}).values())
+            if col is not None:
+                existing = list(col.find({}, {"_id": 0, "id": 1}))
+            else:
+                existing = list(self.db_mgr._local_store.get("rebalancing_proposals", {}).values())
             p_id = max([p.get("id", 0) for p in existing], default=0) + 1
             proposal_data["id"] = p_id
 
         if "created_at" not in proposal_data:
             proposal_data["created_at"] = datetime.utcnow().isoformat()
 
-        col = self.db_mgr.get_collection("rebalancing_proposals")
         if col is not None:
             col.update_one({"id": p_id}, {"$set": proposal_data}, upsert=True)
         
@@ -133,15 +136,18 @@ class DecisionHistoryRepository:
 
     def save(self, log_data: Dict[str, Any]) -> Dict[str, Any]:
         l_id = log_data.get("id")
+        col = self.db_mgr.get_collection("decision_history")
         if not l_id:
-            existing = list(self.db_mgr._local_store.get("decision_history", {}).values())
+            if col is not None:
+                existing = list(col.find({}, {"_id": 0, "id": 1}))
+            else:
+                existing = list(self.db_mgr._local_store.get("decision_history", {}).values())
             l_id = max([l.get("id", 0) for l in existing], default=0) + 1
             log_data["id"] = l_id
 
         if "timestamp" not in log_data:
             log_data["timestamp"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
-        col = self.db_mgr.get_collection("decision_history")
         if col is not None:
             col.update_one({"id": l_id}, {"$set": log_data}, upsert=True)
         
