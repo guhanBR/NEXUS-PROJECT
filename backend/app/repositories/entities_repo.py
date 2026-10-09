@@ -111,12 +111,14 @@ class ProposalRepository:
         if "created_at" not in proposal_data:
             proposal_data["created_at"] = datetime.utcnow().isoformat()
 
+        clean_doc = serialize_doc(proposal_data)
+
         if col is not None:
-            col.update_one({"id": p_id}, {"$set": proposal_data}, upsert=True)
+            col.update_one({"id": p_id}, {"$set": clean_doc}, upsert=True)
         
-        self.db_mgr._local_store.setdefault("rebalancing_proposals", {})[str(p_id)] = proposal_data
+        self.db_mgr._local_store.setdefault("rebalancing_proposals", {})[str(p_id)] = clean_doc
         self.db_mgr.save_local_cache()
-        return serialize_doc(proposal_data)
+        return clean_doc
 
 
 class DecisionHistoryRepository:
@@ -148,12 +150,14 @@ class DecisionHistoryRepository:
         if "timestamp" not in log_data:
             log_data["timestamp"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 
+        clean_doc = serialize_doc(log_data)
+
         if col is not None:
-            col.update_one({"id": l_id}, {"$set": log_data}, upsert=True)
+            col.update_one({"id": l_id}, {"$set": clean_doc}, upsert=True)
         
-        self.db_mgr._local_store.setdefault("decision_history", {})[str(l_id)] = log_data
+        self.db_mgr._local_store.setdefault("decision_history", {})[str(l_id)] = clean_doc
         self.db_mgr.save_local_cache()
-        return serialize_doc(log_data)
+        return clean_doc
 
 member_repo = MemberRepository()
 task_repo = TaskRepository()

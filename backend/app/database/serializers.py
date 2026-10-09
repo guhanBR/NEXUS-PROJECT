@@ -15,17 +15,18 @@ def serialize_doc(doc: Any) -> Any:
     if isinstance(doc, dict):
         new_doc = {}
         for k, v in doc.items():
-            if k == "_id" and isinstance(v, ObjectId):
+            key_str = str(k)
+            if key_str == "_id" and isinstance(v, ObjectId):
                 new_doc["id"] = str(v)
                 new_doc["_id"] = str(v)
             elif isinstance(v, ObjectId):
-                new_doc[k] = str(v)
+                new_doc[key_str] = str(v)
             elif isinstance(v, datetime):
-                new_doc[k] = v.isoformat()
+                new_doc[key_str] = v.isoformat()
             elif isinstance(v, (dict, list)):
-                new_doc[k] = serialize_doc(v)
+                new_doc[key_str] = serialize_doc(v)
             else:
-                new_doc[k] = v
+                new_doc[key_str] = v
         return new_doc
     if isinstance(doc, ObjectId):
         return str(doc)
