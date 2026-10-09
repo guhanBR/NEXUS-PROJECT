@@ -21,9 +21,7 @@ import {
   X,
   PanelLeftClose,
   PanelLeft,
-  Bell,
-  Layers,
-  Zap,
+  Briefcase
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';
@@ -114,89 +112,115 @@ export function AppLayout() {
   const roleLabel = role === 'admin' ? 'Admin' : role === 'manager' ? 'Manager' : 'Member';
 
   return (
-    <div className="h-screen w-screen landing-canvas flex flex-col p-2 sm:p-3 lg:p-4 font-sans antialiased text-white selection:bg-amber-400 selection:text-slate-950 overflow-hidden select-none">
+    <div className="h-screen w-screen landing-canvas flex flex-col font-sans antialiased text-white selection:bg-amber-400 selection:text-slate-950 overflow-hidden select-none">
       
-      {/* Top Outer Micro Bar */}
-      <header className="flex items-center justify-between px-3 py-1 shrink-0 z-10">
-        <NavLink to="/" className="flex items-center gap-2 group">
-          <span className="font-bold text-sm tracking-tight text-white font-sans block leading-none">
-            RebalanceX
+      {/* Mobile-Only Top Navigation Bar with Safe Area Support */}
+      <header className="lg:hidden flex items-center justify-between px-4 py-2.5 pt-safe bg-[#0E1A14]/95 border-b border-white/10 shrink-0 z-30">
+        <NavLink to="/overview" className="flex items-center gap-2 group">
+          <span className="font-bold text-base tracking-tight text-white font-sans block leading-none">
+            Ryzen Matrix
           </span>
-          <span className="text-[9px] font-medium text-amber-200 uppercase tracking-wider hidden sm:inline-block ml-1">
-            &bull; Adaptive Intelligence
+          <span className="text-[9px] font-medium text-amber-200 uppercase tracking-wider block">
+            &bull; {roleLabel}
           </span>
         </NavLink>
 
-        <div className="flex items-center gap-4 text-xs font-semibold text-slate-100">
-          <span className="hidden md:inline-block text-slate-200">
-            {roleLabel} Console &bull; {user?.name || 'Aarav Sharma'}
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] text-slate-300 font-medium truncate max-w-[120px]">
+            {user?.name || 'Aarav Sharma'}
           </span>
           <button
+            type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-1.5 rounded-xl bg-white/10 text-white hover:bg-white/20"
+            className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition flex items-center justify-center"
+            aria-label="Toggle Navigation Drawer"
           >
             {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </header>
 
-      {/* MASTER FLOATING APPLICATION SHELL (Fits Screen 100% with Frosted Glass & Sage Atmosphere) */}
-      <div className="flex-1 w-full h-full min-h-0 bg-[#0F1C16]/50 backdrop-blur-2xl rounded-[24px] sm:rounded-[32px] border border-white/20 shadow-2xl flex flex-col lg:flex-row overflow-hidden">
+      {/* Mobile Drawer Backdrop Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden animate-fadeIn"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* MASTER APPLICATION SHELL */}
+      <div className="flex-1 w-full h-full min-h-0 flex flex-col lg:flex-row overflow-hidden lg:p-3 lg:gap-3">
         
-        {/* LEFT SAGE/CHARCOAL SIDEBAR */}
+        {/* SIDEBAR (Desktop Fixed or Mobile Drawer) */}
         <aside
-          className={`fixed lg:static top-0 left-0 h-full w-[250px] sm:w-[270px] bg-[#0E1A14]/95 lg:bg-[#0F1C16]/60 backdrop-blur-2xl border-r border-white/15 flex flex-col justify-between p-3.5 sm:p-4 z-50 transition-all duration-300 shrink-0 select-none overflow-y-auto no-scrollbar ${
+          className={`fixed lg:static top-0 left-0 h-full w-[260px] bg-[#0E1A14]/95 lg:bg-[#0F1C16]/80 backdrop-blur-2xl lg:rounded-3xl border-r lg:border border-white/15 flex flex-col justify-between p-4 pt-safe lg:pt-4 z-50 transition-transform duration-300 shrink-0 select-none overflow-y-auto no-scrollbar shadow-2xl ${
             isMobileMenuOpen
-              ? 'translate-x-0 shadow-2xl'
+              ? 'translate-x-0'
               : '-translate-x-full lg:translate-x-0'
-          } ${isSidebarCollapsed ? 'lg:w-[84px] lg:p-2.5' : ''}`}
+          } ${isSidebarCollapsed ? 'lg:w-[76px] lg:p-2.5' : ''}`}
         >
           <div className="space-y-3.5">
             {/* Top Brand Logo & Collapse Toggle */}
-            <div className="flex items-center justify-between pb-1 border-b border-white/10">
+            <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <NavLink
                 to="/overview"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center gap-2.5 group"
-                title="RebalanceX Workspace"
+                title="Ryzen Matrix Workspace"
               >
-                {!isSidebarCollapsed && (
+                {!isSidebarCollapsed ? (
                   <div>
                     <span className="font-bold text-base tracking-tight text-white leading-none block">
-                      RebalanceX
+                      Ryzen Matrix
                     </span>
                     <span className="text-[9px] font-medium text-amber-200 tracking-wider uppercase block mt-0.5">
-                      Autonomous Engine
+                      Adaptive Workspace
                     </span>
                   </div>
+                ) : (
+                  <span className="font-bold text-sm tracking-tight text-amber-200 block text-center w-full">
+                    RM
+                  </span>
                 )}
               </NavLink>
 
+              {/* Desktop Collapse Toggle */}
               <button
+                type="button"
                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="hidden lg:flex p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
+                className="hidden lg:flex p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition"
                 title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
               >
                 {isSidebarCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+              </button>
+
+              {/* Mobile Close Button */}
+              <button
+                type="button"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="lg:hidden p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
+              >
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Search Bar */}
             {!isSidebarCollapsed && (
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search deliverables..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8.5 pr-2.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs font-medium text-white placeholder-slate-300 focus:outline-none focus:ring-1 focus:ring-amber-300/60 focus:bg-white/15 transition"
+                  className="w-full pl-8.5 pr-2.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs font-medium text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-amber-300/60 focus:bg-white/15 transition"
                 />
               </div>
             )}
 
-            {/* Navigation Tiles Stack (RebalanceX Frosted Tiles) */}
-            <div className="space-y-1.5">
+            {/* Navigation Tiles Stack */}
+            <div className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.to || (item.to !== '/overview' && location.pathname.startsWith(item.to));
@@ -205,19 +229,19 @@ export function AppLayout() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`p-2 sm:p-2.5 rounded-xl flex items-center gap-3 transition-all ${
+                    className={`p-2 rounded-xl flex items-center gap-2.5 transition-all ${
                       isActive
-                        ? 'bg-white text-slate-900 font-bold shadow-lg shadow-black/20'
-                        : 'bg-white/5 hover:bg-white/12 text-slate-200 hover:text-white border border-white/5 hover:border-white/20'
-                    }`}
+                        ? 'bg-white text-slate-900 font-bold shadow-md'
+                        : 'bg-white/5 hover:bg-white/12 text-slate-200 hover:text-white border border-transparent hover:border-white/10'
+                    } ${isSidebarCollapsed ? 'justify-center p-2.5' : ''}`}
                     title={item.label}
                   >
                     <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
                         isActive ? 'bg-[#1C2420] text-amber-300' : 'bg-white/10 text-amber-200'
                       }`}
                     >
-                      <Icon className="w-4 h-4 stroke-[2]" />
+                      <Icon className="w-3.5 h-3.5 stroke-[2]" />
                     </div>
 
                     {!isSidebarCollapsed && (
@@ -226,11 +250,11 @@ export function AppLayout() {
                           <span className="text-xs tracking-tight block leading-none">
                             {item.label}
                           </span>
-                          <span className={`text-[10px] ${isActive ? 'text-slate-500 font-semibold' : 'text-slate-300'}`}>
+                          <span className={`text-[9px] ${isActive ? 'text-slate-500 font-medium' : 'text-slate-400'}`}>
                             {item.sublabel}
                           </span>
                         </div>
-                        <span className={`text-[10px] font-mono ${isActive ? 'text-slate-400' : 'text-amber-300/70'}`}>
+                        <span className={`text-[9px] font-mono ${isActive ? 'text-slate-400' : 'text-amber-300/70'}`}>
                           {item.step}
                         </span>
                       </div>
@@ -242,28 +266,37 @@ export function AppLayout() {
           </div>
 
           {/* Bottom Pro AI Status Box & Sign Out */}
-          <div className="pt-3 space-y-2.5 border-t border-white/10">
-            {!isSidebarCollapsed ? (
+          <div className="pt-3 space-y-2 border-t border-white/10">
+            {!isSidebarCollapsed && (
               <div
-                onClick={() => navigate('/recovery')}
+                onClick={() => {
+                  navigate('/recovery');
+                  setIsMobileMenuOpen(false);
+                }}
                 className="p-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-300/30 shadow-xs cursor-pointer hover:border-amber-300/60 transition group"
               >
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="text-[11px] font-bold text-white flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-amber-300" />
-                    Adaptive Intelligence
+                    Adaptive Solver
+                  </span>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/30 text-emerald-300">
+                    Online
                   </span>
                 </div>
                 <p className="text-[9px] text-slate-200 leading-tight">
                   Zero-slack CPM Solver Active.
                 </p>
               </div>
-            ) : null}
+            )}
 
             {/* Logout Row */}
             <button
+              type="button"
               onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-slate-300 hover:text-rose-300 hover:bg-rose-500/20 text-xs font-semibold transition"
+              className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-slate-300 hover:text-rose-300 hover:bg-rose-500/20 text-xs font-semibold transition ${
+                isSidebarCollapsed ? 'justify-center' : ''
+              }`}
               title="Sign Out"
             >
               <LogOut className="w-4 h-4 shrink-0" />
@@ -272,8 +305,8 @@ export function AppLayout() {
           </div>
         </aside>
 
-        {/* RIGHT MAIN APPLICATION CANVAS (Light Muted Canvas with High Contrast & Smooth Internal Scrolling) */}
-        <main className="flex-1 bg-[#F6F8F7] text-slate-900 overflow-y-auto min-w-0 h-full p-4 sm:p-6 lg:p-7 relative">
+        {/* MAIN APPLICATION CONTENT CANVAS */}
+        <main className="flex-1 bg-[#F6F8F7] text-slate-900 overflow-y-auto min-w-0 h-full p-3 sm:p-5 lg:p-6 lg:rounded-3xl shadow-xl relative pb-safe">
           <Outlet />
         </main>
 

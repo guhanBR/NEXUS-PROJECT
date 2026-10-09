@@ -175,7 +175,12 @@ export const api = {
 
   // Tasks & CPM Schedule
   createTask: (projectId, data) => request(`/api/projects/${projectId}/tasks`, { method: 'POST', body: JSON.stringify(data) }),
-  updateTask: (taskId, data) => request(`/api/tasks/${taskId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  updateTask: (arg1, arg2, arg3) => {
+    // Supports both api.updateTask(taskId, data) and api.updateTask(projectId, taskId, data)
+    const taskId = typeof arg2 === 'object' && arg2 !== null ? arg1 : arg2;
+    const data = typeof arg2 === 'object' && arg2 !== null ? arg2 : (arg3 || {});
+    return request(`/api/tasks/${taskId}`, { method: 'PATCH', body: JSON.stringify(data) });
+  },
   generateSchedule: (projectId) => request(`/api/projects/${projectId}/schedule`, { method: 'POST' }),
 
   // Crisis Simulator & Rebalancing (PS#18)

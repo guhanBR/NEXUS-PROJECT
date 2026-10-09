@@ -33,6 +33,29 @@
   }
 }
 
+/* Safe Area Insets for Mobile & Capacitor Android/iOS */
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top, 0px), 12px);
+}
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+}
+.pl-safe {
+  padding-left: max(env(safe-area-inset-left, 0px), 12px);
+}
+.pr-safe {
+  padding-right: max(env(safe-area-inset-right, 0px), 12px);
+}
+
+/* Hide scrollbars while preserving touch scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Master Analytics Dashboard Frame Atmosphere */
 .landing-canvas {
   background: radial-gradient(circle at 75% 25%, #9BB0A8 0%, #879791 45%, #6D7D76 100%);

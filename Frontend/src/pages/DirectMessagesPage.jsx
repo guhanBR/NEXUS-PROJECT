@@ -195,8 +195,8 @@ export function DirectMessagesPage() {
       {/* Split View: Contacts Sidebar + Active Thread */}
       <div className="flex-1 bg-white rounded-3xl border border-slate-200/90 shadow-xs flex overflow-hidden min-h-0">
         
-        {/* Left: Contact Directory */}
-        <div className="w-72 sm:w-80 border-r border-slate-100 flex flex-col shrink-0 bg-slate-50/50">
+        {/* Left: Contact Directory (Responsive visibility) */}
+        <div className={`w-full md:w-72 lg:w-80 border-r border-slate-100 flex flex-col shrink-0 bg-slate-50/50 ${selectedContact ? 'hidden md:flex' : 'flex'}`}>
           <div className="p-3.5 border-b border-slate-100">
             <div className="relative">
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -259,10 +259,18 @@ export function DirectMessagesPage() {
 
         {/* Right: Message Stream & Input */}
         {selectedContact ? (
-          <div className="flex-1 flex flex-col min-w-0 bg-white">
+          <div className={`flex-1 flex flex-col min-w-0 bg-white ${selectedContact ? 'flex' : 'hidden md:flex'}`}>
             {/* Conversation Top Header */}
-            <div className="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
-              <div className="flex items-center gap-3 min-w-0">
+            <div className="px-4 sm:px-5 py-3.5 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                {/* Mobile back button */}
+                <button
+                  onClick={() => setSelectedContact(null)}
+                  className="md:hidden p-1.5 -ml-1 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+                  title="Back to contacts"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                </button>
                 <img
                   src={selectedContact.avatar}
                   alt={selectedContact.name}
