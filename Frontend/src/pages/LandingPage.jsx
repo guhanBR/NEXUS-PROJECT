@@ -67,11 +67,11 @@ export function LandingPage() {
             <Compass className="w-4 h-4 text-amber-300" />
           </div>
           <div>
-            <span className="font-semibold text-lg tracking-tight text-white font-sans block leading-none">
-              RebalanceX
+            <span className="font-bold text-lg tracking-tight text-white font-sans block leading-none">
+              Ryzen Matrix
             </span>
-            <span className="text-[9px] font-bold text-amber-300 tracking-wider uppercase block mt-0.5">
-              by Team Ryzen Matrix
+            <span className="text-[9px] font-medium text-amber-200 tracking-wider uppercase block mt-0.5">
+              Adaptive Intelligence
             </span>
           </div>
         </NavLink>

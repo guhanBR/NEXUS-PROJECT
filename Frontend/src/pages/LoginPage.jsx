@@ -66,11 +66,11 @@ export function LoginPage() {
             </svg>
           </div>
           <div>
-            <span className="font-serif text-xl font-normal tracking-wide text-white block leading-none">
-              Rebalance<span className="italic font-light opacity-90">X</span>
+            <span className="font-sans font-bold text-xl tracking-tight text-white block leading-none">
+              Ryzen Matrix
             </span>
-            <span className="text-[9px] font-bold text-amber-300 tracking-wider uppercase block mt-0.5">
-              Team Ryzen Matrix
+            <span className="text-[9px] font-medium text-amber-200 tracking-wider uppercase block mt-0.5">
+              Adaptive Workspace
             </span>
           </div>
         </Link>
@@ -91,7 +91,7 @@ export function LoginPage() {
               ⚡ Team Ryzen Matrix
             </span>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-              Sign in to RebalanceX
+              Sign in to Ryzen Matrix
             </h1>
             <p className="text-xs text-slate-600">
               Enter your work email and password to access authorized projects.

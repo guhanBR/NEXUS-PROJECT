@@ -149,7 +149,7 @@ export function AppLayout() {
         {/* Mobile Header Bar */}
         <div className="lg:hidden bg-white px-5 py-4 flex items-center justify-between border-b border-slate-100">
           <NavLink to="/" className="flex items-center gap-2.5">
-            <span className="font-extrabold text-xl text-slate-900 tracking-tight">RebalanceX</span>
+            <span className="font-extrabold text-xl text-slate-900 tracking-tight">Ryzen Matrix</span>
             <span className="text-[10px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded">Workspace</span>
           </NavLink>
           <button
@@ -169,16 +169,16 @@ export function AppLayout() {
           <div className="space-y-4 overflow-y-auto pr-0.5">
             {/* Top Brand Header */}
             <div className="flex items-center justify-between px-1 pt-1">
-              <NavLink to="/" className="flex items-center gap-2 group">
-                <div className="w-7 h-7 rounded-xl bg-slate-900 text-amber-300 flex items-center justify-center font-bold text-xs shadow-xs">
+              <NavLink to="/" className="flex items-center gap-2.5 group">
+                <div className="w-8 h-8 rounded-xl bg-slate-900 text-amber-300 flex items-center justify-center font-bold text-xs shadow-xs">
                   <Compass className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-lg font-bold tracking-tight text-slate-900 block leading-none">
-                    RebalanceX
-                  </span>
-                  <span className="text-[9px] font-extrabold text-amber-600 tracking-wider uppercase block mt-0.5">
+                  <span className="text-lg font-black tracking-tight text-slate-900 block leading-none">
                     Ryzen Matrix
+                  </span>
+                  <span className="text-[9px] font-bold text-slate-400 tracking-wider uppercase block mt-0.5">
+                    Adaptive Workspace
                   </span>
                 </div>
               </NavLink>
