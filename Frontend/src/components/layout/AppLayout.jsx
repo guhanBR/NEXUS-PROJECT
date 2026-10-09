@@ -37,6 +37,9 @@ import {
   UploadCloud,
   DownloadCloud,
   Clock,
+  Award,
+  TrendingUp,
+  Hash,
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';
@@ -78,22 +81,66 @@ export function AppLayout() {
     projects.find((p) => p.id === activeProjectId)?.name ||
     (projects.length > 0 ? projects[0].name : 'Loading workspace...');
 
-  // 6 Primary Project Navigation Squircle Tiles (Simple & Needed Workspaces Only)
-  const squircleTiles = [
-    { to: '/overview', label: 'Overview', icon: LayoutDashboard },
-    { to: '/team-formation', label: 'Team', icon: Users },
-    { to: role === 'member' ? '/member/my-tasks' : '/admin/task-planning', label: 'Tasks & CPM', icon: CalendarDays },
-    { to: '/recovery', label: 'Rebalance', icon: Sliders },
-    { to: '/projects', label: 'Projects', icon: FolderKanban },
-    { to: '/decision-audit', label: 'Audit Trail', icon: History },
-  ];
+  // Dynamic Role-Based Modules (Exact Match to Master Prompt Table 4)
+  const getRoleNav = () => {
+    if (role === 'member') {
+      return {
+        squircleTiles: [
+          { to: '/member/my-tasks', label: 'My Tasks', icon: CheckSquare },
+          { to: '/overview', label: 'Workspace', icon: LayoutDashboard },
+          { to: '/progress-monitor', label: 'Team Progress', icon: TrendingUp },
+          { to: '/messages', label: 'Messages', icon: MessageSquare },
+          { to: '/performance-allocation', label: 'Performance', icon: Award },
+          { to: '/project-rooms', label: 'Rooms', icon: Hash },
+        ],
+        secondaryLinks: [
+          { to: '/overtime-requests', label: 'My Overtime Requests', icon: Clock },
+          { to: '/settings', label: 'Settings', icon: Settings },
+        ],
+      };
+    }
 
-  // Secondary Essential Workspace Links (Needed items only)
-  const secondaryLinks = [
-    { to: '/settings', label: 'Project Settings', icon: Settings },
-    { to: '/task-planning', label: 'Gantt Timeline', icon: Layers },
-    { to: '/recovery', label: 'Outage Simulator', icon: Zap },
-  ];
+    if (role === 'manager') {
+      return {
+        squircleTiles: [
+          { to: '/overview', label: 'Oversight', icon: LayoutDashboard },
+          { to: '/team-formation', label: 'Team Overview', icon: Users },
+          { to: '/progress-monitor', label: 'Task Progress', icon: TrendingUp },
+          { to: '/recovery', label: 'Recovery Review', icon: Sliders },
+          { to: '/team-formation', label: 'Team Recs', icon: Sparkles },
+          { to: '/messages', label: 'Messages', icon: MessageSquare },
+        ],
+        secondaryLinks: [
+          { to: '/performance-allocation', label: 'Performance Reports', icon: Award },
+          { to: '/overtime-requests', label: 'Overtime Overview', icon: Clock },
+          { to: '/project-rooms', label: 'Project Rooms', icon: Hash },
+          { to: '/settings', label: 'Settings', icon: Settings },
+        ],
+      };
+    }
+
+    // Default: Admin
+    return {
+      squircleTiles: [
+        { to: '/projects', label: 'Portfolio', icon: FolderKanban },
+        { to: '/team-formation', label: 'Workforce', icon: Users },
+        { to: '/progress-monitor', label: 'Monitor', icon: TrendingUp },
+        { to: '/admin/task-planning', label: 'Task Control', icon: CalendarDays },
+        { to: '/recovery', label: 'Scenario Lab', icon: Sliders },
+        { to: '/team-formation', label: 'AI Builder', icon: Sparkles },
+      ],
+      secondaryLinks: [
+        { to: '/messages', label: 'Direct Messages', icon: MessageSquare },
+        { to: '/performance-allocation', label: 'Performance & Allocation', icon: Award },
+        { to: '/overtime-requests', label: 'Overtime Requests', icon: Clock },
+        { to: '/project-rooms', label: 'Project Rooms', icon: Hash },
+        { to: '/decision-audit', label: 'Decision Audit', icon: History },
+        { to: '/settings', label: 'Settings', icon: Settings },
+      ],
+    };
+  };
+
+  const { squircleTiles, secondaryLinks } = getRoleNav();
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
