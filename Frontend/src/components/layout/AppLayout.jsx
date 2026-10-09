@@ -112,15 +112,15 @@ export function AppLayout() {
   const roleLabel = role === 'admin' ? 'Admin' : role === 'manager' ? 'Manager' : 'Member';
 
   return (
-    <div className="h-screen w-screen landing-canvas flex flex-col font-sans antialiased text-white selection:bg-amber-400 selection:text-slate-950 overflow-hidden select-none">
+    <div className="h-screen w-screen landing-canvas flex flex-col font-sans antialiased text-white selection:bg-emerald-400 selection:text-slate-950 overflow-hidden select-none">
       
       {/* Mobile-Only Top Navigation Bar with Safe Area Support */}
-      <header className="lg:hidden flex items-center justify-between px-4 py-2.5 pt-safe bg-[#0E1A14]/95 border-b border-white/10 shrink-0 z-30">
+      <header className="lg:hidden flex items-center justify-between px-4 py-2.5 pt-safe bg-[#0B1510]/95 border-b border-emerald-500/20 shrink-0 z-30">
         <NavLink to="/overview" className="flex items-center gap-2 group">
           <span className="font-bold text-base tracking-tight text-white font-sans block leading-none">
             Ryzen Matrix
           </span>
-          <span className="text-[9px] font-medium text-amber-200 uppercase tracking-wider block">
+          <span className="text-[9px] font-medium text-emerald-300 uppercase tracking-wider block">
             &bull; {roleLabel}
           </span>
         </NavLink>
@@ -154,7 +154,7 @@ export function AppLayout() {
         
         {/* SIDEBAR (Desktop Fixed or Mobile Drawer) */}
         <aside
-          className={`fixed lg:static top-0 left-0 h-full w-[260px] bg-[#0E1A14]/95 lg:bg-[#0F1C16]/80 backdrop-blur-2xl lg:rounded-3xl border-r lg:border border-white/15 flex flex-col justify-between p-4 pt-safe lg:pt-4 z-50 transition-transform duration-300 shrink-0 select-none overflow-y-auto no-scrollbar shadow-2xl ${
+          className={`fixed lg:static top-0 left-0 h-full w-[260px] bg-[#0B1510]/95 lg:bg-[#0D1A14]/85 backdrop-blur-2xl lg:rounded-3xl border-r lg:border border-emerald-500/20 flex flex-col justify-between p-4 pt-safe lg:pt-4 z-50 transition-transform duration-300 shrink-0 select-none overflow-y-auto no-scrollbar shadow-2xl ${
             isMobileMenuOpen
               ? 'translate-x-0'
               : '-translate-x-full lg:translate-x-0'
@@ -167,7 +167,7 @@ export function AppLayout() {
                 <button
                   type="button"
                   onClick={() => setIsSidebarCollapsed(false)}
-                  className="w-10 h-10 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-bold text-xs transition-all shadow-md shadow-amber-400/20 flex items-center justify-center group"
+                  className="w-10 h-10 rounded-2xl bg-emerald-400 hover:bg-emerald-300 active:scale-95 text-slate-950 font-bold text-xs transition-all shadow-md shadow-emerald-400/25 flex items-center justify-center group"
                   title="Expand Sidebar (Ryzen Matrix)"
                 >
                   <span className="leading-none tracking-tight group-hover:hidden">RM</span>
@@ -186,7 +186,7 @@ export function AppLayout() {
                     <span className="font-bold text-base tracking-tight text-white leading-none block">
                       Ryzen Matrix
                     </span>
-                    <span className="text-[9px] font-medium text-amber-200 tracking-wider uppercase block mt-0.5">
+                    <span className="text-[9px] font-medium text-emerald-300 tracking-wider uppercase block mt-0.5">
                       Adaptive Workspace
                     </span>
                   </div>
@@ -222,7 +222,7 @@ export function AppLayout() {
                   placeholder="Search deliverables..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8.5 pr-2.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs font-medium text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-amber-300/60 focus:bg-white/15 transition"
+                  className="w-full pl-8.5 pr-2.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs font-medium text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-400/60 focus:bg-white/15 transition"
                 />
               </div>
             )}
@@ -241,8 +241,8 @@ export function AppLayout() {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
                         isActive
-                          ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 font-bold scale-105'
-                          : 'bg-white/5 hover:bg-white/15 text-amber-200/80 hover:text-white border border-transparent hover:border-white/10'
+                          ? 'bg-emerald-400 text-slate-950 shadow-md shadow-emerald-400/30 font-bold scale-105'
+                          : 'bg-white/5 hover:bg-white/15 text-emerald-200/80 hover:text-white border border-transparent hover:border-white/10'
                       }`}
                       title={`${item.label} (${item.sublabel})`}
                     >
@@ -258,14 +258,14 @@ export function AppLayout() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`p-2 rounded-xl flex items-center gap-2.5 transition-all ${
                       isActive
-                        ? 'bg-amber-400/15 text-white font-bold border border-amber-400/40 shadow-xs'
+                        ? 'bg-emerald-500/20 text-white font-bold border border-emerald-400/40 shadow-xs'
                         : 'bg-white/5 hover:bg-white/12 text-slate-200 hover:text-white border border-transparent hover:border-white/10'
                     }`}
                     title={item.label}
                   >
                     <div
                       className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
-                        isActive ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/10 text-amber-200'
+                        isActive ? 'bg-emerald-400 text-slate-950 font-bold' : 'bg-white/10 text-emerald-300'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5 stroke-[2]" />
@@ -276,11 +276,11 @@ export function AppLayout() {
                         <span className="text-xs tracking-tight block leading-none">
                           {item.label}
                         </span>
-                        <span className={`text-[9px] ${isActive ? 'text-amber-200/80 font-medium' : 'text-slate-400'}`}>
+                        <span className={`text-[9px] ${isActive ? 'text-emerald-300 font-medium' : 'text-slate-400'}`}>
                           {item.sublabel}
                         </span>
                       </div>
-                      <span className={`text-[9px] font-mono ${isActive ? 'text-amber-300 font-bold' : 'text-amber-300/60'}`}>
+                      <span className={`text-[9px] font-mono ${isActive ? 'text-emerald-300 font-bold' : 'text-emerald-400/60'}`}>
                         {item.step}
                       </span>
                     </div>
@@ -298,11 +298,11 @@ export function AppLayout() {
                   navigate('/recovery');
                   setIsMobileMenuOpen(false);
                 }}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-300/30 shadow-xs cursor-pointer hover:border-amber-300/60 transition group"
+                className="p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/30 shadow-xs cursor-pointer hover:border-emerald-400/60 transition group"
               >
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="text-[11px] font-bold text-white flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-300" />
+                    <Sparkles className="w-3 h-3 text-emerald-300" />
                     Adaptive Solver
                   </span>
                   <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/30 text-emerald-300">

@@ -161,15 +161,15 @@ export function OverviewPage() {
           <div className="lg:col-span-7 space-y-5">
             
             {/* Feature Pill Descriptor */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F1C16]/70 border border-emerald-500/20 text-xs font-medium text-slate-100 backdrop-blur-md shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B1510]/80 border border-emerald-500/30 text-xs font-medium text-emerald-300 backdrop-blur-md shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>Smart Team Matching &amp; Autonomous Resource Rebalancing</span>
             </div>
 
             {/* Editorial Serif Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white font-editorial leading-[1.18] drop-shadow-sm">
               Build the right team. <br />
-              <span className="italic font-medium text-amber-200">Keep projects on track.</span>
+              <span className="italic font-medium text-emerald-300">Keep projects on track.</span>
             </h1>
 
             {/* Supporting Explanation */}
@@ -184,10 +184,10 @@ export function OverviewPage() {
                 className="hero-cta-btn group py-3 px-6 inline-flex items-center gap-2"
                 aria-label="Launch RebalanceX Critical Path Engine"
               >
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-950">
                   Launch Recovery Engine
                 </span>
-                <ArrowRight className="w-4 h-4 text-slate-900 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
@@ -199,12 +199,12 @@ export function OverviewPage() {
                   return (
                     <div
                       key={item.step}
-                      className="workflow-tile p-3 flex flex-col justify-between min-h-[90px] cursor-pointer hover:border-amber-300/60"
+                      className="workflow-tile p-3 flex flex-col justify-between min-h-[90px] cursor-pointer hover:border-emerald-400/60"
                       onClick={() => navigate(item.link)}
                       title={`Go to ${item.title}`}
                     >
                       <div className="flex items-center justify-between text-white">
-                        <Icon className="w-4 h-4 text-amber-300 stroke-[2.2]" />
+                        <Icon className="w-4 h-4 text-emerald-300 stroke-[2.2]" />
                       </div>
                       <div className="mt-2">
                         <div className="text-xs font-bold text-white tracking-wide truncate">{item.title}</div>
@@ -216,7 +216,7 @@ export function OverviewPage() {
               </div>
 
               {/* Step numbers below tiles */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 px-1 text-[11px] font-mono font-bold text-amber-300/80">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 px-1 text-[11px] font-mono font-bold text-emerald-300/80">
                 <div>01</div>
                 <div>02</div>
                 <div>03</div>
@@ -227,7 +227,7 @@ export function OverviewPage() {
 
           {/* Right Column: Live Interactive Autonomous Optimizer & Critical Path HUD Card (Replaces static image) */}
           <div className="lg:col-span-5 flex items-center justify-center relative">
-            <div className="w-full bg-[#0D1813]/85 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-emerald-900/40 shadow-2xl space-y-3.5 text-white">
+            <div className="w-full bg-[#09130E]/90 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-emerald-500/30 shadow-2xl space-y-3.5 text-white">
               
               {/* Header: Engine Status & Active Project */}
               <div className="flex items-center justify-between pb-1">
@@ -237,7 +237,7 @@ export function OverviewPage() {
                     Engine Active &bull; CPM Matrix
                   </span>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-amber-200 border border-white/10">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-emerald-300 border border-white/10">
                   {activeProject?.code || 'PRJ-2026'}
                 </span>
               </div>
@@ -254,7 +254,7 @@ export function OverviewPage() {
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 space-y-0.5">
                   <div className="text-[10px] text-slate-300 uppercase font-semibold">Critical Path Slack</div>
-                  <div className="text-base font-black text-amber-300 font-tabular">0.0 Days</div>
+                  <div className="text-base font-black text-emerald-300 font-tabular">0.0 Days</div>
                   <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
                     <span>✓ On Optimal Track</span>
                   </div>
@@ -270,10 +270,10 @@ export function OverviewPage() {
               </div>
 
               {/* Live Critical Path Pipeline Nodes */}
-              <div className="p-2.5 rounded-2xl bg-black/30 border border-white/10 space-y-2">
+              <div className="p-2.5 rounded-2xl bg-black/40 border border-emerald-500/20 space-y-2">
                 <div className="flex items-center justify-between text-[10px] text-slate-300 font-semibold">
                   <span>Schedule Dependency Graph</span>
-                  <span className="text-amber-300 font-mono text-[10px]">4 Nodes</span>
+                  <span className="text-emerald-300 font-mono text-[10px]">4 Nodes</span>
                 </div>
 
                 {/* Node Pipeline Flow */}
@@ -281,11 +281,11 @@ export function OverviewPage() {
                   <div className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
                     Setup
                   </div>
-                  <div className="h-[1px] flex-1 bg-gradient-to-r from-emerald-500/40 to-amber-500/40 mx-1" />
-                  <div className="px-2 py-0.5 rounded-md bg-amber-500/25 text-amber-200 border border-amber-400/40 text-center font-bold ring-1 ring-amber-400/40">
+                  <div className="h-[1px] flex-1 bg-emerald-500/40 mx-1" />
+                  <div className="px-2 py-0.5 rounded-md bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 text-center font-bold ring-1 ring-emerald-400/40">
                     CPM-Crit
                   </div>
-                  <div className="h-[1px] flex-1 bg-gradient-to-r from-amber-500/40 to-emerald-500/40 mx-1" />
+                  <div className="h-[1px] flex-1 bg-emerald-500/40 mx-1" />
                   <div className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
                     Verify
                   </div>
@@ -300,7 +300,7 @@ export function OverviewPage() {
                 <button
                   type="button"
                   onClick={() => navigate('/recovery')}
-                  className="flex-1 py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md"
+                  className="flex-1 py-2 px-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20"
                 >
                   <Zap className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
                   <span>Run Scenario Test</span>
@@ -312,7 +312,7 @@ export function OverviewPage() {
                   className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/20 transition flex items-center justify-center gap-1"
                 >
                   <span>Gantt Chart</span>
-                  <ArrowRight className="w-3 h-3 text-amber-200" />
+                  <ArrowRight className="w-3 h-3 text-emerald-300" />
                 </button>
               </div>
 
