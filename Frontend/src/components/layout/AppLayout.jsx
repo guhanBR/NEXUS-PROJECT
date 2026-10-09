@@ -17,6 +17,7 @@ import {
   Search,
   Bell,
   CheckCircle2,
+  CheckSquare,
   AlertTriangle,
   Zap,
   Layers,
