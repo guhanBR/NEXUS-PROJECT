@@ -21,8 +21,8 @@ export function SettingsPage() {
               Optimizer Weights & Talent Pool
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            Settings & <span className="italic font-light">Talent Directory</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Settings &amp; Talent Directory
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Manage global engineer profiles, skill maps, weekly capacities, and solver balance priorities.

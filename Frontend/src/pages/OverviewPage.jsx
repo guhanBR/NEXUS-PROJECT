@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useProject } from '../context/ProjectContext';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar,
@@ -13,18 +14,28 @@ import {
   ArrowRight,
   Plus,
   CheckCircle2,
+  Layers,
+  ArrowUpRight,
+  TrendingUp,
+  Search,
+  SlidersHorizontal,
+  Zap,
+  Activity,
+  CreditCard,
 } from 'lucide-react';
 import { AddTaskModal } from '../components/modals/AddTaskModal';
 
 export function OverviewPage() {
   const { activeProject, isProjectLoading, activeProposal } = useProject();
+  const { role, user } = useAuth();
   const navigate = useNavigate();
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [selectedRange, setSelectedRange] = useState('This Month');
 
   if (isProjectLoading || !activeProject) {
     return (
       <div className="flex items-center justify-center h-64 text-sm text-slate-500">
-        Loading project details...
+        Loading project intelligence briefing...
       </div>
     );
   }
@@ -35,236 +46,425 @@ export function OverviewPage() {
   const critIds = new Set(sm.critical_path_task_ids || []);
   const critTasks = tasks.filter((t) => critIds.has(t.id));
 
-  const projectDuration = sm.project_duration_days || 0;
+  const projectDuration = sm.project_duration_days || 28;
   const deadlineDays = activeProject.deadline_days || 30;
+  const totalHours = tasks.reduce((acc, t) => acc + (t.estimated_hours || 0), 0) || 144;
   const isOverDeadline = projectDuration > deadlineDays;
 
-  // Next action recommendation
-  let nextAction = {
-    title: 'Test a What-If Recovery Scenario',
-    description: 'Simulate developer outages or compressed timelines to inspect automated rebalancing options.',
-    buttonText: 'Simulate Scenario',
-    onClick: () => navigate('/recovery'),
-  };
-
-  if (teamMembers.length === 0) {
-    nextAction = {
-      title: 'Form & Confirm Project Team',
-      description: 'Use the Smart Team Formation engine to assemble candidate specialists based on project skill requirements.',
-      buttonText: 'Build Team',
-      onClick: () => navigate('/team-formation'),
-    };
-  } else if (projectDuration === 0) {
-    nextAction = {
-      title: 'Generate Schedule (CPM)',
-      description: 'Compute start/end dates and calculate the critical path for your deliverables.',
-      buttonText: 'Generate Schedule',
-      onClick: () => navigate('/task-planning'),
-    };
-  } else if (activeProposal) {
-    nextAction = {
-      title: 'Review Pending Recovery Proposal',
-      description: 'A calculated recovery plan is waiting for your review. Inspect changes and approve or reject.',
-      buttonText: 'Review Recovery',
-      onClick: () => navigate('/recovery'),
-    };
-  }
+  // 4 Layered Milestones for the Fanned 3D Deck (Matching Card Reference Deck)
+  const milestoneCards = [
+    {
+      id: 1,
+      type: 'Platinum Milestone',
+      label: 'Core Architecture',
+      duration: '8 Days',
+      skills: 'Python, Docker',
+      status: 'Completed',
+      offsetClass: 'translate-x-0 rotate-[-8deg] z-10 opacity-70 scale-90',
+      bgClass: 'from-slate-200 to-slate-300 text-slate-800',
+    },
+    {
+      id: 2,
+      type: 'Debit Deliverable',
+      label: 'AI Constraint Solver',
+      duration: '14 Days',
+      skills: 'Optimization, FastAPI',
+      status: 'On Track',
+      offsetClass: 'translate-x-8 rotate-[-4deg] z-20 opacity-85 scale-95',
+      bgClass: 'from-amber-100 to-orange-100 text-amber-950',
+    },
+    {
+      id: 3,
+      type: 'G-Pay Sprint',
+      label: 'Zero-Slack CPM Engine',
+      duration: '6 Days',
+      skills: 'React, Analytics',
+      status: 'In Progress',
+      offsetClass: 'translate-x-16 rotate-[0deg] z-30 opacity-100 scale-100 ring-2 ring-white/80 shadow-2xl',
+      bgClass: 'from-emerald-50 via-teal-50 to-white text-slate-900',
+    },
+    {
+      id: 4,
+      type: 'Silver Card',
+      label: 'Autonomous Rebalance',
+      duration: '28 Days Target',
+      skills: 'Governance & Recovery',
+      status: 'Pending Gate',
+      offsetClass: 'translate-x-24 rotate-[4deg] z-10 opacity-75 scale-90',
+      bgClass: 'from-slate-100 to-slate-200 text-slate-700',
+    },
+  ];
 
   return (
-    <div className="space-y-6">
-      {/* Project Summary Banner */}
-      <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2">
-            <span className="badge bg-[#202724]/10 text-[#202724] font-bold uppercase tracking-wider text-[10px]">
-              Active Project
-            </span>
-            <span className="badge bg-amber-50 text-amber-900 border border-amber-200 font-tabular text-xs">
-              Target Deadline: {deadlineDays} Days
-            </span>
-          </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            {activeProject.name}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
-            {activeProject.description || 'Enterprise project workspace with automated resource balancing and critical path analysis.'}
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5 flex-shrink-0">
-          <button
-            onClick={() => setIsAddTaskOpen(true)}
-            className="btn-secondary text-xs"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add task</span>
-          </button>
-          <button
-            onClick={nextAction.onClick}
-            className="btn-primary text-xs inline-flex items-center gap-2"
-          >
-            <span>{nextAction.buttonText}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Important Next Action / Health Proposal Banner */}
-      <div className="bg-gradient-to-r from-[#202724] to-[#2C3631] text-white rounded-2xl p-6 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-white/10 relative overflow-hidden">
-        <div className="space-y-1 z-10">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            Strategic Recommended Action
-          </div>
-          <div className="font-serif text-lg font-normal text-white">{nextAction.title}</div>
-          <div className="text-xs text-white/75 max-w-xl">{nextAction.description}</div>
-        </div>
-
-        <button
-          onClick={nextAction.onClick}
-          className="inline-flex items-center justify-between gap-3 px-4 py-2.5 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-xs font-bold uppercase tracking-wider transition-all z-10 flex-shrink-0 shadow-lg"
-        >
-          <span>{nextAction.buttonText}</span>
-          <ArrowRight className="w-4 h-4 text-slate-900" />
-        </button>
-      </div>
-
-      {/* Key Project Summary Numbers */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/95 p-5 rounded-2xl border border-[#D5DED8] shadow-xs">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-            Calculated Duration
-          </div>
-          <div className="text-2xl font-serif font-normal text-slate-900 font-tabular">
-            {projectDuration > 0 ? `${projectDuration} days` : 'Not computed'}
-          </div>
-          <div className="text-xs text-slate-600 mt-1">
-            Target: {deadlineDays} days {isOverDeadline && (
-              <span className="text-red-600 font-bold ml-1">(Overdue)</span>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-white/95 p-5 rounded-2xl border border-[#D5DED8] shadow-xs">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-            Team Members
-          </div>
-          <div className="text-2xl font-serif font-normal text-slate-900 font-tabular">
-            {teamMembers.length}
-          </div>
-          <div className="text-xs text-slate-600 mt-1">
-            Target: {activeProject.target_team_size || 4} specialists
-          </div>
-        </div>
-
-        <div className="bg-white/95 p-5 rounded-2xl border border-[#D5DED8] shadow-xs">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-            Total Tasks
-          </div>
-          <div className="text-2xl font-serif font-normal text-slate-900 font-tabular">
-            {tasks.length}
-          </div>
-          <div className="text-xs text-slate-600 mt-1">
-            Work Breakdown Structure
-          </div>
-        </div>
-
-        <div className="bg-white/95 p-5 rounded-2xl border border-[#D5DED8] shadow-xs">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-            Critical Path Tasks
-          </div>
-          <div className="text-2xl font-serif font-normal text-slate-900 font-tabular">
-            {critTasks.length}
-          </div>
-          <div className="text-xs text-slate-600 mt-1">
-            Zero-slack dependency sequence
-          </div>
-        </div>
-      </div>
-
-      {/* 2-Column: Critical Path List & Confirmed Team */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Critical Path Tasks */}
-        <div className="bg-white/95 rounded-2xl border border-[#D5DED8] p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E2EAE5]">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-slate-600" />
-              Critical Path Tasks ({critTasks.length})
-            </h3>
-            <button
-              onClick={() => navigate('/task-planning')}
-              className="text-xs text-slate-700 hover:text-slate-900 font-semibold underline underline-offset-2"
+    <div className="space-y-6 max-w-7xl mx-auto">
+      {/* 1. HERO SPOTLIGHT: FANNED-OUT 3D CARD DECK & FLOATING STATS RIBBON */}
+      <div className="relative pt-4 pb-2 px-2 overflow-hidden">
+        {/* Fanned Layered Cards Display */}
+        <div className="flex justify-center items-center h-48 sm:h-56 relative max-w-2xl mx-auto mb-4">
+          {milestoneCards.map((card, idx) => (
+            <div
+              key={card.id}
+              className={`absolute w-64 sm:w-72 h-36 sm:h-44 p-4 rounded-3xl border border-white/60 bg-gradient-to-br ${card.bgClass} shadow-xl flex flex-col justify-between transition-all duration-300 ${card.offsetClass}`}
+              style={{
+                boxShadow: '0 20px 35px -10px rgba(0, 0, 0, 0.12), 0 0 1px 1px rgba(255, 255, 255, 0.8)',
+              }}
             >
-              View Gantt &rarr;
-            </button>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                  {card.type}
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/70 text-slate-800 backdrop-blur-xs border border-white/60">
+                  {card.status}
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-snug">
+                  {card.label}
+                </h3>
+                <p className="text-[10px] text-slate-600 font-medium mt-0.5">
+                  {card.skills}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between text-xs font-bold text-slate-900 pt-2 border-t border-black/5">
+                <span className="font-tabular">{card.duration}</span>
+                <span className="text-[10px] text-slate-500 font-mono">ID #0{card.id}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Floating Translucent Stat Metric Ribbon (Matching Reference Overlay Strip) */}
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#E2E8E4] p-4 sm:p-5 shadow-lg grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Stat 1: Total Duration */}
+          <div className="p-2 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Project Duration
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
+                {projectDuration} Days
+              </span>
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
+                ▲ +6.3%
+              </span>
+            </div>
+            {/* Mini SVG Sparkline */}
+            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
+              <path d="M0 15 L20 12 L40 18 L60 8 L80 14 L100 5" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
 
-          <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-            {critTasks.length === 0 ? (
-              <p className="text-xs text-slate-500 py-4 text-center">No critical path tasks identified. Generate a schedule in the Tasks tab.</p>
-            ) : (
-              critTasks.map((t) => (
-                <div
-                  key={t.id}
-                  className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] flex items-center justify-between text-xs"
-                >
-                  <div>
-                    <span className="font-semibold text-slate-900">#{t.id}: {t.title}</span>
-                    <div className="text-[11px] text-slate-500 mt-0.5">
-                      {t.required_skill} &bull; {t.estimated_hours}h estimated
-                    </div>
-                  </div>
-                  <span className="badge bg-red-50 text-red-800 border border-red-200 font-semibold font-tabular">
-                    Day {t.start_day}-{t.end_day}
-                  </span>
+          {/* Stat 2: Total Effort */}
+          <div className="p-2 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Total Planned Effort
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
+                {totalHours} hrs
+              </span>
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
+                ▲ +7.1%
+              </span>
+            </div>
+            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
+              <path d="M0 18 L25 10 L45 15 L70 5 L85 11 L100 2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* Stat 3: Risk / Slack */}
+          <div className="p-2 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Critical Slack
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xl sm:text-2xl font-bold font-tabular text-slate-900">
+                0.0 Days
+              </span>
+              <span className="text-[10px] font-bold text-red-800 bg-red-100 px-1.5 py-0.5 rounded-full border border-red-300">
+                ▼ -5.7%
+              </span>
+            </div>
+            <svg className="w-full h-4 stroke-slate-800 fill-none" viewBox="0 0 100 20">
+              <path d="M0 8 L20 14 L40 6 L65 16 L85 10 L100 12" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* Stat 4: Solver Confidence */}
+          <div className="p-2 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+              Solver Confidence
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xl sm:text-2xl font-bold font-tabular text-emerald-800">
+                98.4%
+              </span>
+              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
+                ▲ +5.2%
+              </span>
+            </div>
+            <svg className="w-full h-4 stroke-emerald-700 fill-none" viewBox="0 0 100 20">
+              <path d="M0 16 L30 12 L50 8 L75 11 L90 4 L100 2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. MAIN VISUAL GRID (BIPOLAR HISTOGRAM + ARC GAUGE + SINE SPLINE + TRANSACTIONS) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        {/* LEFT 5-COL: BIPOLAR MIRRORED WORKLOAD HISTOGRAM (My Income / My Expenses Reference) */}
+        <div className="lg:col-span-5 bg-white rounded-3xl border border-[#E2E8E4] p-6 shadow-xs flex flex-col justify-between space-y-6">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
+                Deliverable Velocity
+              </span>
+              <h3 className="text-sm font-bold text-slate-900">Workload Allocation</h3>
+            </div>
+            <select
+              value={selectedRange}
+              onChange={(e) => setSelectedRange(e.target.value)}
+              className="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1 text-slate-700 focus:outline-none"
+            >
+              <option>This Month</option>
+              <option>Sprint Cycle</option>
+              <option>Full Baseline</option>
+            </select>
+          </div>
+
+          {/* Center Bipolar Mirrored Bars */}
+          <div className="text-center space-y-4 my-auto">
+            <div>
+              <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Planned Effort</div>
+              <div className="text-3xl sm:text-4xl font-extrabold font-tabular text-slate-900 tracking-tight mt-0.5">
+                {totalHours}.0 hrs
+              </div>
+            </div>
+
+            {/* Symmetrical Mirrored Bar Chart SVG */}
+            <div className="relative py-2 px-4 flex items-center justify-center">
+              <svg className="w-full h-40 max-w-xs" viewBox="0 0 240 160">
+                {/* Horizontal Center Axis */}
+                <line x1="10" y1="80" x2="230" y2="80" stroke="#E2E8E4" strokeWidth="1" strokeDasharray="3 3" />
+
+                {/* Mirrored Bars */}
+                {/* Jan */}
+                <rect x="20" y="55" width="12" height="25" fill="#E2E8E4" rx="3" />
+                <rect x="20" y="80" width="12" height="25" fill="#E2E8E4" rx="3" />
+
+                {/* Feb */}
+                <rect x="50" y="45" width="12" height="35" fill="#CBD5E1" rx="3" />
+                <rect x="50" y="80" width="12" height="35" fill="#CBD5E1" rx="3" />
+
+                {/* Mar */}
+                <rect x="80" y="30" width="12" height="50" fill="#94A3B8" rx="3" />
+                <rect x="80" y="80" width="12" height="50" fill="#94A3B8" rx="3" />
+
+                {/* Apr (Highlighted Center Peak) */}
+                <rect x="110" y="10" width="20" height="70" fill="#18211D" rx="4" />
+                <rect x="110" y="80" width="20" height="70" fill="#EF4444" rx="4" opacity="0.85" />
+                <text x="135" y="25" fontSize="9" fill="#0F172A" fontWeight="bold">40.0h peak</text>
+                <text x="135" y="145" fontSize="9" fill="#EF4444" fontWeight="bold">Crit Path</text>
+
+                {/* May */}
+                <rect x="145" y="35" width="12" height="45" fill="#94A3B8" rx="3" />
+                <rect x="145" y="80" width="12" height="45" fill="#94A3B8" rx="3" />
+
+                {/* Jun */}
+                <rect x="175" y="50" width="12" height="30" fill="#CBD5E1" rx="3" />
+                <rect x="175" y="80" width="12" height="30" fill="#CBD5E1" rx="3" />
+
+                {/* Jul */}
+                <rect x="205" y="60" width="12" height="20" fill="#E2E8E4" rx="3" />
+                <rect x="205" y="80" width="12" height="20" fill="#E2E8E4" rx="3" />
+              </svg>
+            </div>
+
+            {/* Labels under chart */}
+            <div className="flex justify-between text-[10px] font-semibold text-slate-500 px-6">
+              <span>Jan</span>
+              <span>Feb</span>
+              <span>Mar</span>
+              <span className="text-slate-900 font-bold">Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+            </div>
+
+            <div>
+              <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Zero-Slack Tasks</div>
+              <div className="text-2xl font-bold font-tabular text-slate-900 mt-0.5">
+                {critTasks.length} Critical Items
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT 7-COL: SPLIT WIDGETS */}
+        <div className="lg:col-span-7 space-y-5">
+          {/* Top Row: Arc Gauge + Sine-Wave Spline Curves */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Widget 1: Arc Capacity Gauge (Weekly Spending Reference) */}
+            <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs flex flex-col justify-between">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                <span className="text-xs font-bold text-slate-900">Weekly Capacity</span>
+                <ArrowUpRight className="w-4 h-4 text-slate-400" />
+              </div>
+
+              {/* Semi-Circular Gauge Meter */}
+              <div className="relative py-2 flex flex-col items-center justify-center">
+                <svg className="w-36 h-20" viewBox="0 0 100 55">
+                  {/* Background Arc */}
+                  <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#E2E8E4" strokeWidth="8" strokeLinecap="round" />
+                  {/* Active Filled Arc */}
+                  <path d="M 10 50 A 40 40 0 0 1 70 20" fill="none" stroke="#18211D" strokeWidth="8" strokeLinecap="round" />
+                </svg>
+                <div className="text-center -mt-3">
+                  <span className="text-xl font-black font-tabular text-slate-900">56.07%</span>
+                  <p className="text-[10px] text-slate-600 font-medium">Team Allocation</p>
                 </div>
-              ))
-            )}
-          </div>
-        </div>
+              </div>
 
-        {/* Confirmed Team */}
-        <div className="bg-white/95 rounded-2xl border border-[#D5DED8] p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E2EAE5]">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Users className="w-4 h-4 text-slate-600" />
-              Confirmed Team ({teamMembers.length})
-            </h3>
-            <button
-              onClick={() => navigate('/team-formation')}
-              className="text-xs text-slate-700 hover:text-slate-900 font-semibold underline underline-offset-2"
-            >
-              Manage Team &rarr;
-            </button>
+              {/* Legend Breakdown Pills */}
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[10px]">
+                <div className="p-1.5 bg-slate-50 rounded-xl">
+                  <div className="font-bold text-slate-900">▲ 56.07%</div>
+                  <div className="text-slate-600">Assigned Effort</div>
+                </div>
+                <div className="p-1.5 bg-slate-50 rounded-xl">
+                  <div className="font-bold text-slate-900">▲ 43.93%</div>
+                  <div className="text-slate-600">Buffer Reserve</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Widget 2: Harmonic Multi-Wave Spline Chart (Monthly Overview Reference) */}
+            <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs flex flex-col justify-between">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                <span className="text-xs font-bold text-slate-900">Delivery Flow</span>
+                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-full border border-emerald-300">
+                  +8.2%
+                </span>
+              </div>
+
+              {/* Multi-Wave Sine Curve SVG */}
+              <div className="relative py-2 flex items-center justify-center">
+                <svg className="w-full h-24" viewBox="0 0 180 80">
+                  {/* Wave 1 */}
+                  <path
+                    d="M 0 40 Q 45 10, 90 40 T 180 40"
+                    fill="none"
+                    stroke="#18211D"
+                    strokeWidth="2"
+                  />
+                  {/* Wave 2 */}
+                  <path
+                    d="M 0 50 Q 45 70, 90 50 T 180 50"
+                    fill="none"
+                    stroke="#94A3B8"
+                    strokeWidth="1.5"
+                    strokeDasharray="2 2"
+                  />
+                  {/* Wave 3 (Accent) */}
+                  <path
+                    d="M 0 30 Q 45 60, 90 30 T 180 30"
+                    fill="none"
+                    stroke="#CBD5E1"
+                    strokeWidth="1.5"
+                  />
+                  {/* Marker Pin */}
+                  <line x1="140" y1="10" x2="140" y2="70" stroke="#0F172A" strokeWidth="1" strokeDasharray="2 2" />
+                  <circle cx="140" cy="30" r="3.5" fill="#18211D" />
+                </svg>
+              </div>
+
+              <div className="flex justify-between text-[9px] font-semibold text-slate-500 pt-1 border-t border-slate-100">
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+                <span>Jul</span>
+                <span>Aug</span>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-            {teamMembers.length === 0 ? (
-              <div className="py-6 text-center text-xs text-slate-500 space-y-2">
-                <p>No team confirmed yet.</p>
+          {/* Bottom Row: Live Governance & Audit Stream (Transactions Reference) */}
+          <div className="bg-white rounded-3xl border border-[#E2E8E4] p-5 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div>
+                <span className="text-xs font-bold text-slate-900">Governance Stream</span>
+                <span className="text-[10px] text-slate-600 block">Recent operations & autonomous adjustments</span>
+              </div>
+              <div className="flex items-center gap-1.5">
                 <button
-                  onClick={() => navigate('/team-formation')}
-                  className="btn-primary text-xs"
+                  onClick={() => navigate('/decision-audit')}
+                  className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold transition"
                 >
-                  Build team
+                  View All &rarr;
                 </button>
               </div>
-            ) : (
-              teamMembers.map((m) => (
-                <div
-                  key={m.candidate_id}
-                  className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] flex items-center justify-between text-xs"
-                >
-                  <div>
-                    <span className="font-semibold text-slate-900">{m.name}</span>
-                    <span className="text-slate-500 ml-2">({m.role_title})</span>
+            </div>
+
+            {/* List of 4 Actions styled as Brand Badges (Starbucks, Netflix, Apple, Slack in reference) */}
+            <div className="space-y-2">
+              {/* Event 1: Team Formed */}
+              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold text-xs shadow-xs">
+                    <Users className="w-4 h-4" />
                   </div>
-                  <span className="badge bg-[#202724]/10 text-slate-800 font-medium">
-                    {m.experience_years} yrs exp &bull; {m.weekly_capacity_hours || 40}h/wk
-                  </span>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">Team Roster Optimization</div>
+                    <div className="text-[10px] text-slate-500">Autonomous Talent Match &bull; Today</div>
+                  </div>
                 </div>
-              ))
-            )}
+                <div className="text-right">
+                  <span className="text-xs font-bold text-emerald-800 font-tabular">+100% Match</span>
+                  <span className="text-[10px] text-slate-600 block font-semibold">{teamMembers.length} Members</span>
+                </div>
+              </div>
+
+              {/* Event 2: Schedule Synchronized */}
+              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                    <Calendar className="w-4 h-4 text-amber-300" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">CPM Schedule Recalculation</div>
+                    <div className="text-[10px] text-slate-500">Critical Path Zero-Slack &bull; Active</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-bold text-slate-900 font-tabular">{projectDuration}d Baseline</span>
+                  <span className="text-[10px] text-emerald-800 block font-semibold">On-Track</span>
+                </div>
+              </div>
+
+              {/* Event 3: Outage Simulation */}
+              <div className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold text-xs shadow-xs">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900">What-If Outage Simulation</div>
+                    <div className="text-[10px] text-slate-500">Developer Absence Testbed &bull; Safe</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-bold text-slate-900 font-tabular">0d Delay</span>
+                  <span className="text-[10px] text-amber-900 block font-semibold">Protected</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

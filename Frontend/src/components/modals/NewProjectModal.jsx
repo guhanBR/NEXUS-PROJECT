@@ -73,7 +73,7 @@ export function NewProjectModal({ onClose }) {
               <FolderPlus className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-serif font-normal text-slate-900 text-lg">Create New Project</h3>
+              <h3 className="text-lg font-bold text-slate-900">Create New Project</h3>
               <p className="text-[11px] text-slate-500">Initialize a new enterprise delivery workspace</p>
             </div>
           </div>

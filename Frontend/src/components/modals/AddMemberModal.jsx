@@ -68,7 +68,7 @@ export function AddMemberModal({ onClose }) {
               <UserCheck className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-serif font-normal text-slate-900 text-lg">Add Candidate to Pool</h3>
+              <h3 className="text-lg font-bold text-slate-900">Add Candidate to Pool</h3>
               <p className="text-[11px] text-slate-500">Register engineer profile, skills map, and capacity</p>
             </div>
           </div>

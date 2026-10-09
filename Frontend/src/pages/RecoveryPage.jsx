@@ -99,8 +99,8 @@ export function RecoveryPage() {
               Simulation & Rebalancing Engine
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            What-If Simulation & <span className="italic font-light">Recovery</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            What-If Simulation &amp; Recovery
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Simulate real-world project disruptions, preview automated task reallocations, and review diffs before saving to live baseline.
@@ -201,8 +201,8 @@ export function RecoveryPage() {
               <div className="badge bg-amber-100 text-amber-900 font-bold text-[10px] uppercase tracking-wider mb-1 border border-amber-300">
                 Calculated Recovery Proposal
               </div>
-              <h3 className="font-serif text-xl font-normal text-slate-900">
-                Review Automated Adjustments & Reassignments
+              <h3 className="text-xl font-bold text-slate-900">
+                Review Automated Adjustments &amp; Reassignments
               </h3>
               <p className="text-xs text-slate-600 mt-0.5">
                 Inspect calculated changes before approving. Approving will apply the rebalanced schedule to the live project.
@@ -216,7 +216,7 @@ export function RecoveryPage() {
                 className="btn-secondary text-xs"
               >
                 <X className="w-3.5 h-3.5" />
-                <span>Reject & Discard</span>
+                <span>Reject &amp; Discard</span>
               </button>
               <button
                 onClick={handleApprove}
@@ -226,7 +226,7 @@ export function RecoveryPage() {
                 {isSubmittingApproval ? 'Applying...' : (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Approve & Apply Plan</span>
+                    <span>Approve &amp; Apply Plan</span>
                   </>
                 )}
               </button>
@@ -237,21 +237,21 @@ export function RecoveryPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
               <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Predicted Duration</div>
-              <div className="text-2xl font-serif font-normal text-slate-900 font-tabular mt-0.5">
+              <div className="text-2xl font-bold text-slate-900 font-tabular mt-0.5">
                 {activeProposal.estimated_duration_days || activeProposal.rebalanced_schedule?.project_duration_days || 0} days
               </div>
             </div>
 
             <div className="p-5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
               <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Reassigned Tasks</div>
-              <div className="text-2xl font-serif font-normal text-slate-900 font-tabular mt-0.5">
+              <div className="text-2xl font-bold text-slate-900 font-tabular mt-0.5">
                 {activeProposal.reassigned_tasks?.length || 0} tasks
               </div>
             </div>
 
             <div className="p-5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
               <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">Optimizer Confidence</div>
-              <div className="text-2xl font-serif font-normal text-emerald-700 font-tabular mt-0.5">
+              <div className="text-2xl font-bold text-emerald-700 font-tabular mt-0.5">
                 {activeProposal.confidence_score ? `${Math.round(activeProposal.confidence_score * 100)}%` : '98%'}
               </div>
             </div>

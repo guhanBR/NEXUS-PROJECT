@@ -46,8 +46,8 @@ export function ProjectsPage() {
               Enterprise Portfolio
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            Project Directory & <span className="italic font-light">Workspaces</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Project Directory &amp; Workspaces
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Select a project to inspect team allocations, critical path deliverables, and simulated recovery plans.
@@ -72,7 +72,7 @@ export function ProjectsPage() {
             <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
               Total Authorized Projects
             </div>
-            <div className="text-2xl font-serif font-normal text-slate-900 mt-0.5">
+            <div className="text-2xl font-bold font-tabular text-slate-900 mt-0.5">
               {authorizedProjects.length}
             </div>
           </div>
@@ -86,7 +86,7 @@ export function ProjectsPage() {
             <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">
               On Track Delivery
             </div>
-            <div className="text-2xl font-serif font-normal text-emerald-800 mt-0.5">
+            <div className="text-2xl font-bold font-tabular text-emerald-800 mt-0.5">
               {onTrackCount}
             </div>
           </div>
@@ -100,7 +100,7 @@ export function ProjectsPage() {
             <div className="text-[11px] font-bold uppercase tracking-wider text-amber-700">
               Deadline / Scope Risks
             </div>
-            <div className="text-2xl font-serif font-normal text-amber-900 mt-0.5">
+            <div className="text-2xl font-bold font-tabular text-amber-900 mt-0.5">
               {riskCount}
             </div>
           </div>

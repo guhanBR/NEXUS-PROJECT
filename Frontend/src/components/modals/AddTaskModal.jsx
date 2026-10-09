@@ -75,7 +75,7 @@ export function AddTaskModal({ onClose }) {
               <CheckSquare className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-serif font-normal text-slate-900 text-lg">Add Task Deliverable</h3>
+              <h3 className="text-lg font-bold text-slate-900">Add Task Deliverable</h3>
               <p className="text-[11px] text-slate-500">Configure WBS item and required capability</p>
             </div>
           </div>

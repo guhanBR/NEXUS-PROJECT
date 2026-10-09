@@ -85,8 +85,8 @@ export function LoginPage() {
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#202724]/10 text-[#202724] border border-[#202724]/15">
               Secure Access
             </span>
-            <h1 className="font-serif text-2xl font-normal text-slate-900 tracking-tight">
-              Sign in to <span className="italic font-light">RebalanceX</span>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+              Sign in to RebalanceX
             </h1>
             <p className="text-xs text-slate-600">
               Enter your work email and password to access authorized projects.

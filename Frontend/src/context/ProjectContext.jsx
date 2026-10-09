@@ -18,6 +18,16 @@ export function ProjectProvider({ children }) {
     queryFn: api.getProjects,
   });
 
+  // Automatically select valid project if not set
+  React.useEffect(() => {
+    if (projects.length > 0) {
+      const exists = projects.some((p) => p.id === activeProjectId);
+      if (!exists) {
+        setActiveProjectId(projects[0].id);
+      }
+    }
+  }, [projects, activeProjectId]);
+
   // Fetch active project detail
   const { data: activeProject, isLoading: isProjectLoading, refetch: refetchProject } = useQuery({
     queryKey: ['project', activeProjectId],

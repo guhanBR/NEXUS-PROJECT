@@ -78,8 +78,8 @@ export function TeamFormationPage() {
               Autonomous Talent Allocation
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            Team Formation & <span className="italic font-light">Roster</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Team Formation &amp; Roster
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Match engineer competencies against project deliverables, inspect capacity balances, and optimize team coverage.
@@ -122,7 +122,7 @@ export function TeamFormationPage() {
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/30 inline-block mb-1">
                 Generated Team Recommendation
               </span>
-              <h3 className="font-serif text-xl font-normal text-white">
+              <h3 className="text-xl font-bold text-white">
                 Proposed Squad ({proposedTeam.members.length} Specialists)
               </h3>
               <p className="text-xs text-white/75 mt-0.5">

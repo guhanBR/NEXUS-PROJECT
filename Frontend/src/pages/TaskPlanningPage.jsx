@@ -70,8 +70,8 @@ export function TaskPlanningPage() {
               Critical Path Method (CPM)
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            Tasks, WBS & <span className="italic font-light">Gantt Schedule</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Tasks, WBS &amp; Gantt Schedule
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Configure work breakdown deliverables, assign owners, track prerequisites, and calculate timeline zero-slack milestones.
@@ -119,8 +119,8 @@ export function TaskPlanningPage() {
                 CPM Schedule & Velocity Trend
               </span>
             </div>
-            <h2 className="font-serif text-xl font-normal text-slate-900">
-              Delivery Timeline & <span className="italic font-light">Velocity Trend</span>
+            <h2 className="text-xl font-bold text-slate-900">
+              Delivery Timeline &amp; Velocity Trend
             </h2>
           </div>
 
@@ -156,21 +156,21 @@ export function TaskPlanningPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total Planned Effort</div>
-            <div className="text-lg font-serif font-bold text-slate-900 font-tabular mt-0.5">
+            <div className="text-lg font-bold text-slate-900 font-tabular mt-0.5">
               {tasks.reduce((acc, t) => acc + (t.estimated_hours || 0), 0)} hrs
             </div>
           </div>
 
           <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
             <div className="text-[10px] font-bold uppercase tracking-wider text-red-700">Critical Path Duration</div>
-            <div className="text-lg font-serif font-bold text-red-800 font-tabular mt-0.5">
+            <div className="text-lg font-bold text-red-800 font-tabular mt-0.5">
               {totalDuration} days
             </div>
           </div>
 
           <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Daily Work Velocity</div>
-            <div className="text-lg font-serif font-bold text-slate-900 font-tabular mt-0.5">
+            <div className="text-lg font-bold text-slate-900 font-tabular mt-0.5">
               {totalDuration > 0
                 ? (tasks.reduce((acc, t) => acc + (t.estimated_hours || 0), 0) / totalDuration).toFixed(1)
                 : 0} h/day
@@ -179,7 +179,7 @@ export function TaskPlanningPage() {
 
           <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#D5DED8]">
             <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">Schedule Health</div>
-            <div className="text-lg font-serif font-bold text-emerald-800 font-tabular mt-0.5">
+            <div className="text-lg font-bold text-emerald-800 font-tabular mt-0.5">
               {totalDuration <= (activeProject?.deadline_days || 30) ? '98% On-Track' : 'Risk'}
             </div>
           </div>

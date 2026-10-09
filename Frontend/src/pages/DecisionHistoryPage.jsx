@@ -41,8 +41,8 @@ export function DecisionHistoryPage() {
               Immutable Governance Log
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-            Decision & <span className="italic font-light">Audit History</span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Decision &amp; Audit History
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Traceable log of all team confirmations, automated CPM schedule calculations, and recovery approvals.
