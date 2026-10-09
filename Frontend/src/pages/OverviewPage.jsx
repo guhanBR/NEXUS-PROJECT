@@ -177,19 +177,17 @@ export function OverviewPage() {
               Match talent to workloads and recover instantly when plans change.
             </p>
 
-            {/* Primary Hero CTA Button with Dark Circular Icon */}
+            {/* Primary Hero CTA Button */}
             <div className="pt-1">
               <button
                 onClick={() => navigate('/recovery')}
-                className="hero-cta-btn group"
+                className="hero-cta-btn group py-3 px-6 inline-flex items-center gap-2"
                 aria-label="Launch RebalanceX Critical Path Engine"
               >
-                <div className="w-8 h-8 rounded-xl bg-[#1C2420] text-amber-300 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
-                  <Compass className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-900 pr-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-900">
                   Launch Recovery Engine
                 </span>
+                <ArrowRight className="w-4 h-4 text-slate-900 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 

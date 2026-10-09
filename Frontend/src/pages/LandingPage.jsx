@@ -63,9 +63,6 @@ export function LandingPage() {
       <header className="max-w-7xl mx-auto w-full px-6 sm:px-8 py-6 flex items-center justify-between z-20">
         {/* Brand Logo & Wordmark */}
         <NavLink to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center backdrop-blur-md shadow-xs group-hover:border-white/50 transition">
-            <Compass className="w-4 h-4 text-amber-300" />
-          </div>
           <div>
             <span className="font-bold text-lg tracking-tight text-white font-sans block leading-none">
               Ryzen Matrix
@@ -139,19 +136,17 @@ export function LandingPage() {
               Match talent to workloads and recover instantly when plans change.
             </p>
 
-            {/* Off-White Hero CTA with Dark Compact Icon Segment */}
+            {/* Off-White Hero CTA */}
             <div>
               <button
                 onClick={handleCtaClick}
-                className="hero-cta-btn group"
+                className="hero-cta-btn group py-3 px-6 inline-flex items-center gap-2"
                 aria-label={isAuthenticated ? 'Open RebalanceX Workspace' : 'Sign in to RebalanceX'}
               >
-                <div className="w-8 h-8 rounded-xl bg-[#1C2420] text-amber-300 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
-                  <Compass className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-900 pr-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-900">
                   {isAuthenticated ? 'Open Project Workspace' : 'Sign in to RebalanceX'}
                 </span>
+                <ArrowRight className="w-4 h-4 text-slate-900 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
