@@ -191,7 +191,7 @@ export function LandingPage() {
 
           {/* Right Column: Live Interactive Autonomous Optimizer & Critical Path HUD Card (Replaces static image) */}
           <div className="lg:col-span-6 flex items-center justify-center relative">
-            <div className="w-full max-w-lg bg-[#0D1813]/85 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl space-y-4 text-white">
+            <div className="w-full max-w-lg bg-[#0D1813]/85 backdrop-blur-md rounded-3xl p-6 border border-emerald-900/40 shadow-2xl space-y-4 text-white">
               
               {/* Header: Engine Status & Active Project */}
               <div className="flex items-center justify-between pb-1">

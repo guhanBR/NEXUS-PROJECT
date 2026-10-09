@@ -153,15 +153,15 @@ export function OverviewPage() {
   return (
     <div className="space-y-6 max-w-[1400px] mx-auto font-sans">
       
-      {/* 1. HERO SECTION (Matching Attached Reference Image 1:1) */}
-      <div className="landing-canvas rounded-3xl p-6 sm:p-8 lg:p-10 border border-white/20 shadow-xl relative overflow-hidden text-white">
+      {/* 1. HERO SECTION (Seamless Borderless Design) */}
+      <div className="landing-canvas rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg relative overflow-hidden text-white border-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Column: Descriptor, Serif Headline, CTA, and 4 Workflow Tiles */}
           <div className="lg:col-span-7 space-y-5">
             
             {/* Feature Pill Descriptor */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F1C16]/70 border border-white/25 text-xs font-medium text-slate-100 backdrop-blur-md shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F1C16]/70 border border-emerald-500/20 text-xs font-medium text-slate-100 backdrop-blur-md shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span>Smart Team Matching &amp; Autonomous Resource Rebalancing</span>
             </div>
@@ -229,7 +229,7 @@ export function OverviewPage() {
 
           {/* Right Column: Live Interactive Autonomous Optimizer & Critical Path HUD Card (Replaces static image) */}
           <div className="lg:col-span-5 flex items-center justify-center relative">
-            <div className="w-full bg-[#0D1813]/80 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-white/20 shadow-2xl space-y-3.5 text-white">
+            <div className="w-full bg-[#0D1813]/85 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-emerald-900/40 shadow-2xl space-y-3.5 text-white">
               
               {/* Header: Engine Status & Active Project */}
               <div className="flex items-center justify-between pb-1">
