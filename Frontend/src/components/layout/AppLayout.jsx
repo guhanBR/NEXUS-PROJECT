@@ -160,16 +160,28 @@ export function AppLayout() {
               : '-translate-x-full lg:translate-x-0'
           } ${isSidebarCollapsed ? 'lg:w-[76px] lg:p-2.5' : ''}`}
         >
-          <div className="space-y-3.5">
+          <div className="space-y-3">
             {/* Top Brand Logo & Collapse Toggle */}
-            <div className="flex items-center justify-between pb-2 border-b border-white/10">
-              <NavLink
-                to="/overview"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 group"
-                title="Ryzen Matrix Workspace"
-              >
-                {!isSidebarCollapsed ? (
+            {isSidebarCollapsed ? (
+              <div className="flex flex-col items-center pb-2 border-b border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setIsSidebarCollapsed(false)}
+                  className="w-10 h-10 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-bold text-xs transition-all shadow-md shadow-amber-400/20 flex items-center justify-center group"
+                  title="Expand Sidebar (Ryzen Matrix)"
+                >
+                  <span className="leading-none tracking-tight group-hover:hidden">RM</span>
+                  <PanelLeft className="w-4 h-4 hidden group-hover:block" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                <NavLink
+                  to="/overview"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 group"
+                  title="Ryzen Matrix Workspace"
+                >
                   <div>
                     <span className="font-bold text-base tracking-tight text-white leading-none block">
                       Ryzen Matrix
@@ -178,32 +190,28 @@ export function AppLayout() {
                       Adaptive Workspace
                     </span>
                   </div>
-                ) : (
-                  <span className="font-bold text-sm tracking-tight text-amber-200 block text-center w-full">
-                    RM
-                  </span>
-                )}
-              </NavLink>
+                </NavLink>
 
-              {/* Desktop Collapse Toggle */}
-              <button
-                type="button"
-                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="hidden lg:flex p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition"
-                title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-              >
-                {isSidebarCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
-              </button>
+                {/* Desktop Collapse Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setIsSidebarCollapsed(true)}
+                  className="hidden lg:flex p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition"
+                  title="Collapse Sidebar"
+                >
+                  <PanelLeftClose className="w-4 h-4" />
+                </button>
 
-              {/* Mobile Close Button */}
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="lg:hidden p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+                {/* Mobile Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="lg:hidden p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
 
             {/* Search Bar */}
             {!isSidebarCollapsed && (
@@ -220,10 +228,29 @@ export function AppLayout() {
             )}
 
             {/* Navigation Tiles Stack */}
-            <div className="space-y-1">
+            <div className={`space-y-1 ${isSidebarCollapsed ? 'flex flex-col items-center' : ''}`}>
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.to || (item.to !== '/overview' && location.pathname.startsWith(item.to));
+                
+                if (isSidebarCollapsed) {
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
+                        isActive
+                          ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 font-bold scale-105'
+                          : 'bg-white/5 hover:bg-white/15 text-amber-200/80 hover:text-white border border-transparent hover:border-white/10'
+                      }`}
+                      title={`${item.label} (${item.sublabel})`}
+                    >
+                      <Icon className="w-4 h-4 stroke-[2]" />
+                    </NavLink>
+                  );
+                }
+
                 return (
                   <NavLink
                     key={item.to}
@@ -231,34 +258,32 @@ export function AppLayout() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`p-2 rounded-xl flex items-center gap-2.5 transition-all ${
                       isActive
-                        ? 'bg-white text-slate-900 font-bold shadow-md'
+                        ? 'bg-amber-400/15 text-white font-bold border border-amber-400/40 shadow-xs'
                         : 'bg-white/5 hover:bg-white/12 text-slate-200 hover:text-white border border-transparent hover:border-white/10'
-                    } ${isSidebarCollapsed ? 'justify-center p-2.5' : ''}`}
+                    }`}
                     title={item.label}
                   >
                     <div
                       className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
-                        isActive ? 'bg-[#1C2420] text-amber-300' : 'bg-white/10 text-amber-200'
+                        isActive ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/10 text-amber-200'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5 stroke-[2]" />
                     </div>
 
-                    {!isSidebarCollapsed && (
-                      <div className="min-w-0 flex-1 flex items-center justify-between">
-                        <div className="truncate">
-                          <span className="text-xs tracking-tight block leading-none">
-                            {item.label}
-                          </span>
-                          <span className={`text-[9px] ${isActive ? 'text-slate-500 font-medium' : 'text-slate-400'}`}>
-                            {item.sublabel}
-                          </span>
-                        </div>
-                        <span className={`text-[9px] font-mono ${isActive ? 'text-slate-400' : 'text-amber-300/70'}`}>
-                          {item.step}
+                    <div className="min-w-0 flex-1 flex items-center justify-between">
+                      <div className="truncate">
+                        <span className="text-xs tracking-tight block leading-none">
+                          {item.label}
+                        </span>
+                        <span className={`text-[9px] ${isActive ? 'text-amber-200/80 font-medium' : 'text-slate-400'}`}>
+                          {item.sublabel}
                         </span>
                       </div>
-                    )}
+                      <span className={`text-[9px] font-mono ${isActive ? 'text-amber-300 font-bold' : 'text-amber-300/60'}`}>
+                        {item.step}
+                      </span>
+                    </div>
                   </NavLink>
                 );
               })}
@@ -295,7 +320,7 @@ export function AppLayout() {
               type="button"
               onClick={handleLogout}
               className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-slate-300 hover:text-rose-300 hover:bg-rose-500/20 text-xs font-semibold transition ${
-                isSidebarCollapsed ? 'justify-center' : ''
+                isSidebarCollapsed ? 'justify-center p-2' : ''
               }`}
               title="Sign Out"
             >
