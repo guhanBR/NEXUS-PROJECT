@@ -123,8 +123,8 @@
           "avatar_color": "#D97706"
         }
       ],
-      "created_at": "2026-10-09T07:22:04.788432",
-      "updated_at": "2026-10-09T07:22:04.788432"
+      "created_at": "2026-10-09T13:57:52.557337",
+      "updated_at": "2026-10-09T13:57:52.557350"
     }
   },
   "members": {
@@ -284,7 +284,7 @@
       "remaining_hours": 24.0,
       "priority": "high",
       "status": "completed",
-      "assigned_candidate_id": 4,
+      "assigned_candidate_id": 5,
       "start_day": 0.0,
       "end_day": 3.0,
       "deadline_day": 5.0,
@@ -422,7 +422,7 @@
       "remaining_hours": 24.0,
       "priority": "critical",
       "status": "todo",
-      "assigned_candidate_id": 4,
+      "assigned_candidate_id": 5,
       "start_day": 19.0,
       "end_day": 22.0,
       "deadline_day": 22.0,
@@ -442,9 +442,9 @@
       "scenario_details": {
         "candidate_id": 2
       },
-      "solver_engine": "Deterministic Constraint Heuristic Optimizer",
-      "solver_status": "optimal",
-      "objective_score": 84.8,
+      "solver_engine": "Google OR-Tools CP-SAT",
+      "solver_status": "feasible_mitigated",
+      "objective_score": 78.8,
       "original_schedule": {
         "tasks": [
           {
@@ -738,7 +738,7 @@
             "remaining_hours": 24.0,
             "priority": "high",
             "status": "completed",
-            "assigned_candidate_id": 4,
+            "assigned_candidate_id": 5,
             "start_day": 0.0,
             "end_day": 3.0,
             "deadline_day": 5.0,
@@ -918,7 +918,7 @@
             "remaining_hours": 24.0,
             "priority": "critical",
             "status": "todo",
-            "assigned_candidate_id": 4,
+            "assigned_candidate_id": 5,
             "start_day": 19.0,
             "end_day": 22.0,
             "deadline_day": 22.0,
@@ -976,19 +976,19 @@
           "4": {
             "candidate_id": 4,
             "name": "Elena Rostova",
-            "assigned_tasks_count": 3,
-            "assigned_hours": 72.0,
+            "assigned_tasks_count": 1,
+            "assigned_hours": 24.0,
             "capacity_hours": 200.0,
-            "utilization_pct": 36.0,
+            "utilization_pct": 12.0,
             "status": "underutilized"
           },
           "5": {
             "candidate_id": 5,
             "name": "Sarah Jenkins",
-            "assigned_tasks_count": 0,
-            "assigned_hours": 0,
+            "assigned_tasks_count": 2,
+            "assigned_hours": 48.0,
             "capacity_hours": 200.0,
-            "utilization_pct": 0.0,
+            "utilization_pct": 24.0,
             "status": "underutilized"
           },
           "6": {
@@ -1003,6 +1003,21 @@
         }
       },
       "reassigned_tasks": [
+        {
+          "task_id": 1,
+          "title": "System Threat Model & Architecture Spec",
+          "required_skill": "CyberSecurity",
+          "priority": "high",
+          "from_candidate_id": 4,
+          "from_candidate_name": "Elena Rostova",
+          "to_candidate_id": 5,
+          "to_candidate_name": "Sarah Jenkins",
+          "orig_start_day": 0.0,
+          "orig_end_day": 3.0,
+          "new_start_day": 0.0,
+          "new_end_day": 3.0,
+          "is_new_task": false
+        },
         {
           "task_id": 2,
           "title": "PostgreSQL Ledger Schema & Partitioning",
@@ -1032,14 +1047,41 @@
           "new_start_day": 7.0,
           "new_end_day": 12.0,
           "is_new_task": false
+        },
+        {
+          "task_id": 8,
+          "title": "PCI-DSS Security Audit & Verification",
+          "required_skill": "CyberSecurity",
+          "priority": "critical",
+          "from_candidate_id": 4,
+          "from_candidate_name": "Elena Rostova",
+          "to_candidate_id": 5,
+          "to_candidate_name": "Sarah Jenkins",
+          "orig_start_day": 15.0,
+          "orig_end_day": 18.0,
+          "new_start_day": 19.0,
+          "new_end_day": 22.0,
+          "is_new_task": false
         }
       ],
-      "reassigned_count": 2,
+      "reassigned_count": 4,
       "explanations": [
         {
           "category": "DISRUPTION_MITIGATION",
           "title": "Workforce Outage Containment (Priya Sharma)",
-          "text": "Identified 2 orphaned task(s) previously assigned to Priya Sharma. Deterministic Constraint Heuristic Optimizer searched active team members with matching skill competencies and capacity to prevent delivery stall."
+          "text": "Identified 4 orphaned task(s) previously assigned to Priya Sharma. Google OR-Tools CP-SAT searched active team members with matching skill competencies and capacity to prevent delivery stall."
+        },
+        {
+          "category": "TASK_REALLOCATION",
+          "task_id": 1,
+          "title": "Reassignment of 'System Threat Model & Architecture Spec' -> Sarah Jenkins",
+          "text": "Reassigned to Sarah Jenkins (holds level 5 in CyberSecurity, post-assignment utilization: 24.0%). Scheduled Day 0.0 - Day 3.0 preserving prerequisite dependencies.",
+          "evidence": {
+            "skill": "CyberSecurity",
+            "candidate_level": 5,
+            "post_utilization_pct": 24.0,
+            "new_timeline": "Day 0.0 - 3.0"
+          }
         },
         {
           "category": "TASK_REALLOCATION",
@@ -1064,6 +1106,18 @@
             "post_utilization_pct": 52.0,
             "new_timeline": "Day 7.0 - 12.0"
           }
+        },
+        {
+          "category": "TASK_REALLOCATION",
+          "task_id": 8,
+          "title": "Reassignment of 'PCI-DSS Security Audit & Verification' -> Sarah Jenkins",
+          "text": "Reassigned to Sarah Jenkins (holds level 5 in CyberSecurity, post-assignment utilization: 24.0%). Scheduled Day 19.0 - Day 22.0 preserving prerequisite dependencies.",
+          "evidence": {
+            "skill": "CyberSecurity",
+            "candidate_level": 5,
+            "post_utilization_pct": 24.0,
+            "new_timeline": "Day 19.0 - 22.0"
+          }
         }
       ],
       "risks": [
@@ -1071,7 +1125,7 @@
       ],
       "status": "approved",
       "id": 1,
-      "created_at": "2026-10-09T07:22:04.819916"
+      "created_at": "2026-10-09T13:57:52.756813"
     }
   },
   "decision_history": {
@@ -1094,13 +1148,13 @@
       "proposal_id": 1,
       "event_title": "Autonomous Rebalancing Plan Approved (member_unavailable)",
       "action_taken": "APPROVED",
-      "summary": "Plan applied with 2 task reallocations. Solver Objective Score: 84.8/100.",
-      "affected_tasks_count": 2,
+      "summary": "Plan applied with 4 task reallocations. Solver Objective Score: 78.8/100.",
+      "affected_tasks_count": 4,
       "details": {
-        "solver_engine": "Deterministic Constraint Heuristic Optimizer"
+        "solver_engine": "Google OR-Tools CP-SAT"
       },
       "id": 2,
-      "timestamp": "2026-10-09 07:22:04"
+      "timestamp": "2026-10-09 13:57:52"
     }
   }
 }

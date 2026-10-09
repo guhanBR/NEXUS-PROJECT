@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 
     # CORS Allowed Origins
     FRONTEND_URL: str = "http://localhost:5173"
+    CORS_ORIGINS: str = "*"
 
     class Config:
         env_file = ".env"

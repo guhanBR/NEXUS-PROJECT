@@ -54,12 +54,25 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS Middleware restricted to configured origins
-allowed_origins = [settings.FRONTEND_URL, "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:8000", "http://127.0.0.1:8000"]
+# CORS Middleware setup - supports Vercel, Render, local dev, and custom env origins
+origins_env = os.getenv("CORS_ORIGINS", os.getenv("FRONTEND_URL", "*"))
+explicit_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "https://nexus-project-nu-nine.vercel.app",
+    "https://nexus-project-y2eb.onrender.com",
+]
+if origins_env and origins_env != "*":
+    explicit_origins.extend([o.strip() for o in origins_env.split(",") if o.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=["*"] if (origins_env == "*" or getattr(settings, "CORS_ORIGINS", "*") == "*") else list(set(explicit_origins)),
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.onrender\.com|http://localhost:\d+|http://127\.0\.0\.1:\d+",
+    allow_credentials=False if (origins_env == "*" or getattr(settings, "CORS_ORIGINS", "*") == "*") else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
