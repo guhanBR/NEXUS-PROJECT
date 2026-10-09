@@ -96,17 +96,17 @@ export function AppLayout() {
   ];
 
   return (
-    <div className="workspace-canvas min-h-screen p-3 sm:p-6 lg:p-8 flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
+    <div className="workspace-canvas min-h-screen w-full p-2 sm:p-4 lg:p-5 flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
       
       {/* Top Right Ambient Label */}
-      <div className="hidden lg:flex justify-end max-w-7xl mx-auto w-full pb-3 px-3">
+      <div className="hidden lg:flex justify-end w-full pb-2 px-2">
         <span className="text-xs font-bold text-slate-500 tracking-wide">
           Project Workspace
         </span>
       </div>
 
-      {/* Master Floating Frame Container (White Rounded-3xl Shell) */}
-      <div className="dashboard-frame flex-1 flex flex-col lg:flex-row overflow-hidden shadow-2xl relative max-w-7xl mx-auto w-full">
+      {/* Master Floating Frame Container (Fit Full Screen) */}
+      <div className="dashboard-frame flex-1 flex flex-col lg:flex-row overflow-hidden shadow-2xl relative w-full min-h-[calc(100vh-3.5rem)]">
         
         {/* Mobile Header Bar */}
         <div className="lg:hidden bg-white px-5 py-4 flex items-center justify-between border-b border-slate-100">
@@ -357,7 +357,7 @@ export function AppLayout() {
       </div>
 
       {/* Bottom Left Ambient Label */}
-      <div className="hidden lg:flex justify-start max-w-7xl mx-auto w-full pt-3 px-3">
+      <div className="hidden lg:flex justify-start w-full pt-2 px-2">
         <span className="text-xs font-bold text-slate-500 tracking-wide">
           RebalanceX Platform
         </span>

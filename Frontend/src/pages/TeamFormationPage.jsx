@@ -197,15 +197,15 @@ export function TeamFormationPage() {
               </thead>
               <tbody className="divide-y divide-[#EBF0EC] bg-white">
                 {teamMembers.map((m) => (
-                  <tr key={m.candidate_id} className="hover:bg-[#F7FAF8]">
+                  <tr key={m.candidate_id || m.id} className="hover:bg-[#F7FAF8]">
                     <td className="px-6 py-4 font-semibold text-slate-900">
                       {m.name}
                     </td>
-                    <td className="px-6 py-4 text-slate-700 text-xs">
-                      {m.role_title}
+                    <td className="px-6 py-4 text-slate-700 text-xs font-medium">
+                      {m.role_title || m.role || 'Software Engineer'}
                     </td>
-                    <td className="px-6 py-4 text-slate-600 font-tabular text-xs">
-                      {m.experience_years} years
+                    <td className="px-6 py-4 text-slate-600 font-tabular text-xs font-medium">
+                      {m.experience_years ? `${m.experience_years} yrs` : (m.experience ? `${m.experience} yrs` : '4+ yrs')}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1.5">
@@ -216,7 +216,7 @@ export function TeamFormationPage() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-tabular text-slate-700 text-xs">
+                    <td className="px-6 py-4 font-tabular text-slate-700 text-xs font-semibold">
                       {m.weekly_capacity_hours || 40} hrs/wk
                     </td>
                   </tr>
