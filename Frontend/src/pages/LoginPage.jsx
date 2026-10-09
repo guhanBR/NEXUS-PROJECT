@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { AlertCircle, Lock, Mail, ArrowRight, Compass } from 'lucide-react';
+import { AlertCircle, Lock, Mail, ArrowRight, Zap, Shield, Users, Briefcase } from 'lucide-react';
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -15,12 +15,24 @@ export function LoginPage() {
 
   const from = location.state?.from?.pathname || '/projects';
 
+  const executeLogin = async (targetEmail, targetPass) => {
+    setErrorMessage('');
+    setIsSubmitting(true);
+    try {
+      await login(targetEmail, targetPass);
+      navigate(from === '/login' ? '/projects' : from, { replace: true });
+    } catch (err) {
+      setErrorMessage(err.message || 'Authentication failed. Please check your credentials.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
 
     if (!email.trim()) {
-      setErrorMessage('Please enter your work email address.');
+      setErrorMessage('Please enter your work email address or use Fast Login below.');
       return;
     }
 
@@ -34,15 +46,13 @@ export function LoginPage() {
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      await login(email, password);
-      navigate(from === '/login' ? '/projects' : from, { replace: true });
-    } catch (err) {
-      setErrorMessage(err.message || 'Authentication failed. Please check your credentials.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    await executeLogin(email, password);
+  };
+
+  const handleFastLogin = async (fastEmail, fastPass) => {
+    setEmail(fastEmail);
+    setPassword(fastPass);
+    await executeLogin(fastEmail, fastPass);
   };
 
   return (
@@ -70,7 +80,7 @@ export function LoginPage() {
 
       {/* Main Form Center */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md my-auto z-10 py-6">
-        <div className="bg-white/95 backdrop-blur-md py-8 px-6 sm:px-8 rounded-3xl border border-white/40 shadow-2xl space-y-6">
+        <div className="bg-white/95 backdrop-blur-md py-8 px-6 sm:px-8 rounded-3xl border border-white/40 shadow-2xl space-y-5">
           <div className="text-center space-y-1.5">
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#202724]/10 text-[#202724] border border-[#202724]/15">
               Secure Access
@@ -110,7 +120,7 @@ export function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@company.com"
+                  placeholder="admin@rebalancex.io"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-slate-800 transition"
                 />
               </div>
@@ -141,7 +151,7 @@ export function LoginPage() {
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -155,10 +165,50 @@ export function LoginPage() {
             </div>
           </form>
 
-          <div className="pt-2 border-t border-slate-100 text-center">
-            <p className="text-[11px] text-slate-500">
-              Role permissions and project allocations are verified at sign in.
-            </p>
+          {/*  Small, Neat & Clean Fast Login Below Sign-in Button */}
+          <div className="pt-4 border-t border-slate-200/70 space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-semibold text-slate-600 flex items-center gap-1">
+                <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
+                 Login
+              </span>
+              <span className="text-[10px] text-slate-400">Select role</span>
+            </div>
+
+            <div className="grid grid-cols-3 gap-1.5">
+              <button
+                type="button"
+                onClick={() => handleFastLogin('admin@rebalancex.io', 'admin123')}
+                disabled={isSubmitting}
+                className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
+                title="Sign in as Admin (Sarah Chen)"
+              >
+                <Shield className="w-3 h-3 text-amber-500" />
+                <span>Admin</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFastLogin('manager@rebalancex.io', 'manager123')}
+                disabled={isSubmitting}
+                className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
+                title="Sign in as Project Manager (Elena Rostova)"
+              >
+                <Briefcase className="w-3 h-3 text-blue-500" />
+                <span>Manager</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFastLogin('member@rebalancex.io', 'member123')}
+                disabled={isSubmitting}
+                className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
+                title="Sign in as Team Member"
+              >
+                <Users className="w-3 h-3 text-emerald-500" />
+                <span>Member</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -170,4 +220,6 @@ export function LoginPage() {
     </div>
   );
 }
+
+
 
