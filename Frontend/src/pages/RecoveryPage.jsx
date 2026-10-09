@@ -39,16 +39,32 @@ export function RecoveryPage() {
     setIsSimulating(true);
 
     try {
+      let backendType = 'member_unavailable';
+      let params = {};
+
+      if (scenarioType === 'developer_outage') {
+        backendType = 'member_unavailable';
+        if (unavailableCandidateId) {
+          params = { candidate_id: parseInt(unavailableCandidateId) };
+        }
+      } else if (scenarioType === 'deadline_compression') {
+        backendType = 'deadline_shortened';
+        params = { new_deadline_days: parseInt(compressedDeadlineDays) };
+      } else if (scenarioType === 'scope_expansion') {
+        backendType = 'urgent_task_added';
+        params = {
+          urgent_task: {
+            title: 'Critical Scope Addition Task',
+            required_skill: 'Python',
+            min_skill_level: 2,
+            estimated_hours: 24,
+          },
+        };
+      }
+
       const payload = {
-        disruption_scenario: scenarioType,
-        unavailable_candidate_ids:
-          scenarioType === 'developer_outage' && unavailableCandidateId
-            ? [parseInt(unavailableCandidateId)]
-            : [],
-        compressed_deadline_days:
-          scenarioType === 'deadline_compression'
-            ? parseInt(compressedDeadlineDays)
-            : undefined,
+        type: backendType,
+        params,
       };
 
       const result = await api.simulateWhatIf(activeProjectId, payload);
@@ -66,10 +82,7 @@ export function RecoveryPage() {
     setIsSubmittingApproval(true);
 
     try {
-      await api.approvePlan(activeProjectId, {
-        proposal_id: activeProposal.proposal_id,
-        comment: 'Approved by project delivery lead',
-      });
+      await api.approvePlan(activeProjectId, activeProposal.proposal_id);
 
       await queryClient.invalidateQueries(['project', activeProjectId]);
       setActiveProposal(null);

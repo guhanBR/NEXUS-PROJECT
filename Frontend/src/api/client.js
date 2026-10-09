@@ -54,8 +54,25 @@ export const api = {
 
   // Crisis Simulator & Rebalancing (PS#18)
   simulateCrisis: (projectId, data) => request(`/api/projects/${projectId}/scenarios`, { method: 'POST', body: JSON.stringify(data) }),
+  simulateWhatIf: (projectId, data) => {
+    const payload = data.type ? data : {
+      type: data.disruption_scenario === 'developer_outage' ? 'member_unavailable' :
+            data.disruption_scenario === 'deadline_compression' ? 'deadline_shortened' :
+            data.disruption_scenario === 'scope_expansion' ? 'urgent_task_added' :
+            data.disruption_scenario || 'member_unavailable',
+      params: data.params || {
+        candidate_id: data.unavailable_candidate_ids?.[0] ? Number(data.unavailable_candidate_ids[0]) : undefined,
+        new_deadline_days: data.compressed_deadline_days ? Number(data.compressed_deadline_days) : undefined,
+      }
+    };
+    return request(`/api/projects/${projectId}/scenarios`, { method: 'POST', body: JSON.stringify(payload) });
+  },
   getProposal: (id) => request(`/api/proposals/${id}`),
   approveProposal: (id) => request(`/api/proposals/${id}/approve`, { method: 'POST' }),
+  approvePlan: (projectId, data) => {
+    const proposalId = typeof data === 'object' ? data.proposal_id : data;
+    return request(`/api/proposals/${proposalId}/approve`, { method: 'POST' });
+  },
   rejectProposal: (id) => request(`/api/proposals/${id}/reject`, { method: 'POST' }),
 
   // Decision Audit History
