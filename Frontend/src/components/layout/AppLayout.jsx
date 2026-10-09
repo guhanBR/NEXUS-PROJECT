@@ -96,17 +96,8 @@ export function AppLayout() {
   ];
 
   return (
-    <div className="workspace-canvas min-h-screen w-full p-2 sm:p-4 lg:p-5 flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
-      
-      {/* Top Right Ambient Label */}
-      <div className="hidden lg:flex justify-end w-full pb-2 px-2">
-        <span className="text-xs font-bold text-slate-500 tracking-wide">
-          Project Workspace
-        </span>
-      </div>
-
-      {/* Master Floating Frame Container (Fit Full Screen) */}
-      <div className="dashboard-frame flex-1 flex flex-col lg:flex-row overflow-hidden shadow-2xl relative w-full min-h-[calc(100vh-3.5rem)]">
+    <div className="min-h-screen w-full bg-white flex flex-col font-sans text-slate-900 selection:bg-slate-900 selection:text-white relative">
+      <div className="flex-1 flex flex-col lg:flex-row min-h-screen w-full">
         
         {/* Mobile Header Bar */}
         <div className="lg:hidden bg-white px-5 py-4 flex items-center justify-between border-b border-slate-100">
@@ -124,7 +115,7 @@ export function AppLayout() {
 
         {/* LEFT SIDEBAR - Clean, Intuitive Navigation */}
         <aside
-          className={`fixed lg:static top-0 left-0 h-full lg:h-auto w-64 bg-[#F8FAF9] border-r border-[#EAEFEA] flex flex-col justify-between p-4 sm:p-5 z-40 transition-transform duration-300 ease-in-out shrink-0 ${
+          className={`fixed lg:static top-0 left-0 h-full lg:min-h-screen w-64 bg-[#F8FAF9] border-r border-[#EAEFEA] flex flex-col justify-between p-4 sm:p-5 z-40 transition-transform duration-300 ease-in-out shrink-0 ${
             isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'
           }`}
         >
@@ -354,13 +345,6 @@ export function AppLayout() {
             <Outlet />
           </div>
         </main>
-      </div>
-
-      {/* Bottom Left Ambient Label */}
-      <div className="hidden lg:flex justify-start w-full pt-2 px-2">
-        <span className="text-xs font-bold text-slate-500 tracking-wide">
-          RebalanceX Platform
-        </span>
       </div>
 
       {/* Floating Project-Aware Assistant Chatbot */}
