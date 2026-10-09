@@ -54,25 +54,11 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS Middleware setup - supports Vercel, Render, local dev, and custom env origins
-origins_env = os.getenv("CORS_ORIGINS", os.getenv("FRONTEND_URL", "*"))
-explicit_origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://localhost:3000",
-    "https://nexus-project-nu-nine.vercel.app",
-    "https://nexus-project-y2eb.onrender.com",
-]
-if origins_env and origins_env != "*":
-    explicit_origins.extend([o.strip() for o in origins_env.split(",") if o.strip()])
-
+# CORS Middleware - allows all origins (Vercel, Render, local dev, mobile)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if (origins_env == "*" or getattr(settings, "CORS_ORIGINS", "*") == "*") else list(set(explicit_origins)),
-    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.onrender\.com|http://localhost:\d+|http://127\.0\.0\.1:\d+",
-    allow_credentials=False if (origins_env == "*" or getattr(settings, "CORS_ORIGINS", "*") == "*") else True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -99,8 +85,9 @@ if os.path.exists(FRONTEND_DIST):
 
     @app.get("/{full_path:path}")
     def serve_frontend_spa(full_path: str):
-        if full_path.startswith("api") or full_path.startswith("health") or full_path.startswith("docs") or full_path.startswith("redoc") or full_path.startswith("openapi.json"):
-            return None
+        clean_path = full_path.lstrip("/")
+        if clean_path.startswith("api") or clean_path.startswith("health") or clean_path.startswith("docs") or clean_path.startswith("redoc") or clean_path.startswith("openapi.json"):
+            raise HTTPException(status_code=404, detail="API route not found")
         file_path = os.path.join(FRONTEND_DIST, full_path)
         if os.path.exists(file_path) and os.path.isfile(file_path):
             return FileResponse(file_path)
