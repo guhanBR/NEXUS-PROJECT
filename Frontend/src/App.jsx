@@ -9,6 +9,8 @@ import { ProjectsPage } from './pages/ProjectsPage';
 import { OverviewPage } from './pages/OverviewPage';
 import { TeamFormationPage } from './pages/TeamFormationPage';
 import { TaskPlanningPage } from './pages/TaskPlanningPage';
+import { AdminTaskPlanningPage } from './pages/AdminTaskPlanningPage';
+import { MemberMyTasksPage } from './pages/MemberMyTasksPage';
 import { RecoveryPage } from './pages/RecoveryPage';
 import { DecisionHistoryPage } from './pages/DecisionHistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -46,10 +48,15 @@ export function App() {
             {/* Projects Directory */}
             <Route path="/projects" element={<ProjectsPage />} />
 
-            {/* Project Details 5 Tabs */}
+            {/* Project Details Tabs */}
             <Route path="/overview" element={<OverviewPage />} />
             <Route path="/team-formation" element={<TeamFormationPage />} />
+            
+            {/* Distinct Task Planning & Personal Tasks Routes */}
             <Route path="/task-planning" element={<TaskPlanningPage />} />
+            <Route path="/admin/task-planning" element={<AdminTaskPlanningPage />} />
+            <Route path="/member/my-tasks" element={<MemberMyTasksPage />} />
+
             <Route path="/recovery" element={<RecoveryPage />} />
             <Route path="/crisis-simulator" element={<RecoveryPage />} />
             <Route path="/rebalance-diff" element={<RecoveryPage />} />

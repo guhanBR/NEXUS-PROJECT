@@ -171,13 +171,16 @@ export function AddTaskModal({ onClose }) {
 
           <div>
             <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
-              Prerequisite Dependencies (Comma-separated IDs, e.g. 1, 2)
+              Depends on (Prerequisite Task IDs)
             </label>
             <input
               {...register('dependencies')}
-              placeholder="None or e.g. 1, 3"
-              className="input font-mono"
+              placeholder="e.g. 1, 2 (or leave empty if first task)"
+              className="input font-mono text-xs"
             />
+            <p className="text-[11px] text-slate-500 mt-1">
+              This task can start after the selected tasks finish.
+            </p>
           </div>
 
           <div className="pt-4 border-t border-[#E2EAE5] flex justify-end gap-2.5">

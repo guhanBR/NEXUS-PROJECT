@@ -27,6 +27,7 @@ import {
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';
 import { NewProjectModal } from '../modals/NewProjectModal';
+import { RebalanceXAssistant } from '../assistant/RebalanceXAssistant';
 
 export function AppLayout() {
   const {
@@ -63,11 +64,13 @@ export function AppLayout() {
     projects.find((p) => p.id === activeProjectId)?.name ||
     (projects.length > 0 ? projects[0].name : 'Loading workspace...');
 
-  // Primary 2x2 Squircle Navigation Tiles
+  // Primary 2x2 Squircle Navigation Tiles adapted to role
   const mainTiles = [
     { to: '/overview', label: 'Home', sublabel: 'Dashboard', icon: LayoutDashboard },
     { to: '/team-formation', label: 'Roster', sublabel: 'Team Pool', icon: Users },
-    { to: '/task-planning', label: 'Analytics', sublabel: 'CPM Schedule', icon: CalendarDays },
+    role === 'member'
+      ? { to: '/member/my-tasks', label: 'My Tasks', sublabel: 'Personal Work', icon: CheckSquare }
+      : { to: '/admin/task-planning', label: 'Planning', sublabel: 'CPM Schedule', icon: CalendarDays },
     { to: '/recovery', label: 'Recovery', sublabel: 'Simulations', icon: Sparkles },
   ];
 
@@ -319,21 +322,33 @@ export function AppLayout() {
 
             {/* Right Action Pill Controls */}
             <div className="flex items-center gap-2.5 flex-wrap">
-              <button
-                onClick={() => navigate('/recovery')}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold shadow-2xs transition hover:scale-[1.02]"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-500" />
-                <span>Simulate Outage</span>
-              </button>
+              {role !== 'member' ? (
+                <>
+                  <button
+                    onClick={() => navigate('/recovery')}
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold shadow-2xs transition hover:scale-[1.02]"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Simulate Outage</span>
+                  </button>
 
-              <button
-                onClick={() => navigate('/task-planning')}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition hover:scale-[1.02]"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>Compute CPM</span>
-              </button>
+                  <button
+                    onClick={() => navigate('/admin/task-planning')}
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition hover:scale-[1.02]"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Compute CPM</span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => navigate('/member/my-tasks')}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition hover:scale-[1.02]"
+                >
+                  <CheckSquare className="w-3.5 h-3.5 text-amber-300" />
+                  <span>My Deliverables</span>
+                </button>
+              )}
 
               <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 shadow-2xs relative">
                 <Bell className="w-4 h-4" />
@@ -352,6 +367,9 @@ export function AppLayout() {
           </div>
         </main>
       </div>
+
+      {/* Floating Project-Aware Assistant Chatbot */}
+      <RebalanceXAssistant />
 
       {isNewProjectOpen && <NewProjectModal onClose={() => setIsNewProjectOpen(false)} />}
     </div>
