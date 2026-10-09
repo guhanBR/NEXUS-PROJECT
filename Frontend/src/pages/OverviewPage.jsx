@@ -29,47 +29,47 @@ export function OverviewPage() {
     setStarred((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  // 4 Core Crypto / Project Assets (Exact Match to Reference Table)
+  // 4 Core Indian Crypto / Project Deliverables & Tokens
   const cryptoAssets = [
     {
-      id: 'band',
-      name: 'Band Protocol',
-      symbol: 'BAND',
-      price: '$2.42',
-      change: '+13.38%',
-      marketCap: '$399.8M',
-      iconBg: 'bg-black',
-      iconText: 'B',
+      id: 'matic',
+      name: 'Polygon Network',
+      symbol: 'MATIC',
+      price: '₹ 62.40',
+      change: '+14.28%',
+      marketCap: '₹ 5,890 Cr',
+      iconBg: 'bg-[#7B3FE4]',
+      iconText: '⬡',
     },
     {
-      id: 'vet',
-      name: 'VeChain',
-      symbol: 'VET',
-      price: '$7.48',
+      id: 'tdm',
+      name: 'Tata Digital Matrix',
+      symbol: 'TDM',
+      price: '₹ 748.50',
       change: '+11.19%',
-      marketCap: '$152.5M',
-      iconBg: 'bg-[#1D2129]',
-      iconText: 'V',
+      marketCap: '₹ 14,250 Cr',
+      iconBg: 'bg-[#00529B]',
+      iconText: 'T',
     },
     {
-      id: 'aave',
-      name: 'Aave',
-      symbol: 'AAVE',
-      price: '$0.0184',
-      change: '+7.57%',
-      marketCap: '$1.2B',
-      iconBg: 'bg-[#2B313E]',
-      iconText: 'A',
+      id: 'wrx',
+      name: 'WazirX Token',
+      symbol: 'WRX',
+      price: '₹ 18.40',
+      change: '+8.75%',
+      marketCap: '₹ 1,120 Cr',
+      iconBg: 'bg-[#2358F5]',
+      iconText: 'W',
     },
     {
-      id: 'waves',
-      name: 'Waves',
-      symbol: 'WAVES',
-      price: '$30.68',
+      id: 'csk',
+      name: 'CoinSwitch Kuber',
+      symbol: 'CSK',
+      price: '₹ 306.80',
       change: '+6.80%',
-      marketCap: '$399.8M',
-      iconBg: 'bg-[#191D26]',
-      iconText: '◆',
+      marketCap: '₹ 3,990 Cr',
+      iconBg: 'bg-[#00D09C]',
+      iconText: '₹',
     },
   ];
 
@@ -90,7 +90,7 @@ export function OverviewPage() {
           <button
             type="button"
             className="w-10 h-10 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-600 transition shadow-2xs"
-            title="Search"
+            title="Search projects & assets"
           >
             <Search className="w-4 h-4" />
           </button>
@@ -109,11 +109,11 @@ export function OverviewPage() {
           <div className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-full bg-slate-50 border border-slate-200/80 hover:bg-slate-100 transition cursor-pointer shadow-2xs">
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80"
-              alt="Zoia M."
+              alt="Priya Patel"
               className="w-8 h-8 rounded-full object-cover border border-white shadow-2xs"
             />
             <span className="text-xs font-bold text-slate-900">
-              {user?.name || 'Zoia M.'}
+              {user?.name || 'Aarav Sharma'}
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </div>
@@ -136,10 +136,10 @@ export function OverviewPage() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-2xl sm:text-[28px] font-black text-slate-900 tracking-tight">
-                  $ 17 643.41
+                  ₹ 14,85,640.50
                 </div>
                 <span className="text-xs font-semibold text-slate-500 mt-0.5 block">
-                  Portfolio balance
+                  Total Project Treasury & Assets (INR)
                 </span>
               </div>
               <button className="text-slate-400 hover:text-slate-700 p-1">
@@ -149,10 +149,10 @@ export function OverviewPage() {
 
             {/* Sparkline Wave Chart with Floating Target Tooltip */}
             <div className="relative my-4 h-28 flex items-center justify-center">
-              {/* Floating Pinpoint Tooltip ($27 483.00) */}
+              {/* Floating Pinpoint Tooltip (₹ 24,50,000.00) */}
               <div className="absolute left-[62%] top-0 -translate-x-1/2 flex flex-col items-center z-10">
                 <div className="px-3 py-1 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-lg">
-                  $27 483.00
+                  ₹ 24,50,000.00
                 </div>
                 <div className="w-[1px] h-10 border-l border-dashed border-slate-400 my-0.5" />
                 <div className="w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-white shadow-xs -mt-1" />
@@ -209,7 +209,7 @@ export function OverviewPage() {
         <div className="lg:col-span-7 flex flex-col">
           <div className="flex items-center justify-between mb-3 px-1">
             <h2 className="text-lg font-black text-slate-900 tracking-tight">
-              Your Assets
+              Indian Web3 & Project Assets
             </h2>
             <button className="p-1 rounded-lg text-slate-400 hover:text-slate-700">
               <ArrowLeftRight className="w-4 h-4" />
@@ -218,15 +218,15 @@ export function OverviewPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
             
-            {/* Asset 1: 1.25 BTC (Pastel Lavender) */}
+            {/* Asset 1: 4,500 MATIC (Pastel Lavender) */}
             <div className="bg-[#F0EAF8] rounded-[30px] p-5 flex flex-col justify-between border border-[#E4D9F2] shadow-xs">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-base font-black text-slate-900">
-                    1.25 BTC
+                    4,500 MATIC
                   </div>
                   <span className="text-xs font-semibold text-slate-500">
-                    $ 2948.04
+                    ₹ 2,80,800.00
                   </span>
                 </div>
                 <button className="text-slate-400 hover:text-slate-700">
@@ -235,24 +235,24 @@ export function OverviewPage() {
               </div>
 
               <div className="flex items-center justify-between mt-8">
-                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center font-black text-slate-900 shadow-2xs text-sm">
-                  ₿
+                <div className="w-9 h-9 rounded-full bg-[#7B3FE4] text-white flex items-center justify-center font-black shadow-2xs text-xs">
+                  ⬡
                 </div>
                 <span className="text-xs font-bold text-purple-700">
-                  + 0.14%
+                  + 4.14%
                 </span>
               </div>
             </div>
 
-            {/* Asset 2: 0.32 LTC (Pastel Mint Green) */}
+            {/* Asset 2: 0.45 BTC (Pastel Mint Green) */}
             <div className="bg-[#E7F6EC] rounded-[30px] p-5 flex flex-col justify-between border border-[#D5EFE0] shadow-xs">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-base font-black text-slate-900">
-                    0.32 LTC
+                    0.45 BTC
                   </div>
                   <span className="text-xs font-semibold text-slate-500">
-                    $ 2948.04
+                    ₹ 26,48,500.00
                   </span>
                 </div>
                 <button className="text-slate-400 hover:text-slate-700">
@@ -262,23 +262,23 @@ export function OverviewPage() {
 
               <div className="flex items-center justify-between mt-8">
                 <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center font-black text-slate-900 shadow-2xs text-sm font-serif">
-                  Ł
+                  ₿
                 </div>
                 <span className="text-xs font-bold text-emerald-700">
-                  + 0.31%
+                  + 1.31%
                 </span>
               </div>
             </div>
 
-            {/* Asset 3: 1.25 ETH (Pastel Butter Yellow) */}
+            {/* Asset 3: 3.50 ETH (Pastel Butter Yellow) */}
             <div className="bg-[#FAF4DD] rounded-[30px] p-5 flex flex-col justify-between border border-[#EFE5C6] shadow-xs">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-base font-black text-slate-900">
-                    1.25 ETH
+                    3.50 ETH
                   </div>
                   <span className="text-xs font-semibold text-slate-500">
-                    $ 2948.04
+                    ₹ 8,14,200.00
                   </span>
                 </div>
                 <button className="text-slate-400 hover:text-slate-700">
@@ -291,7 +291,7 @@ export function OverviewPage() {
                   ◆
                 </div>
                 <span className="text-xs font-bold text-amber-700">
-                  + 0.27%
+                  + 2.27%
                 </span>
               </div>
             </div>
@@ -308,7 +308,7 @@ export function OverviewPage() {
         <div className="lg:col-span-7 flex flex-col">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 px-1">
             <h3 className="text-lg font-black text-slate-900 tracking-tight">
-              Market is down 0.80%
+              Indian Market is up 1.45% Today
             </h3>
 
             {/* Filter Dropdowns */}
@@ -328,9 +328,9 @@ export function OverviewPage() {
             <table className="w-full text-left text-xs">
               <thead className="text-[11px] font-bold text-slate-400 border-b border-slate-100 pb-2">
                 <tr>
-                  <th className="pb-3 font-semibold">Name</th>
-                  <th className="pb-3 font-semibold">Price</th>
-                  <th className="pb-3 font-semibold">Change</th>
+                  <th className="pb-3 font-semibold">Asset / Project</th>
+                  <th className="pb-3 font-semibold">Price (INR)</th>
+                  <th className="pb-3 font-semibold">24h Gain</th>
                   <th className="pb-3 font-semibold">Market Cap</th>
                   <th className="pb-3 font-semibold text-center">Watch</th>
                 </tr>
@@ -386,7 +386,7 @@ export function OverviewPage() {
           </div>
         </div>
 
-        {/* RIGHT: Dark Promo Card ("Earn free crypto with Coinview Earn!") */}
+        {/* RIGHT: Dark Promo Card ("Earn tokens with Ryzen Matrix India!") */}
         <div className="lg:col-span-5 flex flex-col justify-end">
           <div className="bg-[#191A1E] text-white rounded-[32px] p-7 sm:p-8 relative overflow-hidden shadow-2xl flex flex-col justify-between min-h-[220px]">
             
@@ -395,12 +395,12 @@ export function OverviewPage() {
               <h4 className="text-xl sm:text-2xl font-black text-white leading-tight">
                 Earn{' '}
                 <span className="border border-white/60 px-2 py-0.5 rounded-lg text-sm font-bold inline-block mx-0.5">
-                  free
+                  ₹ free
                 </span>{' '}
-                crypto with Coinview Earn!
+                tokens with Ryzen Matrix Earn!
               </h4>
               <p className="text-xs text-slate-400 font-medium leading-relaxed">
-                Learn about different cryptocurrencies and earn them for free!
+                Learn about Indian Web3 innovations, Digital Rupee (e₹), and complete sprint milestones to earn rewards!
               </p>
             </div>
 
@@ -410,7 +410,7 @@ export function OverviewPage() {
                 onClick={() => navigate('/recovery')}
                 className="px-6 py-2.5 rounded-full bg-[#D8ECFD] hover:bg-[#C2E3FC] text-slate-950 text-xs font-extrabold shadow-lg transition-transform active:scale-95"
               >
-                Earn Now
+                Start Earning (INR)
               </button>
             </div>
 

@@ -186,7 +186,7 @@ export function LoginPage() {
                 onClick={() => handleFastLogin('admin@rebalancex.io', 'admin123')}
                 disabled={isSubmitting}
                 className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
-                title="Sign in as Admin (Sarah Chen)"
+                title="Sign in as Admin (Aarav Sharma - Bengaluru)"
               >
                 <Shield className="w-3 h-3 text-amber-500" />
                 <span>Admin</span>
@@ -197,7 +197,7 @@ export function LoginPage() {
                 onClick={() => handleFastLogin('manager@rebalancex.io', 'manager123')}
                 disabled={isSubmitting}
                 className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
-                title="Sign in as Project Manager (Elena Rostova)"
+                title="Sign in as Delivery Manager (Priya Patel - Mumbai)"
               >
                 <Briefcase className="w-3 h-3 text-blue-500" />
                 <span>Manager</span>
@@ -208,7 +208,7 @@ export function LoginPage() {
                 onClick={() => handleFastLogin('member@rebalancex.io', 'member123')}
                 disabled={isSubmitting}
                 className="py-1.5 px-2 bg-slate-50 hover:bg-[#202724] text-slate-700 hover:text-white rounded-lg text-xs font-medium border border-slate-200 hover:border-[#202724] transition-all flex items-center justify-center gap-1"
-                title="Sign in as Team Member"
+                title="Sign in as Senior Engineer (Rohan Verma - Hyderabad)"
               >
                 <Users className="w-3 h-3 text-emerald-500" />
                 <span>Member</span>

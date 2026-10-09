@@ -47,11 +47,11 @@ export function AuthProvider({ children }) {
       if (cleanEmail === 'admin@rebalancex.io' || cleanEmail === 'admin@rebalancex.com' || cleanEmail.startsWith('admin')) {
         authenticatedUser = {
           id: 999,
-          name: 'Sarah Chen',
+          name: 'Aarav Sharma',
           email: cleanEmail,
           role: 'admin',
-          role_title: 'System Administrator',
-          department: 'Engineering Operations',
+          role_title: 'Chief Technical Director',
+          department: 'Engineering Operations (Bengaluru)',
           avatar_color: '#0B57D0',
         };
       } else if (
@@ -61,11 +61,11 @@ export function AuthProvider({ children }) {
       ) {
         authenticatedUser = {
           id: 888,
-          name: 'Elena Rostova',
+          name: 'Priya Patel',
           email: cleanEmail,
           role: 'manager',
-          role_title: 'Lead Project Manager',
-          department: 'Product Delivery',
+          role_title: 'Lead Delivery Manager',
+          department: 'Product Delivery (Mumbai)',
           avatar_color: '#006A60',
         };
       } else {
@@ -89,10 +89,10 @@ export function AuthProvider({ children }) {
           // Standard member fallback with valid email
           authenticatedUser = {
             id: members[0]?.id || 1,
-            name: cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+            name: 'Rohan Verma',
             email: cleanEmail,
             role: 'member',
-            role_title: 'Team Member',
+            role_title: 'Senior Systems Engineer (Hyderabad)',
             skills: { Python: 3, React: 3 },
             weekly_capacity_hours: 40,
             avatar_color: '#0B57D0',

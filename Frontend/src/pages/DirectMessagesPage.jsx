@@ -40,10 +40,10 @@ export function DirectMessagesPage() {
       // Members can chat with Delivery Lead/Admin and Teammates
       contactList.push({
         id: 'lead-1',
-        name: activeProject?.manager_name || 'Sarah Chen (Delivery Lead)',
+        name: activeProject?.manager_name || 'Priya Patel (Delivery Lead)',
         role: 'manager',
         roleTitle: 'Project Manager',
-        status: 'Active in Workspace',
+        status: 'Active in Workspace (Mumbai)',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80',
       });
       team.filter((m) => m.name !== user?.name).forEach((m) => {
@@ -60,10 +60,10 @@ export function DirectMessagesPage() {
       // Managers can chat with Admin and all project members
       contactList.push({
         id: 'admin-1',
-        name: 'Alex Rivera (System Administrator)',
+        name: 'Aarav Sharma (Chief Architect)',
         role: 'admin',
         roleTitle: 'Workspace Admin',
-        status: 'Governance Scope',
+        status: 'Governance Scope (Bengaluru)',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&auto=format&fit=crop&q=80',
       });
       team.forEach((m) => {
@@ -80,10 +80,10 @@ export function DirectMessagesPage() {
       // Admin can chat with Managers and all Specialists
       contactList.push({
         id: 'manager-1',
-        name: activeProject?.manager_name || 'Sarah Chen (Delivery Manager)',
+        name: activeProject?.manager_name || 'Priya Patel (Delivery Manager)',
         role: 'manager',
         roleTitle: 'Project Manager',
-        status: 'Lead Oversight',
+        status: 'Lead Oversight (Mumbai)',
         avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80',
       });
       team.forEach((m) => {

@@ -22,35 +22,35 @@ export function OvertimeManagementPage() {
   const [requests, setRequests] = useState([
     {
       id: 'ot-101',
-      recipientName: 'Alex Morgan',
+      recipientName: 'Rohan Verma',
       recipientId: 'cand-1',
-      projectTitle: activeProject?.name || 'FinTech Quantum Core Alpha',
+      projectTitle: activeProject?.name || 'Tata FinTech Quantum Core Alpha',
       taskTitle: 'PostgreSQL Connection Pooling & Stress Benchmark',
       requestedHours: 6,
       proposedDate: 'Saturday, 16 July 2026',
-      reason: 'Accelerate zero-slack critical path deliverable before security audit',
+      reason: 'Accelerate zero-slack critical path deliverable before RBI & NPCI compliance audit',
       status: 'pending', // 'pending' | 'accepted' | 'declined'
-      issuedBy: 'Sarah Chen (Delivery Lead)',
+      issuedBy: 'Priya Patel (Delivery Lead)',
       issuedAt: '14 July 2026',
     },
     {
       id: 'ot-102',
       recipientName: 'Priya Sharma',
       recipientId: 'cand-2',
-      projectTitle: activeProject?.name || 'FinTech Quantum Core Alpha',
+      projectTitle: activeProject?.name || 'Tata FinTech Quantum Core Alpha',
       taskTitle: 'CyberSecurity Role-Based RBAC Enforcement',
       requestedHours: 4,
       proposedDate: 'Sunday, 17 July 2026',
-      reason: 'OAuth2 token rotation verification',
+      reason: 'OAuth2 token rotation verification for UPI Gateway',
       status: 'accepted',
-      issuedBy: 'Alex Rivera (Admin)',
+      issuedBy: 'Aarav Sharma (Admin)',
       issuedAt: '13 July 2026',
     },
   ]);
 
   // Form state for Admin to issue a new request
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formRecipient, setFormRecipient] = useState(members[0]?.name || 'Alex Morgan');
+  const [formRecipient, setFormRecipient] = useState(members[0]?.name || 'Rohan Verma');
   const [formTask, setFormTask] = useState(activeProject?.tasks?.[0]?.title || 'Core Deliverable');
   const [formHours, setFormHours] = useState(4);
   const [formDate, setFormDate] = useState('2026-07-18');

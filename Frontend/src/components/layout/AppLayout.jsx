@@ -228,13 +228,13 @@ export function AppLayout() {
             {/* Desktop Profile Tooltip */}
             <div className="hidden lg:group-hover:flex absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-3.5 py-2 rounded-xl bg-slate-950/95 backdrop-blur-md text-white text-xs font-semibold whitespace-nowrap shadow-2xl border border-white/15 z-50 pointer-events-none flex-col gap-0.5 animate-in fade-in zoom-in-95 duration-150">
               <div className="font-bold text-slate-100 flex items-center gap-1.5">
-                <span>{user?.name || 'Zoia M.'}</span>
+                <span>{user?.name || 'Aarav Sharma'}</span>
                 <span className="px-1.5 py-0.5 rounded-md bg-amber-400/20 text-amber-300 text-[9px] uppercase font-black border border-amber-400/30">
                   {roleLabel}
                 </span>
               </div>
               <span className="text-[10px] text-slate-400 font-normal">
-                {user?.email || 'zoia@ryzenmatrix.ai'}
+                {user?.email || 'aarav.sharma@ryzenmatrix.ai'}
               </span>
               <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-950 border-l border-b border-white/15 rotate-45" />
             </div>

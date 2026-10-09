@@ -64,23 +64,23 @@ export function ProjectRoomsPage() {
     general: [
       {
         id: 'r-1',
-        senderName: activeProject?.manager_name || 'Sarah Chen',
+        senderName: activeProject?.manager_name || 'Priya Patel',
         senderRole: 'manager',
         text: `Welcome all specialists to the "${activeProject?.name || 'Project'}" general channel. Please review your CPM deliverables and report blockers early.`,
         timestamp: '09:30 AM',
       },
       {
         id: 'r-2',
-        senderName: 'Alex Morgan',
+        senderName: 'Rohan Verma',
         senderRole: 'member',
-        text: 'Reviewing the initial dependency graph. All baseline packages are linked.',
+        text: 'Reviewing the initial dependency graph. All UPI & DB baseline packages are linked.',
         timestamp: '09:45 AM',
       },
     ],
     frontend: [
       {
         id: 'r-f-1',
-        senderName: 'Marcus Vance',
+        senderName: 'Ananya Iyer',
         senderRole: 'member',
         text: 'Design tokens and dark/light contrast standards are synced with the UI skill guidelines.',
         timestamp: '10:00 AM',
@@ -89,18 +89,18 @@ export function ProjectRoomsPage() {
     backend: [
       {
         id: 'r-b-1',
-        senderName: 'Elena Rostova',
+        senderName: 'Vikram Malhotra',
         senderRole: 'member',
-        text: 'Topological sort CPM calculations verified for zero-slack milestones.',
+        text: 'Topological sort CPM calculations verified for zero-slack milestones on Tata Quantum stack.',
         timestamp: '10:10 AM',
       },
     ],
     blockers: [
       {
         id: 'r-bl-1',
-        senderName: 'Priya Sharma',
+        senderName: 'Sneha Reddy',
         senderRole: 'member',
-        text: 'No active blockers currently logged. Baseline schedule is green.',
+        text: 'No active blockers currently logged. Baseline schedule is green for RBI compliance.',
         timestamp: '09:00 AM',
       },
     ],
