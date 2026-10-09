@@ -36,6 +36,7 @@ import {
   CheckSquare,
   UploadCloud,
   DownloadCloud,
+  Clock,
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';

@@ -1,24 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Sparkles,
-  MessageSquare,
-  X,
-  Send,
+  ArrowLeft,
+  ArrowUp,
+  Mic,
+  MicOff,
   Trash2,
-  ChevronRight,
-  ExternalLink,
-  ShieldCheck,
-  AlertTriangle,
-  Users,
-  Calendar,
-  Layers,
-  HelpCircle,
-  Clock,
+  Sparkles,
   ArrowRight,
-  Zap,
-  Minimize2,
-  Maximize2,
+  Battery,
+  Wifi,
+  Signal,
+  X,
+  Volume2,
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';
@@ -26,7 +20,6 @@ import { useAuth } from '../../context/AuthContext';
 export function RebalanceXAssistant() {
   const {
     activeProject,
-    activeProjectId,
     projects,
     members,
     activeProposal,
@@ -39,8 +32,23 @@ export function RebalanceXAssistant() {
   const [messages, setMessages] = useState([]);
   const [inputQuery, setInputQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [currentTime, setCurrentTime] = useState('19:02');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Live clock for mobile status bar (matches screenshot format 19:02)
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 30000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Auto-scroll to bottom of conversation
   useEffect(() => {
@@ -54,43 +62,36 @@ export function RebalanceXAssistant() {
     }
   }, [isOpen]);
 
-  // Initial welcome message when chat is opened
-  useEffect(() => {
-    if (messages.length === 0 && activeProject) {
-      const welcome = generateWelcomeMessage(role, user, activeProject);
-      setMessages([welcome]);
-    }
-  }, [activeProject, role, user]);
-
-  // Role-specific suggested prompt questions
-  const suggestedQuestions = getSuggestedQuestions(role, user, activeProject);
+  // Suggestion prompt chips (includes Botpaddy style chips + project intelligence)
+  const suggestionChips = [
+    'Who is overloaded?',
+    'What\'s on critical path?',
+    'Simulate developer outage',
+    'What are my assigned tasks?',
+    'Show project deadlines',
+    'Help me balance workload',
+  ];
 
   const handleClearChat = () => {
-    if (activeProject) {
-      const welcome = generateWelcomeMessage(role, user, activeProject);
-      setMessages([welcome]);
-    } else {
-      setMessages([]);
-    }
+    setMessages([]);
   };
 
   const handleSend = async (queryText = inputQuery) => {
     const text = (queryText || '').trim();
     if (!text || isTyping) return;
 
-    // Add user message
     const userMsg = {
       id: Date.now(),
       sender: 'user',
       text,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: currentTime,
     };
 
     setMessages((prev) => [...prev, userMsg]);
     setInputQuery('');
     setIsTyping(true);
 
-    // Simulate intelligent analytical reasoning latency
+    // Realistic analytical latency with grounded telemetry computation
     setTimeout(() => {
       const assistantResponse = processProjectQuery(text, {
         activeProject,
@@ -99,7 +100,7 @@ export function RebalanceXAssistant() {
         activeProposal,
         user,
         role,
-        navigate,
+        currentTime,
       });
 
       setMessages((prev) => [...prev, assistantResponse]);
@@ -107,247 +108,286 @@ export function RebalanceXAssistant() {
     }, 450);
   };
 
+  const toggleSpeechRecognition = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('Speech recognition is not supported in this browser.');
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInputQuery(transcript);
+      handleSend(transcript);
+    };
+
+    if (!isListening) {
+      recognition.start();
+    }
+  };
+
   return (
     <>
-      {/* Floating Chat Trigger Button (Bottom Right) */}
+      {/* Floating Trigger Button (Bottom Right) with Glowing Botpaddy Mini-Orb */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-2xl hover:shadow-slate-900/40 border border-white/20 transition-all duration-300 hover:scale-105 group"
-          aria-label="Open RebalanceX Assistant"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-3 px-4 py-3 rounded-full bg-white text-slate-900 shadow-2xl hover:shadow-orange-500/20 border border-slate-200 transition-all duration-300 hover:scale-105 group"
+          aria-label="Open Soye Botpaddy Assistant"
         >
-          <div className="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-xs shadow-[0_0_10px_#F59E0B] group-hover:rotate-12 transition-transform">
-            <Sparkles className="w-3.5 h-3.5" />
+          {/* Glowing Orange Halo Avatar */}
+          <div className="relative flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full bg-[#FF5E2B] shadow-[0_0_12px_#FF5E2B] flex items-center justify-center p-1 group-hover:scale-110 transition-transform">
+              <div className="w-3.5 h-3.5 rounded-full bg-white" />
+            </div>
           </div>
-          <span className="text-xs font-bold tracking-wide">Ask Assistant</span>
-          {activeProject && (
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]" />
-          )}
+          <div className="text-left pr-1">
+            <span className="text-xs font-bold text-slate-900 block leading-tight">Soye Botpaddy</span>
+            <span className="text-[10px] text-slate-500 font-medium">RebalanceX AI</span>
+          </div>
         </button>
       )}
 
-      {/* Floating Assistant Modal / Drawer Panel */}
+      {/* Floating Botpaddy Modal / Mobile Card UI (Exact 1:1 Match to Reference) */}
       {isOpen && (
-        <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[420px] h-[580px] max-h-[85vh] bg-white rounded-3xl border border-slate-200 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-200">
+        <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[410px] h-[640px] max-h-[90vh] bg-white rounded-[36px] border border-slate-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.2)] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200 font-sans">
           
-          {/* Header Bar */}
-          <div className="px-5 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-white/10 shrink-0">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-sm shadow-md shrink-0">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-bold tracking-tight text-white truncate">
-                    RebalanceX Assistant
-                  </span>
-                  <span className="px-1.5 py-0.2 rounded bg-white/20 text-[9px] font-bold text-amber-300 uppercase tracking-wider">
-                    {role || 'lead'}
-                  </span>
-                </div>
-                <div className="text-[10px] text-white/70 truncate flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_4px_#10B981]" />
-                  <span className="truncate">
-                    Scope: <strong className="text-white font-medium">{activeProject?.name || 'Authorized Portfolio'}</strong>
-                  </span>
-                </div>
-              </div>
-            </div>
+          {/* Mobile Top Status Header (19:02, LTE, Battery, Back Button) */}
+          <div className="px-6 pt-5 pb-3 flex items-center justify-between text-slate-900 shrink-0 select-none">
+            {/* Back Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 -ml-2 rounded-full text-slate-800 hover:text-slate-950 hover:bg-slate-100 transition"
+              title="Close Botpaddy"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-5 h-5 stroke-[2.4]" />
+            </button>
 
-            <div className="flex items-center gap-1 shrink-0">
-              <button
-                onClick={handleClearChat}
-                title="Clear conversation"
-                className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                title="Close chat"
-                className="p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition"
-              >
-                <X className="w-4 h-4" />
-              </button>
+            {/* Time */}
+            <span className="text-xs font-bold tracking-tight text-slate-900 font-mono">
+              {currentTime}
+            </span>
+
+            {/* Status Icons: LTE & Battery */}
+            <div className="flex items-center gap-1.5 text-slate-900">
+              <span className="text-[10px] font-extrabold tracking-wider">LTE</span>
+              <div className="w-5 h-2.5 border border-slate-900 rounded-[3px] p-[1px] flex items-center">
+                <div className="w-full h-full bg-slate-900 rounded-[1px]" />
+              </div>
             </div>
           </div>
 
-          {/* Messages Stream */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#F8FAF9]/80 text-xs">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex flex-col ${
-                  msg.sender === 'user' ? 'items-end' : 'items-start'
-                }`}
-              >
-                <div
-                  className={`max-w-[90%] rounded-2xl p-3.5 space-y-2 leading-relaxed shadow-2xs ${
-                    msg.sender === 'user'
-                      ? 'bg-slate-900 text-white rounded-br-xs'
-                      : 'bg-white text-slate-800 border border-[#E2E8E4] rounded-bl-xs'
-                  }`}
-                >
-                  {/* Message Content */}
-                  <div className="space-y-2">
-                    {msg.text && (
-                      <p className="whitespace-pre-wrap font-medium">{msg.text}</p>
-                    )}
-
-                    {/* Optional Grounded Data Table */}
-                    {msg.table && (
-                      <div className="overflow-x-auto my-2 rounded-xl border border-slate-200">
-                        <table className="w-full text-left text-[11px]">
-                          <thead className="bg-slate-100 font-bold text-slate-700 uppercase tracking-wider">
-                            <tr>
-                              {msg.table.headers.map((h, i) => (
-                                <th key={i} className="px-2.5 py-1.5">{h}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100 bg-white">
-                            {msg.table.rows.map((row, i) => (
-                              <tr key={i} className="hover:bg-slate-50">
-                                {row.map((cell, j) => (
-                                  <td key={j} className="px-2.5 py-1.5">{cell}</td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-
-                    {/* Optional Source / Action Links */}
-                    {msg.links && msg.links.length > 0 && (
-                      <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1.5">
-                        {msg.links.map((link, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => {
-                              navigate(link.to);
-                              setIsOpen(false);
-                            }}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 text-[11px] font-bold transition"
-                          >
-                            <span>{link.label}</span>
-                            <ArrowRight className="w-3 h-3 text-slate-500" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
+          {/* Body Area: Welcome State or Active Message Stream */}
+          <div className="flex-1 overflow-y-auto px-5 py-2 flex flex-col justify-between">
+            {messages.length === 0 ? (
+              /* Center Hero Empty State (Exact 1:1 Match to Image) */
+              <div className="my-auto flex flex-col items-center justify-center text-center py-8">
+                {/* Glowing Pulsating Orange Halo Ring Orb */}
+                <div className="relative mb-8 flex items-center justify-center">
+                  {/* Diffuse Outer Glow */}
+                  <div className="w-24 h-24 rounded-full bg-[#FF5E2B]/30 blur-xl absolute -inset-2 botpaddy-glow-orb" />
+                  
+                  {/* Thick Orange Ring with White Center */}
+                  <div className="relative w-24 h-24 rounded-full bg-gradient-to-tr from-[#FF5E2B] via-[#FF6E38] to-[#FF4B12] p-[14px] shadow-[0_0_30px_rgba(255,94,43,0.5)] botpaddy-glow-orb">
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-inner" />
                   </div>
                 </div>
 
-                <span className="text-[9px] text-slate-400 mt-1 px-1 font-mono">
-                  {msg.timestamp}
-                </span>
+                {/* Friendly Botpaddy Greeting */}
+                <h2 className="text-xl sm:text-[22px] font-bold text-[#1A1F26] tracking-tight">
+                  Hi I'm Soye, Ur Botpaddy
+                </h2>
+                <p className="text-xs text-slate-500 font-medium mt-1 max-w-[260px]">
+                  Your autonomous project copilot. Ask me about tasks, schedules, or workload.
+                </p>
               </div>
-            ))}
+            ) : (
+              /* Active Conversational Message Stream */
+              <div className="space-y-3.5 py-2">
+                {/* Top mini badge in conversational mode */}
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100 text-[10px] text-slate-400">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#FF5E2B]" />
+                    <span className="font-bold text-slate-700">Soye Active</span>
+                  </div>
+                  <button
+                    onClick={handleClearChat}
+                    className="flex items-center gap-1 text-slate-400 hover:text-red-500 transition"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    <span>Reset</span>
+                  </button>
+                </div>
 
-            {/* Typing Indicator */}
-            {isTyping && (
-              <div className="flex items-center gap-1.5 p-3 bg-white rounded-2xl border border-slate-200 text-slate-400 text-xs w-fit">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-spin" />
-                <span className="font-semibold text-slate-600">Analyzing live project telemetry...</span>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex flex-col ${
+                      msg.sender === 'user' ? 'items-end' : 'items-start'
+                    }`}
+                  >
+                    {msg.sender === 'assistant' ? (
+                      <div className="flex gap-2.5 max-w-[92%]">
+                        {/* Mini Glowing Orb Avatar */}
+                        <div className="w-6 h-6 rounded-full bg-[#FF5E2B] p-1 shadow-[0_0_8px_#FF5E2B] shrink-0 mt-1">
+                          <div className="w-full h-full rounded-full bg-white" />
+                        </div>
+
+                        {/* Assistant Response Bubble */}
+                        <div className="bg-[#F8FAF9] text-slate-800 border border-slate-200/80 rounded-2xl rounded-tl-xs p-3.5 space-y-2.5 shadow-2xs text-xs leading-relaxed">
+                          {msg.text && (
+                            <p className="whitespace-pre-wrap font-medium text-slate-800">
+                              {msg.text}
+                            </p>
+                          )}
+
+                          {/* Data Table if applicable */}
+                          {msg.table && (
+                            <div className="overflow-x-auto my-1.5 rounded-xl border border-slate-200">
+                              <table className="w-full text-left text-[10px]">
+                                <thead className="bg-slate-100 font-bold text-slate-700 uppercase tracking-wider">
+                                  <tr>
+                                    {msg.table.headers.map((h, i) => (
+                                      <th key={i} className="px-2 py-1">{h}</th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 bg-white">
+                                  {msg.table.rows.map((row, i) => (
+                                    <tr key={i} className="hover:bg-slate-50">
+                                      {row.map((cell, j) => (
+                                        <td key={j} className="px-2 py-1 font-medium">{cell}</td>
+                                      ))}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+
+                          {/* Action Navigation Links */}
+                          {msg.links && msg.links.length > 0 && (
+                            <div className="pt-2 border-t border-slate-200/60 flex flex-wrap gap-1.5">
+                              {msg.links.map((link, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    navigate(link.to);
+                                    setIsOpen(false);
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white hover:bg-slate-100 text-slate-900 border border-slate-200 text-[10px] font-bold transition shadow-2xs"
+                                >
+                                  <span>{link.label}</span>
+                                  <ArrowRight className="w-3 h-3 text-[#FF5E2B]" />
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      /* User Message Bubble */
+                      <div className="max-w-[85%] bg-[#1A1F26] text-white rounded-2xl rounded-br-xs px-4 py-2.5 text-xs font-medium leading-relaxed shadow-sm">
+                        {msg.text}
+                      </div>
+                    )}
+
+                    <span className="text-[9px] text-slate-400 mt-1 px-1 font-mono">
+                      {msg.timestamp}
+                    </span>
+                  </div>
+                ))}
+
+                {/* Typing Indicator */}
+                {isTyping && (
+                  <div className="flex items-center gap-2 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 text-slate-500 text-xs w-fit">
+                    <div className="w-4 h-4 rounded-full bg-[#FF5E2B] p-[3px] animate-pulse">
+                      <div className="w-full h-full rounded-full bg-white" />
+                    </div>
+                    <span className="font-semibold text-slate-600">Soye is thinking...</span>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
-          {/* Suggested Prompts Section */}
-          <div className="px-3.5 py-2 bg-white border-t border-slate-100 overflow-x-auto flex gap-1.5 shrink-0 no-scrollbar">
-            {suggestedQuestions.map((q, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSend(q)}
-                className="whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-semibold transition shrink-0 border border-slate-200/80"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
+          {/* Bottom Actions Section: Suggestion Chips + Input Bar */}
+          <div className="p-4 pt-1 bg-white space-y-3 shrink-0">
+            {/* Horizontal Scrollable Suggestion Chips (Matches Reference) */}
+            <div className="overflow-x-auto flex gap-2 pb-1 no-scrollbar select-none">
+              {suggestionChips.map((chip, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSend(chip)}
+                  className="whitespace-nowrap px-4 py-2 rounded-full bg-[#F2F4F7] hover:bg-[#E5E7EB] active:scale-95 text-slate-700 text-xs font-semibold transition-all border border-slate-200/60 shrink-0"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
 
-          {/* Input & Send Form */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend();
-            }}
-            className="p-3 bg-white border-t border-slate-200 flex items-center gap-2 shrink-0"
-          >
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputQuery}
-              onChange={(e) => setInputQuery(e.target.value)}
-              placeholder={`Ask about ${activeProject?.name ? `"${activeProject.name}"` : 'projects, tasks, team...'}`}
-              className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/20 focus:border-slate-400"
-            />
-            <button
-              type="submit"
-              disabled={!inputQuery.trim() || isTyping}
-              className="p-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-xs"
+            {/* Pill-Shaped Input Bar (Matches Reference: Rounded pill, Mic Icon, Coral Send Circle) */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend();
+              }}
+              className="bg-[#F2F4F7] border border-slate-200/90 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-inner-xs"
             >
-              <Send className="w-4 h-4" />
-            </button>
-          </form>
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputQuery}
+                onChange={(e) => setInputQuery(e.target.value)}
+                placeholder="Ask about your project, tasks, or team..."
+                className="flex-1 bg-transparent text-xs sm:text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none py-1.5"
+              />
+
+              {/* Speech-to-text Microphone Button */}
+              <button
+                type="button"
+                onClick={toggleSpeechRecognition}
+                className={`p-1.5 rounded-full transition ${
+                  isListening
+                    ? 'text-red-500 bg-red-100 animate-pulse'
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
+                title={isListening ? 'Listening...' : 'Voice Input'}
+              >
+                {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+              </button>
+
+              {/* Orange Circular Send Button with Upward Arrow */}
+              <button
+                type="submit"
+                disabled={!inputQuery.trim() || isTyping}
+                className="w-8 h-8 rounded-full bg-[#FF5E2B] hover:bg-[#E64B17] active:scale-95 text-white flex items-center justify-center shadow-md shadow-orange-500/20 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
+                title="Send Message"
+              >
+                <ArrowUp className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </>
   );
 }
 
-// Helper 1: Welcome message factory
-function generateWelcomeMessage(role, user, project) {
-  const name = user?.name?.split(' ')[0] || 'there';
-  const roleTitle = role === 'admin' ? 'Administrator' : role === 'manager' ? 'Delivery Lead' : 'Team Specialist';
-
-  return {
-    id: 'welcome-1',
-    sender: 'assistant',
-    text: `Hello ${name}! I am your project-aware RebalanceX Assistant. I have live read-only access to **${project?.name || 'your workspaces'}**.\n\nAsk me about critical path deliverables, deadlines, team capacity, pending recovery proposals, or milestone progress.`,
-    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    links: [
-      { label: 'View Dashboard', to: '/overview' },
-      { label: 'WBS & Schedule', to: '/task-planning' },
-    ],
-  };
-}
-
-// Helper 2: Suggested questions based on authenticated role
-function getSuggestedQuestions(role, user, project) {
-  if (role === 'admin') {
-    return [
-      'Show the projects I can oversee',
-      'Which projects have deadline risks?',
-      'Who manages each workspace?',
-    ];
-  }
-
-  if (role === 'member') {
-    return [
-      'What are my assigned tasks?',
-      'What is due next on my schedule?',
-      'Who is on my confirmed team?',
-    ];
-  }
-
-  // Default: Manager / Lead
-  return [
-    'What needs attention in this project?',
-    'Which tasks are on the critical path?',
-    'Who has available workload capacity?',
-    'Explain the latest recovery proposal',
-  ];
-}
-
-// Helper 3: Intelligent grounded response synthesis engine
+// Intelligent grounded response synthesis engine
 function processProjectQuery(query, ctx) {
   const q = query.toLowerCase();
-  const { activeProject, projects, members, activeProposal, user, role } = ctx;
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const { activeProject, projects, members, activeProposal, user, role, currentTime } = ctx;
 
   const tasks = activeProject?.tasks || [];
   const sm = activeProject?.schedule_metrics || {};
@@ -365,7 +405,7 @@ function processProjectQuery(query, ctx) {
         id: Date.now(),
         sender: 'assistant',
         text: `The CPM scheduler has calculated a **${duration}-day baseline** for "${activeProject?.name}". All tasks currently have adequate buffer slack.`,
-        timestamp: time,
+        timestamp: currentTime,
         links: [{ label: 'View Gantt Schedule', to: '/task-planning' }],
       };
     }
@@ -373,7 +413,7 @@ function processProjectQuery(query, ctx) {
     return {
       id: Date.now(),
       sender: 'assistant',
-      text: `There are **${critTasks.length} deliverables on the Critical Path** (0-day slack). Any delay on these tasks will push the project completion beyond ${duration} days:`,
+      text: `There are **${critTasks.length} deliverables on the Critical Path** (0-day slack). Any delay will push project completion beyond ${duration} days:`,
       table: {
         headers: ['ID', 'Deliverable', 'Duration', 'Assignee'],
         rows: critTasks.map((t) => {
@@ -381,13 +421,13 @@ function processProjectQuery(query, ctx) {
           return [
             `#${t.id}`,
             t.title,
-            `Day ${t.start_day || 0} → ${t.end_day || 0} (${t.estimated_hours}h)`,
+            `Day ${t.start_day || 0} → ${t.end_day || 0}`,
             owner?.name || 'Unassigned',
           ];
         }),
       },
       links: [{ label: 'Open Gantt Timeline', to: '/task-planning' }],
-      timestamp: time,
+      timestamp: currentTime,
     };
   }
 
@@ -401,8 +441,8 @@ function processProjectQuery(query, ctx) {
       return {
         id: Date.now(),
         sender: 'assistant',
-        text: `You currently have no direct deliverables assigned in "${activeProject?.name}". Check with your delivery lead or review open work.`,
-        timestamp: time,
+        text: `You currently have no direct deliverables assigned in "${activeProject?.name}". Review the tasks board to pick up open work.`,
+        timestamp: currentTime,
         links: [{ label: 'Review All Tasks', to: '/task-planning' }],
       };
     }
@@ -415,24 +455,24 @@ function processProjectQuery(query, ctx) {
         headers: ['Task', 'Effort', 'Scheduled Window', 'Status'],
         rows: myTasks.map((t) => [
           t.title,
-          `${t.estimated_hours} hrs`,
+          `${t.estimated_hours}h`,
           `Day ${t.start_day || 0} → ${t.end_day || 0}`,
           (t.status || 'todo').toUpperCase(),
         ]),
       },
       links: [{ label: 'Update Task Status', to: '/task-planning' }],
-      timestamp: time,
+      timestamp: currentTime,
     };
   }
 
-  // 3. Team / Capacity questions
-  if (q.includes('team') || q.includes('capacity') || q.includes('roster') || q.includes('who is on') || q.includes('engineer') || q.includes('members')) {
+  // 3. Team / Overloaded / Capacity questions
+  if (q.includes('overload') || q.includes('team') || q.includes('capacity') || q.includes('roster') || q.includes('who is on') || q.includes('engineer') || q.includes('members')) {
     if (teamMembers.length === 0) {
       return {
         id: Date.now(),
         sender: 'assistant',
-        text: `"${activeProject?.name}" does not have a confirmed team yet. Use the autonomous Smart Team Formation engine to generate an optimal squad.`,
-        timestamp: time,
+        text: `"${activeProject?.name}" does not have a confirmed team yet. Use Smart Team Formation to assemble an optimal squad.`,
+        timestamp: currentTime,
         links: [{ label: 'Form Team Roster', to: '/team-formation' }],
       };
     }
@@ -442,7 +482,7 @@ function processProjectQuery(query, ctx) {
       sender: 'assistant',
       text: `"${activeProject?.name}" has **${teamMembers.length} confirmed specialists** with a total capacity of ${teamMembers.reduce((acc, m) => acc + (m.weekly_capacity_hours || 40), 0)}h/week:`,
       table: {
-        headers: ['Specialist', 'Role Title', 'Weekly Capacity', 'Experience'],
+        headers: ['Specialist', 'Role Title', 'Capacity', 'Experience'],
         rows: teamMembers.map((m) => [
           m.name,
           m.role_title,
@@ -451,18 +491,18 @@ function processProjectQuery(query, ctx) {
         ]),
       },
       links: [{ label: 'Inspect Team Roster', to: '/team-formation' }],
-      timestamp: time,
+      timestamp: currentTime,
     };
   }
 
-  // 4. Recovery proposal / What-if questions
-  if (q.includes('recovery') || q.includes('proposal') || q.includes('outage') || q.includes('what-if') || q.includes('disruption')) {
+  // 4. Recovery proposal / Outage simulation questions
+  if (q.includes('recovery') || q.includes('outage') || q.includes('proposal') || q.includes('simulate') || q.includes('what-if') || q.includes('disruption')) {
     if (activeProposal) {
       const reassignments = activeProposal.reassigned_tasks || [];
       return {
         id: Date.now(),
         sender: 'assistant',
-        text: `There is an active **Recovery Plan Proposal** with predicted duration of **${activeProposal.estimated_duration_days || duration} days** (${Math.round((activeProposal.confidence_score || 0.98) * 100)}% solver confidence) and **${reassignments.length} automated task reallocations**:`,
+        text: `Active **Recovery Proposal** has an estimated duration of **${activeProposal.estimated_duration_days || duration} days** (${Math.round((activeProposal.confidence_score || 0.98) * 100)}% solver confidence) and **${reassignments.length} automated reallocations**:`,
         table: reassignments.length > 0 ? {
           headers: ['Task', 'Previous Owner', 'New Owner', 'Reason'],
           rows: reassignments.map((r) => [
@@ -473,21 +513,21 @@ function processProjectQuery(query, ctx) {
           ]),
         } : null,
         links: [{ label: 'Review & Approve Plan', to: '/recovery' }],
-        timestamp: time,
+        timestamp: currentTime,
       };
     }
 
     return {
       id: Date.now(),
       sender: 'assistant',
-      text: `There are currently no pending recovery proposals for "${activeProject?.name}". You can test developer absences or deadline acceleration safely in memory.`,
-      timestamp: time,
+      text: `No active disruption pending for "${activeProject?.name}". You can test developer absences or deadline acceleration in the sandbox.`,
+      timestamp: currentTime,
       links: [{ label: 'Simulate What-If Outage', to: '/recovery' }],
     };
   }
 
-  // 5. Portfolio / All Projects questions (Admin / Manager)
-  if (q.includes('project') || q.includes('portfolio') || q.includes('oversee') || q.includes('directory')) {
+  // 5. Portfolio / All Projects questions
+  if (q.includes('project') || q.includes('portfolio') || q.includes('deadline') || q.includes('directory')) {
     return {
       id: Date.now(),
       sender: 'assistant',
@@ -498,38 +538,23 @@ function processProjectQuery(query, ctx) {
           p.name,
           p.manager_name || 'Engineering Lead',
           `${p.deadline_days || 30} days`,
-          (p.schedule_metrics?.project_duration_days || 0) > (p.deadline_days || 30) ? 'Risk' : 'On Track',
+          (p.schedule_metrics?.project_duration_days || 0) > (p.deadline_days || 30) ? '⚠️ Risk' : '✅ On Track',
         ]),
       },
       links: [{ label: 'Open Project Directory', to: '/projects' }],
-      timestamp: time,
+      timestamp: currentTime,
     };
   }
 
-  // 6. Attention / General Project Status
-  if (q.includes('attention') || q.includes('status') || q.includes('health') || q.includes('summary') || q.includes('risk')) {
-    const isOver = duration > deadline;
-    return {
-      id: Date.now(),
-      sender: 'assistant',
-      text: `**Executive Briefing for "${activeProject?.name}":**\n\n- **Target Deadline:** ${deadline} Days\n- **Estimated Duration:** ${duration} Days (${isOver ? '⚠️ Over Deadline' : '✅ On Track'})\n- **Total Planned Effort:** ${tasks.reduce((a, t) => a + (t.estimated_hours || 0), 0)} Hours\n- **Confirmed Squad:** ${teamMembers.length} Specialists\n- **Zero-Slack Tasks:** ${critIds.size} Critical Path Deliverables`,
-      links: [
-        { label: 'View Overview Briefing', to: '/overview' },
-        { label: 'Check CPM Schedule', to: '/task-planning' },
-      ],
-      timestamp: time,
-    };
-  }
-
-  // 7. Fallback helpful guide
+  // 6. Default / Fallback guidance
   return {
     id: Date.now(),
     sender: 'assistant',
-    text: `I've analyzed "${activeProject?.name}". You can ask me specific questions such as:\n- *"Which tasks are on the critical path?"*\n- *"Who has available workload capacity?"*\n- *"What are my assigned deliverables?"*\n- *"Explain the latest recovery proposal"*`,
-    timestamp: time,
+    text: `I've analyzed "${activeProject?.name}". Ask me specific questions such as:\n• *"Who is overloaded?"*\n• *"What's on the critical path?"*\n• *"Simulate a developer outage"*\n• *"Show project deadlines"*`,
+    timestamp: currentTime,
     links: [
-      { label: 'View Dashboard', to: '/overview' },
-      { label: 'Inspect Team Roster', to: '/team-formation' },
+      { label: 'View Overview Briefing', to: '/overview' },
+      { label: 'Check CPM Schedule', to: '/task-planning' },
     ],
   };
 }

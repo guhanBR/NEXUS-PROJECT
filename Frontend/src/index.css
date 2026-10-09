@@ -58,6 +58,22 @@
   border-radius: 2rem;
 }
 
+/* Botpaddy AI Avatar Glowing Pulse */
+@keyframes botpaddy-glow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 35px 12px rgba(255, 94, 43, 0.40), 0 0 65px 22px rgba(255, 120, 60, 0.20);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 50px 18px rgba(255, 94, 43, 0.58), 0 0 85px 30px rgba(255, 120, 60, 0.30);
+  }
+}
+
+.botpaddy-glow-orb {
+  animation: botpaddy-glow 3.2s ease-in-out infinite;
+}
+
 /* Soft Neumorphic Glass Tile */
 .soft-panel {
   background: #FFFFFF;
