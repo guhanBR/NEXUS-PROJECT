@@ -7,6 +7,9 @@ import { Capacitor } from '@capacitor/core';
 
 const STORAGE_KEY_API_BASE = 'rebalancex_custom_api_base';
 
+export const DEFAULT_HOST_IP = '10.128.23.178';
+export const DEFAULT_PORT = '8000';
+
 export function isNativeApp() {
   try {
     return Capacitor.isNativePlatform();
@@ -28,10 +31,10 @@ export function getApiBaseUrl() {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/+$/, '');
 
-  // If running inside native Android WebView / Emulator and no URL provided
+  // If running inside native Android WebView / Physical Phone and no custom URL provided:
+  // Default to the host PC LAN IP so physical phones can reach the PC server directly
   if (isNativeApp()) {
-    // 10.0.2.2 is the default Android emulator loopback to host machine
-    return 'http://10.0.2.2:8000';
+    return `http://${DEFAULT_HOST_IP}:${DEFAULT_PORT}`;
   }
 
   // Standard web relative path (proxied by Vite in dev or served on same domain)
@@ -40,11 +43,49 @@ export function getApiBaseUrl() {
 
 export function setApiBaseUrl(url) {
   if (typeof window !== 'undefined') {
-    if (!url) {
+    if (!url || !url.trim()) {
       localStorage.removeItem(STORAGE_KEY_API_BASE);
     } else {
-      localStorage.setItem(STORAGE_KEY_API_BASE, url.trim().replace(/\/+$/, ''));
+      let formatted = url.trim().replace(/\/+$/, '');
+      if (!formatted.startsWith('http://') && !formatted.startsWith('https://')) {
+        formatted = `http://${formatted}`;
+      }
+      localStorage.setItem(STORAGE_KEY_API_BASE, formatted);
     }
+  }
+}
+
+export async function testConnection(customUrl) {
+  let target = (customUrl !== undefined ? customUrl : getApiBaseUrl()).trim().replace(/\/+$/, '');
+  if (target && !target.startsWith('http://') && !target.startsWith('https://')) {
+    target = `http://${target}`;
+  }
+
+  const testUrl = target ? `${target}/health` : '/health';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  try {
+    const res = await fetch(testUrl, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { success: true, url: target || window.location.origin, data };
+    }
+    return {
+      success: false,
+      url: target,
+      message: `Server returned HTTP ${res.status}: ${res.statusText}`,
+    };
+  } catch (err) {
+    clearTimeout(timeoutId);
+    let msg = err.name === 'AbortError' ? 'Connection timed out after 4 seconds' : (err.message || 'Unable to reach backend');
+    return { success: false, url: target, message: msg };
   }
 }
 
@@ -76,10 +117,10 @@ async function request(url, options = {}) {
 
     return await response.json();
   } catch (err) {
-    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+    if (err.name === 'TypeError' && (err.message.includes('fetch') || err.message.includes('NetworkError') || err.message.includes('Failed to fetch'))) {
       const hint = isNativeApp()
-        ? ` Cannot reach backend at ${fullUrl}. If using an emulator, ensure backend is running at http://127.0.0.1:8000 on your PC. If on a physical phone, set your PC's LAN IP in Settings.`
-        : '';
+        ? ` Cannot reach backend at ${fullUrl}. Ensure your PC backend is running on http://0.0.0.0:8000 and your phone is on the same Wi-Fi network.`
+        : ` Cannot reach backend at ${fullUrl}.`;
       throw new Error(`Network connection error.${hint}`);
     }
     throw err;
