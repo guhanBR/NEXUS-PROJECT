@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
-  Home,
-  CreditCard,
-  BarChart2,
-  ArrowLeftRight,
-  RefreshCw,
-  Receipt,
-  Snowflake,
-  Clock,
-  Key,
+  Compass,
+  Users,
+  CalendarDays,
+  Sliders,
+  CheckCircle2,
+  Sparkles,
+  ArrowRight,
   FolderKanban,
   Shield,
+  MessageSquare,
+  Hash,
+  Award,
+  Clock,
+  Settings,
   Search,
-  Sparkles,
   LogOut,
   Menu,
   X,
   PanelLeftClose,
   PanelLeft,
   Bell,
-  MessageSquare,
-  Upload,
   Layers,
+  Zap,
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
 import { useAuth } from '../../context/AuthContext';
@@ -43,229 +44,224 @@ export function AppLayout() {
     navigate('/login', { replace: true });
   };
 
-  // 2-Column Main Navigation Tiles (Matching Reference UI 1:1)
-  const navTiles = [
+  // Cohesive Navigation Items styled after the RebalanceX Workflow
+  const navItems = [
     {
+      step: '01',
       to: '/overview',
-      label: 'Home',
-      icon: Home,
+      label: 'Overview',
+      sublabel: 'Dashboard',
+      icon: Compass,
     },
     {
-      to: '/projects',
-      label: 'Cards',
-      sublabel: 'Projects',
-      icon: CreditCard,
-    },
-    {
+      step: '02',
       to: role === 'member' ? '/member/my-tasks' : '/team-formation',
-      label: 'Analytics',
+      label: role === 'member' ? 'My Tasks' : 'Build Team',
       sublabel: 'Workforce',
-      icon: BarChart2,
+      icon: Users,
     },
     {
+      step: '03',
       to: '/progress-monitor',
-      label: 'Transfars',
-      sublabel: 'Progress',
-      icon: ArrowLeftRight,
+      label: 'Plan Work',
+      sublabel: 'CPM Schedule',
+      icon: CalendarDays,
     },
     {
+      step: '04',
       to: '/recovery',
-      label: 'Swap Coins',
+      label: 'Test Changes',
       sublabel: 'Scenario Lab',
-      icon: RefreshCw,
+      icon: Sliders,
     },
     {
+      step: '05',
+      to: '/messages',
+      label: 'Messages',
+      sublabel: 'Direct Scope',
+      icon: MessageSquare,
+    },
+    {
+      step: '06',
+      to: '/project-rooms',
+      label: 'Project Rooms',
+      sublabel: 'Channels',
+      icon: Hash,
+    },
+    {
+      step: '07',
       to: '/performance-allocation',
-      label: 'Payments',
-      sublabel: 'Performance',
-      icon: Receipt,
-    },
-  ];
-
-  // Lower Utility Actions List (Matching Reference UI 1:1)
-  const utilityItems = [
-    {
-      to: '/recovery',
-      label: 'Freeze Card',
-      sublabel: 'Simulate Outage',
-      icon: Snowflake,
+      label: 'Performance',
+      sublabel: 'Allocation',
+      icon: Award,
     },
     {
+      step: '08',
       to: '/overtime-requests',
-      label: 'Set Spending Limit',
-      sublabel: 'Capacity Limits',
+      label: 'Overtime',
+      sublabel: 'Voluntary',
       icon: Clock,
     },
     {
-      to: '/task-planning',
-      label: 'View Card PIN',
-      sublabel: 'CPM Milestone Keys',
-      icon: Key,
-    },
-    {
-      to: '/project-rooms',
-      label: 'Manage Subscriptions',
-      sublabel: 'Project Rooms',
-      icon: FolderKanban,
-    },
-    {
+      step: '09',
       to: '/settings',
-      label: 'Security Settings',
-      sublabel: 'Governance & Audit',
-      icon: Shield,
+      label: 'Settings',
+      sublabel: 'Audit & Config',
+      icon: Settings,
     },
   ];
 
   const roleLabel = role === 'admin' ? 'Admin' : role === 'manager' ? 'Manager' : 'Member';
 
   return (
-    <div className="min-h-screen w-screen bg-[#ECEFEA] flex flex-col justify-between p-2 sm:p-4 lg:p-6 font-sans antialiased text-slate-900 selection:bg-slate-900 selection:text-white overflow-x-hidden relative">
+    <div className="h-screen w-screen landing-canvas flex flex-col p-2 sm:p-3 lg:p-4 font-sans antialiased text-white selection:bg-amber-400 selection:text-slate-950 overflow-hidden select-none">
       
-      {/* Top Right Outer Decorative Label (Matching Reference Screenshot) */}
-      <div className="hidden lg:flex justify-end max-w-[1520px] mx-auto w-full px-4 pt-1 pb-2">
-        <span className="text-xs font-semibold text-slate-500 tracking-tight">
-          Analytics Dashboard
-        </span>
-      </div>
-
-      {/* MASTER FLOATING APPLICATION SHELL (ZIXO / Juice Lab Master Frame) */}
-      <div className="max-w-[1520px] mx-auto w-full flex-1 bg-[#FDFEFE] rounded-[28px] sm:rounded-[36px] lg:rounded-[42px] border border-white/90 shadow-[0_25px_60px_-15px_rgba(26,38,32,0.12),0_0_0_1px_rgba(225,233,228,0.8)] flex flex-col lg:flex-row overflow-hidden min-h-[860px]">
-        
-        {/* MOBILE TOP BAR (Only on small viewports) */}
-        <div className="lg:hidden flex items-center justify-between px-5 py-3.5 bg-white border-b border-slate-100 shrink-0 z-40">
-          <div className="flex items-center gap-2.5">
-            <span className="font-extrabold text-xl tracking-tight text-slate-900">
-              2IXO
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-full">
-              Ryzen Matrix
-            </span>
+      {/* Top Outer Micro Bar */}
+      <header className="flex items-center justify-between px-3 py-1 shrink-0 z-10">
+        <NavLink to="/" className="flex items-center gap-2 group">
+          <div className="w-6 h-6 rounded-lg border border-white/30 bg-white/10 flex items-center justify-center backdrop-blur-md shadow-xs group-hover:border-white/50 transition">
+            <Compass className="w-3.5 h-3.5 text-amber-300" />
           </div>
+          <span className="font-bold text-sm tracking-tight text-white font-sans block leading-none">
+            RebalanceX
+          </span>
+          <span className="text-[9px] font-medium text-amber-200 uppercase tracking-wider hidden sm:inline-block ml-1">
+            &bull; Adaptive Intelligence
+          </span>
+        </NavLink>
+
+        <div className="flex items-center gap-4 text-xs font-semibold text-slate-100">
+          <span className="hidden md:inline-block text-slate-200">
+            {roleLabel} Console &bull; {user?.name || 'Aarav Sharma'}
+          </span>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
-            aria-label="Toggle Navigation"
+            className="lg:hidden p-1.5 rounded-xl bg-white/10 text-white hover:bg-white/20"
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
+      </header>
 
-        {/* LEFT COMPACT SIDEBAR */}
+      {/* MASTER FLOATING APPLICATION SHELL (Fits Screen 100% with Frosted Glass & Sage Atmosphere) */}
+      <div className="flex-1 w-full h-full min-h-0 bg-[#0F1C16]/50 backdrop-blur-2xl rounded-[24px] sm:rounded-[32px] border border-white/20 shadow-2xl flex flex-col lg:flex-row overflow-hidden">
+        
+        {/* LEFT SAGE/CHARCOAL SIDEBAR */}
         <aside
-          className={`fixed lg:static top-0 left-0 h-full w-[260px] sm:w-[280px] bg-white lg:bg-transparent border-r border-[#EEF2EF] flex flex-col justify-between p-5 lg:p-6 z-50 transition-all duration-300 shrink-0 select-none overflow-y-auto no-scrollbar ${
+          className={`fixed lg:static top-0 left-0 h-full w-[250px] sm:w-[270px] bg-[#0E1A14]/95 lg:bg-[#0F1C16]/60 backdrop-blur-2xl border-r border-white/15 flex flex-col justify-between p-3.5 sm:p-4 z-50 transition-all duration-300 shrink-0 select-none overflow-y-auto no-scrollbar ${
             isMobileMenuOpen
-              ? 'translate-x-0 shadow-2xl bg-white'
+              ? 'translate-x-0 shadow-2xl'
               : '-translate-x-full lg:translate-x-0'
-          } ${isSidebarCollapsed ? 'lg:w-[88px] lg:p-3.5' : ''}`}
+          } ${isSidebarCollapsed ? 'lg:w-[84px] lg:p-2.5' : ''}`}
         >
-          <div className="space-y-5">
-            {/* Top Brand & Collapse Toggle */}
-            <div className="flex items-center justify-between pt-1">
+          <div className="space-y-3.5">
+            {/* Top Brand Logo & Collapse Toggle */}
+            <div className="flex items-center justify-between pb-1 border-b border-white/10">
               <NavLink
                 to="/overview"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 group"
-                title="Ryzen Matrix / Zixo"
+                className="flex items-center gap-2.5 group"
+                title="RebalanceX Workspace"
               >
-                {!isSidebarCollapsed ? (
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-black text-2xl tracking-tighter text-slate-900 leading-none">
-                      2IXO
+                <div className="w-9 h-9 rounded-2xl border border-white/30 bg-white/15 flex items-center justify-center text-amber-300 shadow-sm group-hover:scale-105 transition-transform">
+                  <Compass className="w-5 h-5 stroke-[2]" />
+                </div>
+                {!isSidebarCollapsed && (
+                  <div>
+                    <span className="font-bold text-base tracking-tight text-white leading-none block">
+                      RebalanceX
                     </span>
-                  </div>
-                ) : (
-                  <div className="w-10 h-10 rounded-2xl bg-slate-950 text-white flex items-center justify-center font-black text-sm shadow-md">
-                    2I
+                    <span className="text-[9px] font-medium text-amber-200 tracking-wider uppercase block mt-0.5">
+                      Autonomous Engine
+                    </span>
                   </div>
                 )}
               </NavLink>
 
               <button
                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+                className="hidden lg:flex p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
                 title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
               >
                 {isSidebarCollapsed ? <PanelLeft className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* Search Pill Bar */}
+            {/* Search Bar */}
             {!isSidebarCollapsed && (
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-slate-300 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search deliverables..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-2xl bg-[#F6F8F7] border border-transparent hover:border-slate-200 focus:border-slate-300 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white transition"
+                  className="w-full pl-8.5 pr-2.5 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs font-medium text-white placeholder-slate-300 focus:outline-none focus:ring-1 focus:ring-amber-300/60 focus:bg-white/15 transition"
                 />
               </div>
             )}
 
-            {/* 2-Column Navigation Tiles (Matching Reference 1:1) */}
-            <div className={`grid gap-2.5 ${isSidebarCollapsed ? 'grid-cols-1' : 'grid-cols-2'}`}>
-              {navTiles.map((tile) => {
-                const Icon = tile.icon;
-                const isActive = location.pathname === tile.to || (tile.to !== '/overview' && location.pathname.startsWith(tile.to));
+            {/* Navigation Tiles Stack (RebalanceX Frosted Tiles) */}
+            <div className="space-y-1.5">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.to || (item.to !== '/overview' && location.pathname.startsWith(item.to));
                 return (
                   <NavLink
-                    key={tile.to}
-                    to={tile.to}
+                    key={item.to}
+                    to={item.to}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center transition-all ${
+                    className={`p-2 sm:p-2.5 rounded-xl flex items-center gap-3 transition-all ${
                       isActive
-                        ? 'bg-[#242628] text-white shadow-md shadow-slate-900/10'
-                        : 'bg-[#F6F8F7] hover:bg-[#EDF2EF] text-slate-700 hover:text-slate-900'
+                        ? 'bg-white text-slate-900 font-bold shadow-lg shadow-black/20'
+                        : 'bg-white/5 hover:bg-white/12 text-slate-200 hover:text-white border border-white/5 hover:border-white/20'
                     }`}
-                    title={tile.sublabel || tile.label}
+                    title={item.label}
                   >
-                    <Icon className={`w-5 h-5 mb-1.5 stroke-[1.9] ${isActive ? 'text-white' : 'text-slate-700'}`} />
+                    <div
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                        isActive ? 'bg-[#1C2420] text-amber-300' : 'bg-white/10 text-amber-200'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 stroke-[2]" />
+                    </div>
+
                     {!isSidebarCollapsed && (
-                      <span className={`text-[11px] font-bold tracking-tight leading-tight ${isActive ? 'text-white' : 'text-slate-800'}`}>
-                        {tile.label}
-                      </span>
+                      <div className="min-w-0 flex-1 flex items-center justify-between">
+                        <div className="truncate">
+                          <span className="text-xs tracking-tight block leading-none">
+                            {item.label}
+                          </span>
+                          <span className={`text-[10px] ${isActive ? 'text-slate-500 font-semibold' : 'text-slate-300'}`}>
+                            {item.sublabel}
+                          </span>
+                        </div>
+                        <span className={`text-[10px] font-mono ${isActive ? 'text-slate-400' : 'text-amber-300/70'}`}>
+                          {item.step}
+                        </span>
+                      </div>
                     )}
                   </NavLink>
                 );
               })}
             </div>
-
-            {/* Lower Utility Actions List */}
-            {!isSidebarCollapsed && (
-              <div className="pt-2 space-y-1">
-                {utilityItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <NavLink
-                      key={item.label}
-                      to={item.to}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-2.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-[#F6F8F7] text-xs font-semibold transition group"
-                    >
-                      <Icon className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition shrink-0 stroke-[1.8]" />
-                      <span className="truncate">{item.label}</span>
-                    </NavLink>
-                  );
-                })}
-              </div>
-            )}
           </div>
 
-          {/* Bottom Pro AI Box & Sign Out */}
-          <div className="pt-6 space-y-3">
+          {/* Bottom Pro AI Status Box & Sign Out */}
+          <div className="pt-3 space-y-2.5 border-t border-white/10">
             {!isSidebarCollapsed ? (
               <div
                 onClick={() => navigate('/recovery')}
-                className="p-3.5 rounded-2xl bg-gradient-to-br from-[#FFF9F6] to-[#FFF0EA] border border-[#FFE2D6] shadow-2xs cursor-pointer hover:shadow-xs transition group"
+                className="p-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-300/30 shadow-xs cursor-pointer hover:border-amber-300/60 transition group"
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1">
-                    Pro <Sparkles className="w-3 h-3 text-[#FF5E2B]" />
+                <div className="flex items-center justify-between mb-0.5">
+                  <span className="text-[11px] font-bold text-white flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-300" />
+                    Adaptive Intelligence
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-500 font-medium leading-relaxed">
-                  Everything you need for smart project intelligence.
+                <p className="text-[9px] text-slate-200 leading-tight">
+                  Zero-slack CPM Solver Active.
                 </p>
               </div>
             ) : null}
@@ -273,7 +269,7 @@ export function AppLayout() {
             {/* Logout Row */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 text-xs font-semibold transition"
+              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-slate-300 hover:text-rose-300 hover:bg-rose-500/20 text-xs font-semibold transition"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4 shrink-0" />
@@ -282,18 +278,11 @@ export function AppLayout() {
           </div>
         </aside>
 
-        {/* RIGHT MAIN APPLICATION CANVAS */}
-        <main className="flex-1 bg-white overflow-y-auto min-w-0 h-full p-5 sm:p-7 lg:p-9 relative">
+        {/* RIGHT MAIN APPLICATION CANVAS (Light Muted Canvas with High Contrast & Smooth Internal Scrolling) */}
+        <main className="flex-1 bg-[#F6F8F7] text-slate-900 overflow-y-auto min-w-0 h-full p-4 sm:p-6 lg:p-7 relative">
           <Outlet />
         </main>
 
-      </div>
-
-      {/* Bottom Left Outer Decorative Wordmark (Matching Reference Screenshot) */}
-      <div className="hidden lg:flex justify-start max-w-[1520px] mx-auto w-full px-4 pt-2 pb-1">
-        <span className="text-xs font-black text-slate-500 tracking-tight">
-          Juice Lab &bull; Ryzen Matrix
-        </span>
       </div>
 
       {/* Floating RebalanceX Assistant */}
