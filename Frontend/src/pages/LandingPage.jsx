@@ -135,8 +135,8 @@ export function LandingPage() {
             </h1>
 
             {/* Supporting Text */}
-            <p className="text-sm sm:text-base text-slate-100 max-w-lg leading-relaxed font-sans font-normal">
-              Match people to the work, plan tasks around real availability, and review recovery options when plans change.
+            <p className="text-sm sm:text-base text-slate-100/90 max-w-md leading-relaxed font-sans font-normal">
+              Match talent to workloads and recover instantly when plans change.
             </p>
 
             {/* Off-White Hero CTA with Dark Compact Icon Segment */}
@@ -194,10 +194,10 @@ export function LandingPage() {
             <div className="w-full max-w-lg bg-[#0D1813]/85 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl space-y-4 text-white">
               
               {/* Header: Engine Status & Active Project */}
-              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <div className="flex items-center justify-between pb-1">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-300 font-mono">
                     Engine Active &bull; CPM Matrix
                   </span>
                 </div>
@@ -207,9 +207,9 @@ export function LandingPage() {
               </div>
 
               {/* Active Project Title & Optimization Score */}
-              <div className="space-y-1">
-                <div className="text-[11px] text-slate-300 font-medium">Active Autonomous Workspace</div>
-                <div className="text-base font-bold text-white tracking-tight truncate">
+              <div className="space-y-0.5">
+                <div className="text-[10px] text-slate-300 font-medium">Active Autonomous Workspace</div>
+                <div className="text-sm sm:text-base font-bold text-white tracking-tight truncate">
                   Enterprise Core Banking &amp; Cloud Migration
                 </div>
               </div>
@@ -218,7 +218,7 @@ export function LandingPage() {
               <div className="grid grid-cols-2 gap-2.5">
                 <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-0.5">
                   <div className="text-[10px] text-slate-300 uppercase font-semibold">Critical Path Slack</div>
-                  <div className="text-xl font-black text-amber-300 font-tabular">0.0 Days</div>
+                  <div className="text-lg font-black text-amber-300 font-tabular">0.0 Days</div>
                   <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
                     <span>✓ On Optimal Track</span>
                   </div>
@@ -226,7 +226,7 @@ export function LandingPage() {
 
                 <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-0.5">
                   <div className="text-[10px] text-slate-300 uppercase font-semibold">Resource Alignment</div>
-                  <div className="text-xl font-black text-emerald-300 font-tabular">98.5%</div>
+                  <div className="text-lg font-black text-emerald-300 font-tabular">98.5%</div>
                   <div className="text-[10px] text-slate-300 font-medium">
                     <span>Zero skill gaps</span>
                   </div>
@@ -235,26 +235,26 @@ export function LandingPage() {
 
               {/* Live Critical Path Pipeline Nodes */}
               <div className="p-3.5 rounded-2xl bg-black/30 border border-white/10 space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-slate-300 font-semibold">
+                <div className="flex items-center justify-between text-[10px] text-slate-300 font-semibold">
                   <span>Schedule Dependency Graph</span>
                   <span className="text-amber-300 font-mono text-[10px]">4 Nodes</span>
                 </div>
 
                 {/* Node Pipeline Flow */}
                 <div className="flex items-center justify-between text-[10px] font-mono">
-                  <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
+                  <div className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
                     Setup
                   </div>
-                  <div className="h-[2px] flex-1 bg-gradient-to-r from-emerald-500/50 to-amber-500/50 mx-1.5" />
-                  <div className="px-2.5 py-1 rounded-lg bg-amber-500/25 text-amber-200 border border-amber-400/40 text-center font-bold ring-1 ring-amber-400/50">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-emerald-500/40 to-amber-500/40 mx-1.5" />
+                  <div className="px-2.5 py-0.5 rounded-md bg-amber-500/25 text-amber-200 border border-amber-400/40 text-center font-bold ring-1 ring-amber-400/40">
                     CPM-Crit
                   </div>
-                  <div className="h-[2px] flex-1 bg-gradient-to-r from-amber-500/50 to-emerald-500/50 mx-1.5" />
-                  <div className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-amber-500/40 to-emerald-500/40 mx-1.5" />
+                  <div className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
                     Verify
                   </div>
-                  <div className="h-[2px] flex-1 bg-emerald-500/30 mx-1.5" />
-                  <div className="px-2.5 py-1 rounded-lg bg-white/10 text-slate-200 border border-white/10 text-center">
+                  <div className="h-[1px] flex-1 bg-emerald-500/30 mx-1.5" />
+                  <div className="px-2.5 py-0.5 rounded-md bg-white/10 text-slate-200 border border-white/10 text-center">
                     Ship
                   </div>
                 </div>
