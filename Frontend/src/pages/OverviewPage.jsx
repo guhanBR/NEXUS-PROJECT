@@ -227,14 +227,98 @@ export function OverviewPage() {
             </div>
           </div>
 
-          {/* Right Column: 3D Architectural Command Pavilion Visual */}
+          {/* Right Column: Live Interactive Autonomous Optimizer & Critical Path HUD Card (Replaces static image) */}
           <div className="lg:col-span-5 flex items-center justify-center relative">
-            <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-[#0E1A14]/40">
-              <img
-                src="/images/rebalancex_pavilion.jpg"
-                alt="RebalanceX Command Pavilion 3D architectural render"
-                className="w-full h-auto object-cover rounded-3xl hover:scale-102 transition-transform duration-500"
-              />
+            <div className="w-full bg-[#0D1813]/80 backdrop-blur-md rounded-3xl p-5 sm:p-6 border border-white/20 shadow-2xl space-y-4 text-white">
+              
+              {/* Header: Engine Status & Active Project */}
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 font-mono">
+                    Engine Active &bull; CPM Matrix
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-amber-200 border border-white/10">
+                  {activeProject?.code || 'PRJ-2026'}
+                </span>
+              </div>
+
+              {/* Active Project Title & Optimization Score */}
+              <div className="space-y-1">
+                <div className="text-[11px] text-slate-300 font-medium">Active Autonomous Context</div>
+                <div className="text-base font-bold text-white tracking-tight truncate">
+                  {activeProject?.name || 'Enterprise Core Banking Migration'}
+                </div>
+              </div>
+
+              {/* Live Metric Badges Grid */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 space-y-0.5">
+                  <div className="text-[10px] text-slate-300 uppercase font-semibold">Critical Path Slack</div>
+                  <div className="text-lg font-black text-amber-300 font-tabular">0.0 Days</div>
+                  <div className="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+                    <span>✓ On Optimal Track</span>
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 space-y-0.5">
+                  <div className="text-[10px] text-slate-300 uppercase font-semibold">Resource Alignment</div>
+                  <div className="text-lg font-black text-emerald-300 font-tabular">98.5%</div>
+                  <div className="text-[10px] text-slate-300 font-medium">
+                    <span>Zero skill gaps</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Critical Path Pipeline Nodes */}
+              <div className="p-3 rounded-2xl bg-black/30 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between text-[11px] text-slate-300 font-semibold">
+                  <span>Schedule Dependency Graph</span>
+                  <span className="text-amber-300 font-mono text-[10px]">4 Nodes</span>
+                </div>
+
+                {/* Node Pipeline Flow */}
+                <div className="flex items-center justify-between text-[10px] font-mono">
+                  <div className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
+                    Setup
+                  </div>
+                  <div className="h-[2px] flex-1 bg-gradient-to-r from-emerald-500/50 to-amber-500/50 mx-1" />
+                  <div className="px-2 py-1 rounded-lg bg-amber-500/25 text-amber-200 border border-amber-400/40 text-center font-bold ring-1 ring-amber-400/50">
+                    CPM-Crit
+                  </div>
+                  <div className="h-[2px] flex-1 bg-gradient-to-r from-amber-500/50 to-emerald-500/50 mx-1" />
+                  <div className="px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-center font-bold">
+                    Verify
+                  </div>
+                  <div className="h-[2px] flex-1 bg-emerald-500/30 mx-1" />
+                  <div className="px-2 py-1 rounded-lg bg-white/10 text-slate-200 border border-white/10 text-center">
+                    Ship
+                  </div>
+                </div>
+              </div>
+
+              {/* Interactive Quick Simulation Action Buttons */}
+              <div className="pt-1 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate('/recovery')}
+                  className="flex-1 py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md"
+                >
+                  <Zap className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
+                  <span>Run Scenario Test</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/progress-monitor')}
+                  className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/20 transition flex items-center justify-center gap-1"
+                >
+                  <span>Gantt Chart</span>
+                  <ArrowRight className="w-3 h-3 text-amber-200" />
+                </button>
+              </div>
+
             </div>
           </div>
 
