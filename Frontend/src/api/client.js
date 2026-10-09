@@ -1,14 +1,12 @@
 /**
  * Centralized API Client for Ryzen Matrix & RebalanceX Backend
- * Native Capacitor & Web adaptive configuration
+ * Connected to Production Cloud Backend: https://nexus-project-y2eb.onrender.com
  */
 
 import { Capacitor } from '@capacitor/core';
 
+export const PRODUCTION_API_BASE_URL = 'https://nexus-project-y2eb.onrender.com';
 const STORAGE_KEY_API_BASE = 'rebalancex_custom_api_base';
-
-export const DEFAULT_HOST_IP = '10.128.23.178';
-export const DEFAULT_PORT = '8000';
 
 export function isNativeApp() {
   try {
@@ -17,38 +15,60 @@ export function isNativeApp() {
     return typeof window !== 'undefined' && (
       window.location.protocol === 'capacitor:' ||
       window.location.protocol === 'ionic:' ||
-      window.location.hostname === 'localhost' && window.navigator.userAgent.includes('Android')
+      (window.location.hostname === 'localhost' && window.navigator.userAgent.includes('Android'))
     );
   }
+}
+
+/**
+ * Automatically migrate and clear obsolete PC/LAN development endpoints from localStorage
+ * so previously installed apps cleanly switch to production cloud backend without manual reset.
+ */
+function sanitizeCustomUrl(url) {
+  if (!url) return null;
+  const lower = url.toLowerCase();
+  if (
+    lower.includes('10.128.') ||
+    lower.includes('10.0.2.2') ||
+    lower.includes('127.0.0.1') ||
+    lower.includes('localhost:8000') ||
+    lower.includes('192.168.') ||
+    lower.includes('0.0.0.0')
+  ) {
+    try {
+      localStorage.removeItem(STORAGE_KEY_API_BASE);
+    } catch {
+      // ignore
+    }
+    return null;
+  }
+  return url;
 }
 
 export function getApiBaseUrl() {
   if (typeof window !== 'undefined') {
     const custom = localStorage.getItem(STORAGE_KEY_API_BASE);
-    if (custom && custom.trim()) return custom.trim().replace(/\/+$/, '');
+    if (custom && custom.trim()) {
+      const valid = sanitizeCustomUrl(custom.trim().replace(/\/+$/, ''));
+      if (valid) return valid;
+    }
   }
 
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/+$/, '');
 
-  // If running inside native Android WebView / Physical Phone and no custom URL provided:
-  // Default to the host PC LAN IP so physical phones can reach the PC server directly
-  if (isNativeApp()) {
-    return `http://${DEFAULT_HOST_IP}:${DEFAULT_PORT}`;
-  }
-
-  // Standard web relative path (proxied by Vite in dev or served on same domain)
-  return '';
+  // Default to deployed production cloud backend
+  return PRODUCTION_API_BASE_URL;
 }
 
 export function setApiBaseUrl(url) {
   if (typeof window !== 'undefined') {
-    if (!url || !url.trim()) {
+    if (!url || !url.trim() || url.trim() === PRODUCTION_API_BASE_URL) {
       localStorage.removeItem(STORAGE_KEY_API_BASE);
     } else {
       let formatted = url.trim().replace(/\/+$/, '');
       if (!formatted.startsWith('http://') && !formatted.startsWith('https://')) {
-        formatted = `http://${formatted}`;
+        formatted = `https://${formatted}`;
       }
       localStorage.setItem(STORAGE_KEY_API_BASE, formatted);
     }
@@ -58,12 +78,12 @@ export function setApiBaseUrl(url) {
 export async function testConnection(customUrl) {
   let target = (customUrl !== undefined ? customUrl : getApiBaseUrl()).trim().replace(/\/+$/, '');
   if (target && !target.startsWith('http://') && !target.startsWith('https://')) {
-    target = `http://${target}`;
+    target = `https://${target}`;
   }
 
-  const testUrl = target ? `${target}/health` : '/health';
+  const testUrl = target ? `${target}/health` : `${PRODUCTION_API_BASE_URL}/health`;
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 4000);
+  const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s for cloud cold-start
 
   try {
     const res = await fetch(testUrl, {
@@ -75,7 +95,7 @@ export async function testConnection(customUrl) {
 
     if (res.ok) {
       const data = await res.json().catch(() => ({}));
-      return { success: true, url: target || window.location.origin, data };
+      return { success: true, url: target, data };
     }
     return {
       success: false,
@@ -84,7 +104,9 @@ export async function testConnection(customUrl) {
     };
   } catch (err) {
     clearTimeout(timeoutId);
-    let msg = err.name === 'AbortError' ? 'Connection timed out after 4 seconds' : (err.message || 'Unable to reach backend');
+    const msg = err.name === 'AbortError'
+      ? 'Connection timed out. The cloud server may be waking up.'
+      : (err.message || 'Unable to reach backend');
     return { success: false, url: target, message: msg };
   }
 }
@@ -118,10 +140,9 @@ async function request(url, options = {}) {
     return await response.json();
   } catch (err) {
     if (err.name === 'TypeError' && (err.message.includes('fetch') || err.message.includes('NetworkError') || err.message.includes('Failed to fetch'))) {
-      const hint = isNativeApp()
-        ? ` Cannot reach backend at ${fullUrl}. Ensure your PC backend is running on http://0.0.0.0:8000 and your phone is on the same Wi-Fi network.`
-        : ` Cannot reach backend at ${fullUrl}.`;
-      throw new Error(`Network connection error.${hint}`);
+      throw new Error(
+        'Unable to reach the server. Please verify your mobile data or Wi-Fi connection. (If the server is waking up, please retry in a few moments).'
+      );
     }
     throw err;
   }
@@ -132,6 +153,7 @@ export const api = {
   getBaseUrl: getApiBaseUrl,
   setBaseUrl: setApiBaseUrl,
   isNative: isNativeApp,
+  testConnection,
 
   // Health
   getHealth: () => request('/health'),
