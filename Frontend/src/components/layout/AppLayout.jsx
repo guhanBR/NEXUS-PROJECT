@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -15,11 +15,15 @@ import {
   Menu,
   X,
   ChevronDown,
-  FolderGit2,
+  LogOut,
+  UserCheck,
+  CheckSquare,
+  Shield,
+  Briefcase,
   AlertCircle,
-  HelpCircle,
 } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
+import { useAuth } from '../../context/AuthContext';
 import { NewProjectModal } from '../modals/NewProjectModal';
 
 export function AppLayout() {
@@ -33,52 +37,109 @@ export function AppLayout() {
     runLiveDemoSequence,
   } = useProject();
 
+  const { user, role, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
   const isSimulationPage = location.pathname === '/crisis-simulator';
   const isReviewPage = location.pathname === '/rebalance-diff';
 
-  const navGroups = [
-    {
-      group: 'Overview',
-      items: [
-        { to: '/', label: 'Overview', icon: LayoutDashboard, badge: null },
-      ],
-    },
-    {
-      group: 'Plan',
-      items: [
-        { to: '/team-formation', label: 'Build a team', icon: Users, badge: 'PS#11' },
-        { to: '/task-planning', label: 'Tasks & schedule', icon: CalendarDays, badge: null },
-        { to: '/resource-matrix', label: 'Workload', icon: BarChart3, badge: null },
-      ],
-    },
-    {
-      group: 'What-if & Recovery',
-      items: [
-        { to: '/crisis-simulator', label: 'Try a what-if', icon: Sparkles, badge: 'PS#18' },
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
+  // Role-based navigation groups
+  const isTeamMember = role === 'member';
+
+  const navGroups = isTeamMember
+    ? [
         {
-          to: '/rebalance-diff',
-          label: 'Review changes',
-          icon: GitCompare,
-          badge: activeProposal ? '1 Pending' : null,
-          badgeColor: activeProposal ? 'bg-google-blue text-white' : undefined,
+          group: 'My Workspace',
+          items: [
+            { to: '/my-workspace', label: 'My Tasks & Workload', icon: CheckSquare, badge: 'Assigned' },
+          ],
         },
-      ],
-    },
-    {
-      group: 'History',
-      items: [
-        { to: '/decision-audit', label: 'History', icon: History, badge: null },
-      ],
-    },
-  ];
+        {
+          group: 'Project Context',
+          items: [
+            { to: '/', label: 'Overview', icon: LayoutDashboard, badge: null },
+            { to: '/task-planning', label: 'Tasks & schedule', icon: CalendarDays, badge: null },
+            { to: '/team-formation', label: 'Team Roster', icon: Users, badge: null },
+            { to: '/resource-matrix', label: 'Team Workload', icon: BarChart3, badge: null },
+          ],
+        },
+        {
+          group: 'History',
+          items: [
+            { to: '/decision-audit', label: 'Audit History', icon: History, badge: null },
+          ],
+        },
+      ]
+    : [
+        {
+          group: 'Overview',
+          items: [
+            { to: '/', label: 'Overview', icon: LayoutDashboard, badge: null },
+          ],
+        },
+        {
+          group: 'Plan',
+          items: [
+            { to: '/team-formation', label: 'Build a team', icon: Users, badge: 'PS#11' },
+            { to: '/task-planning', label: 'Tasks & schedule', icon: CalendarDays, badge: null },
+            { to: '/resource-matrix', label: 'Workload', icon: BarChart3, badge: null },
+          ],
+        },
+        {
+          group: 'What-if & Recovery',
+          items: [
+            { to: '/crisis-simulator', label: 'Try a what-if', icon: Sparkles, badge: 'PS#18' },
+            {
+              to: '/rebalance-diff',
+              label: 'Review changes',
+              icon: GitCompare,
+              badge: activeProposal ? '1 Pending' : null,
+              badgeColor: activeProposal ? 'bg-google-blue text-white' : undefined,
+            },
+          ],
+        },
+        {
+          group: 'History',
+          items: [
+            { to: '/decision-audit', label: 'History', icon: History, badge: null },
+          ],
+        },
+      ];
+
+  const getRoleBadge = () => {
+    if (role === 'admin') {
+      return (
+        <span className="text-[10px] font-bold text-google-blue bg-google-blueSurface px-2 py-0.5 rounded-full">
+          Admin
+        </span>
+      );
+    }
+    if (role === 'manager') {
+      return (
+        <span className="text-[10px] font-bold text-google-teal bg-google-tealSurface px-2 py-0.5 rounded-full">
+          Project Manager
+        </span>
+      );
+    }
+    return (
+      <span className="text-[10px] font-bold text-google-textSecondary bg-google-subtle px-2 py-0.5 rounded-full">
+        Team Member
+      </span>
+    );
+  };
 
   return (
     <div className="flex h-screen overflow-hidden bg-google-bg font-sans">
-      {/* Mobile Drawer Backdrop */}
+      {/* Mobile Drawer Overlay */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
@@ -157,42 +218,59 @@ export function AppLayout() {
             </div>
           ))}
 
-          {/* Secondary Settings Item */}
-          <div className="pt-2 border-t border-google-border/60">
-            <NavLink
-              to="/settings"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3.5 py-2 rounded-full text-[13px] font-medium transition-all ${
-                  isActive
-                    ? 'bg-google-blueSurface text-google-blueText font-semibold'
-                    : 'text-google-textSecondary hover:bg-google-subtle hover:text-google-text'
-                }`
-              }
-            >
-              <Settings className="w-4 h-4 stroke-[2.2]" />
-              <span>Settings</span>
-            </NavLink>
-          </div>
+          {/* Secondary Settings Item (Visible to Admins & Managers) */}
+          {!isTeamMember && (
+            <div className="pt-2 border-t border-google-border/60">
+              <NavLink
+                to="/settings"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-2.5 px-3.5 py-2 rounded-full text-[13px] font-medium transition-all ${
+                    isActive
+                      ? 'bg-google-blueSurface text-google-blueText font-semibold'
+                      : 'text-google-textSecondary hover:bg-google-subtle hover:text-google-text'
+                  }`
+                }
+              >
+                <Settings className="w-4 h-4 stroke-[2.2]" />
+                <span>Settings & Presets</span>
+              </NavLink>
+            </div>
+          )}
         </nav>
 
-        {/* Footer Project & Solver Status */}
-        <div className="p-3.5 border-t border-google-border bg-google-subtle/40 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-google-teal animate-pulse" />
-              <span className="text-google-text text-[11px] font-medium">
-                Optimizer: <strong className="text-google-teal">Active</strong>
-              </span>
+        {/* User Profile Card & Sign Out in Sidebar Footer */}
+        <div className="p-3 border-t border-google-border bg-google-subtle/40 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 truncate">
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
+                style={{ backgroundColor: user?.avatar_color || '#0B57D0' }}
+              >
+                {user?.name?.charAt(0) || 'U'}
+              </div>
+              <div className="truncate">
+                <span className="text-xs font-bold text-google-text truncate block">
+                  {user?.name || 'Guest User'}
+                </span>
+                <span className="text-[10px] text-google-textMuted truncate block">
+                  {user?.role_title || user?.email}
+                </span>
+              </div>
             </div>
-            <span className="text-[10px] font-bold text-google-blue bg-white px-2 py-0.5 rounded-full border border-google-border">
-              v1.0 MILP
-            </span>
+
+            <button
+              onClick={handleLogout}
+              title="Sign out of account"
+              className="p-1.5 rounded-lg text-google-textMuted hover:text-google-red hover:bg-google-subtle transition"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </aside>
 
-      {/* Main Content Viewport */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-google-border flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10">
@@ -205,7 +283,7 @@ export function AppLayout() {
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Active Project Switcher */}
+            {/* Active Project Selector */}
             <div className="flex items-center gap-2">
               <span className="text-xs font-semibold text-google-textMuted hidden sm:inline">Project:</span>
               <div className="relative">
@@ -224,44 +302,55 @@ export function AppLayout() {
               </div>
             </div>
 
-            <button
-              onClick={() => setIsNewProjectOpen(true)}
-              className="google-btn-secondary py-1.5 px-3 text-xs"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">New Project</span>
-            </button>
+            {!isTeamMember && (
+              <button
+                onClick={() => setIsNewProjectOpen(true)}
+                className="google-btn-secondary py-1.5 px-3 text-xs"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">New Project</span>
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2.5">
-            {/* Quick Demo Workflow */}
-            <button
-              onClick={runLiveDemoSequence}
-              className="google-btn-primary py-1.5 px-3.5 text-xs shadow-google-xs"
-              title="Run end-to-end automated demo flow"
-            >
-              <PlayCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Run Quick Demo</span>
-              <span className="sm:hidden">Demo</span>
-            </button>
+          <div className="flex items-center gap-3">
+            {/* User Identity Chip */}
+            <div className="flex items-center gap-2 px-3 py-1 bg-google-subtle rounded-full border border-google-border text-xs">
+              <span className="text-google-text font-medium hidden sm:inline">{user?.name}</span>
+              {getRoleBadge()}
+            </div>
 
-            <button
-              onClick={handleResetDemo}
-              title="Reset data to default clean state"
-              className="google-btn-secondary py-1.5 px-3 text-xs"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Reset</span>
-            </button>
+            {/* Quick Demo Workflow (Managers/Admins only) */}
+            {!isTeamMember && (
+              <button
+                onClick={runLiveDemoSequence}
+                className="google-btn-primary py-1.5 px-3.5 text-xs shadow-google-xs"
+                title="Run end-to-end automated demo flow"
+              >
+                <PlayCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">Run Demo</span>
+              </button>
+            )}
+
+            {!isTeamMember && (
+              <button
+                onClick={handleResetDemo}
+                title="Reset data to default clean state"
+                className="google-btn-secondary py-1.5 px-3 text-xs"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Reset</span>
+              </button>
+            )}
           </div>
         </header>
 
-        {/* Global Simulation Context Alert Banner if in simulation / proposal review */}
+        {/* Global Simulation Context Alert Banner */}
         {isSimulationPage && (
           <div className="bg-google-amberSurface/80 border-b border-google-amber/30 px-6 py-2 text-xs text-google-amber flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>
-              <strong>Simulation Mode:</strong> This tests what-if scenarios in sandbox mode. Your saved plan changes only after you approve a recovery plan.
+              <strong>Simulation Mode:</strong> Testing scenario parameters in sandbox mode. Saved baseline remains unaltered until approved.
             </span>
           </div>
         )}
