@@ -10,7 +10,8 @@
     "cap:sync": "cap sync android",
     "cap:open": "cap open android",
     "cap:build": "npm run build && cap sync android",
-    "apk:build": "npm run build && cap sync android && cd android && .\\gradlew.bat assembleDebug"
+    "apk:build": "npm run build && cap sync android && cd android && .\\gradlew.bat assembleDebug",
+    "update-apk": "powershell -ExecutionPolicy Bypass -File ..\\build-apk.ps1"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
