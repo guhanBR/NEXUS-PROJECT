@@ -77,6 +77,9 @@ export function TeamFormationPage() {
             <span className="text-xs text-slate-500 font-medium">
               Autonomous Talent Allocation
             </span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-900 border border-amber-300/40">
+              ⚡ Team Ryzen Matrix
+            </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Team Formation &amp; Roster

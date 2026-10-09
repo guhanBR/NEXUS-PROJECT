@@ -126,9 +126,14 @@ export function AppLayout() {
                 <div className="w-7 h-7 rounded-xl bg-slate-900 text-amber-300 flex items-center justify-center font-bold text-xs shadow-xs">
                   <Compass className="w-4 h-4" />
                 </div>
-                <span className="text-lg font-bold tracking-tight text-slate-900 block leading-none">
-                  RebalanceX
-                </span>
+                <div>
+                  <span className="text-lg font-bold tracking-tight text-slate-900 block leading-none">
+                    RebalanceX
+                  </span>
+                  <span className="text-[9px] font-extrabold text-amber-600 tracking-wider uppercase block mt-0.5">
+                    Ryzen Matrix
+                  </span>
+                </div>
               </NavLink>
 
               <button
@@ -247,33 +252,45 @@ export function AppLayout() {
 
           {/* Bottom Section: User Info & Logout */}
           <div className="mt-4 pt-3 border-t border-[#EAEFEA]">
-            <div className="flex items-center justify-between px-1 py-1 text-xs">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-[11px] text-slate-600 font-bold uppercase tracking-wider">{role || 'user'}</span>
+            <div className="flex flex-col gap-1.5 px-1 text-xs">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span className="text-[11px] text-slate-600 font-bold uppercase tracking-wider">{role || 'user'}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-[11px] font-bold text-slate-500 hover:text-red-600 transition"
+                >
+                  Sign out
+                </button>
               </div>
-              <button
-                onClick={handleLogout}
-                className="text-[11px] font-bold text-slate-500 hover:text-red-600 transition"
-              >
-                Sign out
-              </button>
+              <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-800 bg-amber-500/10 border border-amber-300/60 px-2 py-0.5 rounded-md">
+                <Sparkles className="w-3 h-3 text-amber-600" />
+                <span>Team Ryzen Matrix</span>
+              </div>
             </div>
           </div>
         </aside>
 
         {/* MAIN WORKSPACE VIEWPORT */}
         <main className="flex-1 flex flex-col min-w-0 bg-[#FFFFFF] overflow-y-auto">
-          {/* TOP HEADER BAR (Exact Match to Reference Greeting & Pill Actions) */}
+          {/* TOP HEADER BAR */}
           <header className="px-6 sm:px-8 py-5 bg-white border-b border-[#F0F4F1] flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 z-30">
-            {/* Left: Good Morning, Alvie + Date */}
-            <div>
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Good Morning, {user?.name?.split(' ')[0] || 'Alvie'}
-              </h1>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
-                Friday, 15 July 2026
-              </p>
+            {/* Left: Good Morning, Member + Team Ryzen Matrix Badge + Date */}
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  Good Morning, {user?.name?.split(' ')[0] || 'Member'}
+                </h1>
+                <p className="text-xs text-slate-400 font-medium mt-0.5">
+                  Friday, 15 July 2026
+                </p>
+              </div>
+              <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-900 text-xs font-bold shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span>Team Ryzen Matrix</span>
+              </div>
             </div>
 
             {/* Right Action Pills (Transfer, 4-dot, Received, Messages, Bell, Avatar) */}

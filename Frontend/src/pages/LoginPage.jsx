@@ -65,9 +65,14 @@ export function LoginPage() {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
-          <span className="font-serif text-xl font-normal tracking-wide text-white">
-            Rebalance<span className="italic font-light opacity-90">X</span>
-          </span>
+          <div>
+            <span className="font-serif text-xl font-normal tracking-wide text-white block leading-none">
+              Rebalance<span className="italic font-light opacity-90">X</span>
+            </span>
+            <span className="text-[9px] font-bold text-amber-300 tracking-wider uppercase block mt-0.5">
+              Team Ryzen Matrix
+            </span>
+          </div>
         </Link>
 
         <Link
@@ -82,8 +87,8 @@ export function LoginPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md my-auto z-10 py-6">
         <div className="bg-white/95 backdrop-blur-md py-8 px-6 sm:px-8 rounded-3xl border border-white/40 shadow-2xl space-y-5">
           <div className="text-center space-y-1.5">
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#202724]/10 text-[#202724] border border-[#202724]/15">
-              Secure Access
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-900 border border-amber-300/40">
+              ⚡ Team Ryzen Matrix
             </span>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
               Sign in to RebalanceX

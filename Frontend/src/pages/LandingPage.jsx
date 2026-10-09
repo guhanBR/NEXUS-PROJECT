@@ -66,9 +66,14 @@ export function LandingPage() {
           <div className="w-8 h-8 rounded-xl border border-white/30 bg-white/10 flex items-center justify-center backdrop-blur-md shadow-xs group-hover:border-white/50 transition">
             <Compass className="w-4 h-4 text-amber-300" />
           </div>
-          <span className="font-semibold text-lg tracking-tight text-white font-sans">
-            RebalanceX
-          </span>
+          <div>
+            <span className="font-semibold text-lg tracking-tight text-white font-sans block leading-none">
+              RebalanceX
+            </span>
+            <span className="text-[9px] font-bold text-amber-300 tracking-wider uppercase block mt-0.5">
+              by Team Ryzen Matrix
+            </span>
+          </div>
         </NavLink>
 
         {/* Minimal Navigation Links */}
@@ -120,7 +125,7 @@ export function LandingPage() {
             {/* Factual Product Descriptor */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F1C16]/70 border border-white/25 text-xs font-medium text-slate-100 backdrop-blur-md shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>Smart Team Matching & Autonomous Resource Rebalancing</span>
+              <span>Team Ryzen Matrix &bull; Autonomous Resource Rebalancing</span>
             </div>
 
             {/* Large White Serif Headline */}
@@ -301,10 +306,10 @@ export function LandingPage() {
       <footer className="max-w-7xl mx-auto w-full px-6 sm:px-8 py-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-200 gap-4">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-amber-300" />
-          <span className="font-medium text-slate-200">RebalanceX &bull; Multi-Objective Optimization & Autonomous Resource Rebalancing</span>
+          <span className="font-medium text-slate-200">RebalanceX &bull; Developed with precision by <strong>Team Ryzen Matrix</strong></span>
         </div>
         <div>
-          <span className="font-medium text-slate-300">&copy; {new Date().getFullYear()} RebalanceX. All rights reserved.</span>
+          <span className="font-medium text-slate-300">&copy; {new Date().getFullYear()} Team Ryzen Matrix. All rights reserved.</span>
         </div>
       </footer>
     </div>

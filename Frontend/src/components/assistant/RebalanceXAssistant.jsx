@@ -150,7 +150,7 @@ export function RebalanceXAssistant() {
           </div>
           <div className="text-left pr-1">
             <span className="text-xs font-bold text-slate-900 block leading-tight">Soye Botpaddy</span>
-            <span className="text-[10px] text-slate-500 font-medium">RebalanceX AI</span>
+            <span className="text-[10px] text-amber-600 font-bold">Team Ryzen Matrix</span>
           </div>
         </button>
       )}
@@ -206,7 +206,7 @@ export function RebalanceXAssistant() {
                   Hi I'm Soye, Ur Botpaddy
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1 max-w-[260px]">
-                  Your autonomous project copilot. Ask me about tasks, schedules, or workload.
+                  Team Ryzen Matrix Copilot. Ask me about tasks, schedules, or workload.
                 </p>
               </div>
             ) : (
@@ -216,7 +216,7 @@ export function RebalanceXAssistant() {
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100 text-[10px] text-slate-400">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-[#FF5E2B]" />
-                    <span className="font-bold text-slate-700">Soye Active</span>
+                    <span className="font-bold text-slate-700">Team Ryzen Matrix &bull; Soye</span>
                   </div>
                   <button
                     onClick={handleClearChat}
