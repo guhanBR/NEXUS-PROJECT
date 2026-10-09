@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { X, Plus, FolderPlus } from 'lucide-react';
+import { X, FolderPlus } from 'lucide-react';
 import { api } from '../../api/client';
 import { useProject } from '../../context/ProjectContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -53,107 +53,110 @@ export function NewProjectModal({ onClose }) {
       };
 
       const res = await api.createProject(payload);
-      showToast('Project workspace created successfully!', 'success');
+      showToast('Project created successfully!', 'success');
       await queryClient.invalidateQueries(['projects']);
       if (res.project?.id) {
         setActiveProjectId(res.project.id);
       }
       onClose();
     } catch (err) {
-      showToast(err.message, 'error');
+      showToast(err.message || 'Failed to create project.', 'error');
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-2xl shadow-google-modal w-full max-w-lg overflow-hidden border border-google-border">
-        <div className="px-6 py-4 border-b border-google-border flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-google-blueSurface text-google-blue flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#18201C]/60 backdrop-blur-sm p-4 animate-in fade-in duration-150">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-[#D5DED8]">
+        <div className="px-6 py-5 border-b border-[#E2EAE5] flex items-center justify-between bg-[#F7FAF8]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-[#202724] text-white flex items-center justify-center shadow-xs">
               <FolderPlus className="w-4 h-4" />
             </div>
-            <h3 className="font-bold text-google-text text-sm">Create New Project Workspace</h3>
+            <div>
+              <h3 className="font-serif font-normal text-slate-900 text-lg">Create New Project</h3>
+              <p className="text-[11px] text-slate-500">Initialize a new enterprise delivery workspace</p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-google-textMuted hover:bg-google-subtle hover:text-google-text transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
               Project Name
             </label>
             <input
               {...register('name')}
-              placeholder="e.g. HealthTech AI Nexus"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+              placeholder="e.g. Real-Time Autonomous Analytics"
+              className="input"
             />
-            {errors.name && <p className="text-[11px] text-google-red mt-1">{errors.name.message}</p>}
+            {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
-              Mission Description
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Project Scope & Description
             </label>
             <textarea
               {...register('description')}
               rows={2}
               placeholder="Scope, deliverables, and engineering goals"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+              className="input"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Target Team Size
               </label>
               <input
                 type="number"
                 {...register('target_team_size')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+                className="input"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Deadline (Days)
               </label>
               <input
                 type="number"
                 {...register('deadline_days')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+                className="input"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
-              Domain Focus Areas (Comma-separated)
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Domain Tags (Comma-separated)
             </label>
             <input
               {...register('domains')}
               placeholder="e.g. FinTech, Cloud, Microservices"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+              className="input"
             />
           </div>
 
-          <div className="pt-4 border-t border-google-border flex justify-end gap-2.5">
+          <div className="pt-4 border-t border-[#E2EAE5] flex justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="google-btn-secondary"
+              className="btn-secondary text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="google-btn-primary"
+              className="btn-primary text-xs"
             >
               {isSubmitting ? 'Creating...' : 'Create Project'}
             </button>

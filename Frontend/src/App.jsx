@@ -3,31 +3,22 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ProjectProvider } from './context/ProjectContext';
 import { AppLayout } from './components/layout/AppLayout';
+import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
+import { ProjectsPage } from './pages/ProjectsPage';
 import { OverviewPage } from './pages/OverviewPage';
-import { MyWorkspacePage } from './pages/MyWorkspacePage';
 import { TeamFormationPage } from './pages/TeamFormationPage';
 import { TaskPlanningPage } from './pages/TaskPlanningPage';
-import { ResourceMatrixPage } from './pages/ResourceMatrixPage';
-import { CrisisSimulatorPage } from './pages/CrisisSimulatorPage';
-import { RebalanceDiffPage } from './pages/RebalanceDiffPage';
+import { RecoveryPage } from './pages/RecoveryPage';
 import { DecisionHistoryPage } from './pages/DecisionHistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
 
-function ProtectedRoute({ children, allowedRoles }) {
-  const { isAuthenticated, role } = useAuth();
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  if (allowedRoles && !allowedRoles.includes(role)) {
-    // If team member tries to access restricted manager/admin page, redirect to my workspace
-    if (role === 'member') {
-      return <Navigate to="/my-workspace" replace />;
-    }
-    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -38,6 +29,9 @@ export function App() {
     <AuthProvider>
       <ProjectProvider>
         <Routes>
+          {/* Public Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
           {/* Public Login Route */}
           <Route path="/login" element={<LoginPage />} />
 
@@ -49,36 +43,22 @@ export function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<OverviewPage />} />
-            <Route path="/my-workspace" element={<MyWorkspacePage />} />
+            {/* Projects Directory */}
+            <Route path="/projects" element={<ProjectsPage />} />
+
+            {/* Project Details 5 Tabs */}
+            <Route path="/overview" element={<OverviewPage />} />
             <Route path="/team-formation" element={<TeamFormationPage />} />
             <Route path="/task-planning" element={<TaskPlanningPage />} />
-            <Route path="/resource-matrix" element={<ResourceMatrixPage />} />
-            <Route
-              path="/crisis-simulator"
-              element={
-                <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                  <CrisisSimulatorPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/rebalance-diff"
-              element={
-                <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                  <RebalanceDiffPage />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/recovery" element={<RecoveryPage />} />
+            <Route path="/crisis-simulator" element={<RecoveryPage />} />
+            <Route path="/rebalance-diff" element={<RecoveryPage />} />
             <Route path="/decision-audit" element={<DecisionHistoryPage />} />
-            <Route
-              path="/settings"
-              element={
-                <ProtectedRoute allowedRoles={['admin', 'manager']}>
-                  <SettingsPage />
-                </ProtectedRoute>
-              }
-            />
+
+            {/* Secondary Settings */}
+            <Route path="/settings" element={<SettingsPage />} />
+
+            {/* Fallback Catch-all */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

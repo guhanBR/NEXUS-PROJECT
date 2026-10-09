@@ -7,39 +7,47 @@ export default {
   theme: {
     extend: {
       colors: {
-        google: {
-          bg: '#F8FAFD',          // Calm light workspace background
-          surface: '#FFFFFF',     // Clean pure white surface
-          subtle: '#F0F4F9',      // Subtle hover & background fill
-          border: '#E0E3E7',      // Crisp subtle border
-          borderLight: '#EDF0F4',
-          text: '#1F1F1F',        // High contrast primary charcoal/black
-          textSecondary: '#444746',// Google secondary text gray
-          textMuted: '#747775',   // Muted label gray
-          blue: '#0B57D0',        // Google Workspace primary blue
-          blueHover: '#0842A0',
-          blueSurface: '#D3E3FD', // Google M3 active pill container
-          blueText: '#041E49',    // Text on active pill
-          teal: '#006A60',        // Success green/teal
-          tealSurface: '#CCE8E3',
-          amber: '#7A4100',       // Warning amber
-          amberSurface: '#FFDF9E',
-          red: '#BA1A1A',         // Error / Critical red
-          redSurface: '#FFDAD6',
+        sage: {
+          50: '#F4F6F5',
+          100: '#E6EAE8',
+          200: '#CBD4D0',
+          300: '#A8B7B0',
+          400: '#899791',
+          500: '#71817B',
+          600: '#5A6863',
+          700: '#46524D',
+          800: '#343D39',
+          900: '#202623',
+          950: '#141816',
+        },
+        brand: {
+          blue: '#2563EB',
+          blueHover: '#1D4ED8',
+          blueLight: '#EFF6FF',
+          amber: '#F59E0B',
+          amberLight: '#FEF3C7',
+          obsidian: '#1C2420',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'Plus Jakarta Sans', 'Roboto', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        'google-xs': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
-        'google-sm': '0 1px 3px 0 rgba(60, 64, 67, 0.1), 0 1px 2px 0 rgba(60, 64, 67, 0.06)',
-        'google-md': '0 4px 6px -1px rgba(60, 64, 67, 0.12), 0 2px 4px -2px rgba(60, 64, 67, 0.08)',
-        'google-modal': '0 12px 32px 4px rgba(60, 64, 67, 0.18)',
+        'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        '2xs': '0 1px 1px 0 rgba(0, 0, 0, 0.03)',
+        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.25)',
+        'hero-cta': '0 12px 28px -4px rgba(0, 0, 0, 0.25)',
       },
       borderRadius: {
-        'pill': '9999px',
+        '2.5xl': '1.25rem',
+        '3xl': '1.5rem',
+        '4xl': '2rem',
+      },
+      backdropBlur: {
+        'xs': '2px',
+        '2xs': '1px',
       }
     },
   },

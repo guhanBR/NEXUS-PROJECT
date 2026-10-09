@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useProject } from '../context/ProjectContext';
-import { Sliders, Database, UserPlus, ShieldCheck, ChevronDown, ChevronUp, Info, HelpCircle } from 'lucide-react';
+import { Sliders, Database, UserPlus, ChevronDown, ChevronUp, Info, Zap } from 'lucide-react';
 import { AddMemberModal } from '../components/modals/AddMemberModal';
 
 export function SettingsPage() {
@@ -9,39 +9,43 @@ export function SettingsPage() {
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-google-blue bg-google-blueSurface px-2.5 py-0.5 rounded-full">
-            Settings &bull; Preferences
-          </span>
-          <span className="text-xs text-google-textMuted font-mono">
-            Candidate Talent Pool & Optimizer Configuration
-          </span>
+    <div className="space-y-6">
+      {/* Header Banner */}
+      <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="badge bg-[#202724]/10 text-[#202724] font-bold uppercase tracking-wider text-[10px]">
+              Configuration
+            </span>
+            <span className="text-xs text-slate-500 font-medium">
+              Optimizer Weights & Talent Pool
+            </span>
+          </div>
+          <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
+            Settings & <span className="italic font-light">Talent Directory</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
+            Manage global engineer profiles, skill maps, weekly capacities, and solver balance priorities.
+          </p>
         </div>
-        <h2 className="text-2xl font-bold tracking-tight text-google-text">Settings & Talent Directory</h2>
-        <p className="text-xs text-google-textSecondary mt-0.5">
-          Manage the talent directory of candidate engineers and review optimizer tuning parameters.
-        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Candidate Directory */}
-        <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-6 shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E2EAE5]">
             <div>
-              <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
-                <Database className="w-4 h-4 text-google-blue" />
-                Talent Pool Directory ({members.length})
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Database className="w-4 h-4 text-slate-700" />
+                Global Talent Pool ({members.length})
               </h3>
-              <p className="text-xs text-google-textSecondary mt-0.5">
-                Engineers available to be assigned to projects.
+              <p className="text-xs text-slate-500 mt-0.5">
+                Engineers available to be assigned to active projects.
               </p>
             </div>
             <button
               onClick={() => setIsAddMemberOpen(true)}
-              className="google-btn-secondary py-1 px-3 text-xs"
+              className="btn-secondary py-1 px-3 text-xs inline-flex items-center gap-1.5"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>Add Candidate</span>
@@ -50,22 +54,22 @@ export function SettingsPage() {
 
           <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
             {members.length === 0 ? (
-              <p className="text-xs text-google-textMuted py-4 text-center">No candidates in directory.</p>
+              <p className="text-xs text-slate-500 py-6 text-center">No candidates in directory.</p>
             ) : (
               members.map((c) => (
                 <div
                   key={c.id}
-                  className="p-3.5 bg-google-subtle/60 rounded-xl border border-google-border text-xs space-y-1 hover:bg-white transition-colors"
+                  className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] text-xs space-y-1"
                 >
-                  <div className="flex justify-between font-bold text-google-text">
+                  <div className="flex justify-between font-semibold text-slate-900">
                     <span>{c.name}</span>
-                    <span className="text-google-textMuted font-normal">{c.role_title}</span>
+                    <span className="text-slate-500 font-normal">{c.role_title}</span>
                   </div>
-                  <div className="text-google-textSecondary">
+                  <div className="text-slate-600">
                     {Object.entries(c.skills || {})
                       .map(([s, l]) => `${s}: L${l}`)
                       .join(', ')}{' '}
-                    &bull; <span className="font-tabular font-medium">{c.weekly_capacity_hours}h/wk</span> &bull; {c.experience_years} yrs exp
+                    &bull; <span className="font-tabular font-semibold text-slate-800">{c.weekly_capacity_hours}h/wk</span> &bull; {c.experience_years} yrs exp
                   </div>
                 </div>
               ))
@@ -73,86 +77,88 @@ export function SettingsPage() {
           </div>
         </div>
 
-        {/* Plain-Language Optimizer Preferences */}
+        {/* Optimizer Weights */}
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-4">
-            <h3 className="text-sm font-bold text-google-text flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-google-blue" />
-              How the Optimizer Prioritizes Trade-offs
-            </h3>
-            <p className="text-xs text-google-textSecondary">
-              When disruptions occur, RebalanceX balances competing priorities using pre-tuned weights:
-            </p>
+          <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-6 shadow-xs space-y-4">
+            <div className="pb-3 border-b border-[#E2EAE5]">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-slate-700" />
+                Rebalancing Objectives & Priorities
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                When disruptions occur, RebalanceX balances competing priorities using pre-tuned solver weights:
+              </p>
+            </div>
 
             <div className="space-y-3 text-xs">
-              <div className="p-3.5 bg-google-subtle/60 rounded-xl border border-google-border space-y-0.5">
-                <div className="flex justify-between font-bold text-google-text">
+              <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] space-y-1">
+                <div className="flex justify-between font-semibold text-slate-900">
                   <span>1. Protect Project Deadline</span>
-                  <span className="text-[10px] font-bold text-google-red bg-google-redSurface px-2 py-0.2 rounded-full">
+                  <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-bold text-[10px] border border-red-200">
                     Highest Priority (8.0x)
                   </span>
                 </div>
-                <p className="text-google-textSecondary">
-                  The engine strictly penalizes days running past the target deadline.
+                <p className="text-slate-600 text-[11px]">
+                  Heavily penalizes schedule solutions that breach the target project deadline.
                 </p>
               </div>
 
-              <div className="p-3.5 bg-google-subtle/60 rounded-xl border border-google-border space-y-0.5">
-                <div className="flex justify-between font-bold text-google-text">
-                  <span>2. Minimize Plan Perturbation (Churn)</span>
-                  <span className="text-[10px] font-bold text-google-blue bg-google-blueSurface px-2 py-0.2 rounded-full">
+              <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] space-y-1">
+                <div className="flex justify-between font-semibold text-slate-900">
+                  <span>2. Minimize Plan Churn</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[10px] border border-amber-300">
                     Medium Priority (3.5x)
                   </span>
                 </div>
-                <p className="text-google-textSecondary">
-                  Keeps existing task assignments stable unless a change gives significant benefit.
+                <p className="text-slate-600 text-[11px]">
+                  Keeps existing task assignments stable unless reassignment provides measurable gain.
                 </p>
               </div>
 
-              <div className="p-3.5 bg-google-subtle/60 rounded-xl border border-google-border space-y-0.5">
-                <div className="flex justify-between font-bold text-google-text">
+              <div className="p-3.5 bg-[#F7FAF8] rounded-xl border border-[#DCE4DF] space-y-1">
+                <div className="flex justify-between font-semibold text-slate-900">
                   <span>3. Balance Team Workload</span>
-                  <span className="text-[10px] font-bold text-google-teal bg-google-tealSurface px-2 py-0.2 rounded-full">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] border border-emerald-200">
                     Standard (0.4x)
                   </span>
                 </div>
-                <p className="text-google-textSecondary">
-                  Distributes hours evenly to prevent single points of failure and burnout.
+                <p className="text-slate-600 text-[11px]">
+                  Distributes hours evenly across specialists to prevent bottlenecks and burnout.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Advanced Hyperparameters Accordion */}
-          <div className="bg-white rounded-2xl border border-google-border shadow-google-xs p-6 space-y-3">
+          {/* Expandable Technical Details */}
+          <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-5 shadow-xs space-y-3">
             <button
               onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-              className="w-full flex items-center justify-between text-xs font-bold text-google-textSecondary hover:text-google-text"
+              className="w-full flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-slate-900"
             >
               <span className="flex items-center gap-2">
-                <Info className="w-4 h-4 text-google-textMuted" />
+                <Info className="w-4 h-4 text-slate-400" />
                 Advanced Solver Coefficients
               </span>
               {isAdvancedOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
 
             {isAdvancedOpen && (
-              <div className="pt-2 border-t border-google-border text-xs text-google-textSecondary space-y-2 animate-in fade-in duration-150 font-mono">
-                <div className="flex justify-between py-1 border-b border-google-border/60">
+              <div className="pt-2 border-t border-[#E2EAE5] text-xs text-slate-600 space-y-2 font-mono">
+                <div className="flex justify-between py-1 border-b border-slate-100">
                   <span>WEIGHT_DEADLINE_DELAY:</span>
-                  <span className="font-bold text-google-text">8.0</span>
+                  <span className="font-bold text-slate-900">8.0</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-google-border/60">
+                <div className="flex justify-between py-1 border-b border-slate-100">
                   <span>WEIGHT_PLAN_CHURN:</span>
-                  <span className="font-bold text-google-text">3.5</span>
+                  <span className="font-bold text-slate-900">3.5</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-google-border/60">
+                <div className="flex justify-between py-1 border-b border-slate-100">
                   <span>WEIGHT_LOAD_VARIANCE:</span>
-                  <span className="font-bold text-google-text">0.4</span>
+                  <span className="font-bold text-slate-900">0.4</span>
                 </div>
                 <div className="flex justify-between py-1">
                   <span>PENALTY_SKILL_MISMATCH:</span>
-                  <span className="font-bold text-google-text">15.0</span>
+                  <span className="font-bold text-slate-900">15.0</span>
                 </div>
               </div>
             )}

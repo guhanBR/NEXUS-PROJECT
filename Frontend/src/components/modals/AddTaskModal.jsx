@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { X, CheckSquare } from 'lucide-react';
+import { X, CheckSquare, Plus } from 'lucide-react';
 import { api } from '../../api/client';
 import { useProject } from '../../context/ProjectContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -57,67 +57,69 @@ export function AddTaskModal({ onClose }) {
         dependencies: depList,
       });
 
-      // Recalculate CPM schedule
       await api.generateSchedule(activeProjectId);
       await queryClient.invalidateQueries(['project', activeProjectId]);
-      showToast('Task added and CPM schedule updated!', 'success');
+      showToast('Task added and schedule recalculated!', 'success');
       onClose();
     } catch (err) {
-      showToast(err.message, 'error');
+      showToast(err.message || 'Failed to add task.', 'error');
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-2xl shadow-google-modal w-full max-w-lg overflow-hidden border border-google-border">
-        <div className="px-6 py-4 border-b border-google-border flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-google-blueSurface text-google-blue flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#18201C]/60 backdrop-blur-sm p-4 animate-in fade-in duration-150">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-[#D5DED8]">
+        <div className="px-6 py-5 border-b border-[#E2EAE5] flex items-center justify-between bg-[#F7FAF8]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-[#202724] text-white flex items-center justify-center shadow-xs">
               <CheckSquare className="w-4 h-4" />
             </div>
-            <h3 className="font-bold text-google-text text-sm">Add Project Task Deliverable</h3>
+            <div>
+              <h3 className="font-serif font-normal text-slate-900 text-lg">Add Task Deliverable</h3>
+              <p className="text-[11px] text-slate-500">Configure WBS item and required capability</p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-google-textMuted hover:bg-google-subtle hover:text-google-text transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
               Task Title
             </label>
             <input
               {...register('title')}
               placeholder="e.g. Asynchronous Webhook Dispatcher"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+              className="input"
             />
-            {errors.title && <p className="text-[11px] text-google-red mt-1">{errors.title.message}</p>}
+            {errors.title && <p className="text-xs text-red-600 mt-1">{errors.title.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
-              Description
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Deliverable Description
             </label>
             <textarea
               {...register('description')}
               rows={2}
-              placeholder="Delivery requirements and specs"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+              placeholder="Scope, requirements, and engineering targets"
+              className="input"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Required Skill
               </label>
               <select
                 {...register('required_skill')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue bg-white"
+                className="input cursor-pointer"
               >
                 <option value="Python">Python</option>
                 <option value="PostgreSQL">PostgreSQL</option>
@@ -128,36 +130,36 @@ export function AddTaskModal({ onClose }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Min Skill Level (1-5)
               </label>
               <input
                 type="number"
                 {...register('min_skill_level')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+                className="input"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Effort (Hours)
               </label>
               <input
                 type="number"
                 {...register('estimated_hours')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue"
+                className="input"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
                 Priority
               </label>
               <select
                 {...register('priority')}
-                className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue bg-white"
+                className="input cursor-pointer"
               >
                 <option value="critical">Critical</option>
                 <option value="high">High</option>
@@ -168,28 +170,28 @@ export function AddTaskModal({ onClose }) {
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-google-textSecondary mb-1">
-              Prerequisite Dependency IDs (Comma-separated, e.g. 1, 2)
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Prerequisite Dependencies (Comma-separated IDs, e.g. 1, 2)
             </label>
             <input
               {...register('dependencies')}
               placeholder="None or e.g. 1, 3"
-              className="w-full px-3.5 py-2 rounded-xl border border-google-border text-xs font-medium text-google-text focus:outline-none focus:ring-2 focus:ring-google-blue font-mono"
+              className="input font-mono"
             />
           </div>
 
-          <div className="pt-4 border-t border-google-border flex justify-end gap-2.5">
+          <div className="pt-4 border-t border-[#E2EAE5] flex justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="google-btn-secondary"
+              className="btn-secondary text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="google-btn-primary"
+              className="btn-primary text-xs"
             >
               {isSubmitting ? 'Creating...' : 'Create Task'}
             </button>

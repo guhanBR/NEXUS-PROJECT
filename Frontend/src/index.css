@@ -1,13 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-google-bg text-google-text font-sans antialiased;
+    background-color: #ECEFEA;
+    color: #1A211D;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .font-editorial, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
   }
 
   .font-tabular {
@@ -16,55 +28,102 @@
   }
 }
 
-/* Google-inspired Material 3 / Workspace design tokens */
-.google-card {
-  @apply bg-white border border-google-border rounded-2xl shadow-google-xs transition-shadow duration-200 hover:shadow-google-sm;
+/* Master Sage Canvas Atmosphere */
+.landing-canvas {
+  background: radial-gradient(circle at 75% 25%, #9BB0A8 0%, #879791 45%, #6D7D76 100%);
+  min-height: 100vh;
 }
 
-.google-card-header {
-  @apply px-6 py-4 border-b border-google-border flex items-center justify-between;
+.workspace-canvas {
+  background-color: #ECEFEA;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(200, 214, 207, 0.5) 0px, transparent 60%),
+    radial-gradient(at 85% 85%, rgba(185, 202, 194, 0.4) 0px, transparent 60%);
+  min-height: 100vh;
 }
 
-.google-pill {
-  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+/* Reference Workflow Step Tile (Frosted translucent outlined tile) */
+.workflow-tile {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 1.25rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.google-btn-primary {
-  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-google-blue hover:bg-google-blueHover text-white text-xs font-semibold rounded-full shadow-google-xs transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-google-blue focus:ring-offset-2;
+.workflow-tile:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.40);
+  transform: translateY(-2px);
 }
 
-.google-btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-google-subtle text-google-text text-xs font-semibold rounded-full border border-google-border shadow-google-xs transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-google-blue focus:ring-offset-2;
+/* Reference Off-White CTA with Dark Icon Block */
+.hero-cta-btn {
+  @apply inline-flex items-center gap-3.5 pl-2 pr-5 py-2 bg-white hover:bg-slate-100 text-slate-900 text-xs font-bold uppercase tracking-wider rounded-2xl shadow-hero-cta transition-all focus:outline-none focus:ring-2 focus:ring-amber-400/50;
 }
 
-.google-btn-danger {
-  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-google-red hover:bg-red-800 text-white text-xs font-semibold rounded-full shadow-google-xs transition-colors duration-150;
+.hero-cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px -4px rgba(0, 0, 0, 0.35);
 }
 
-/* Custom Gantt Bar & Timeline utilities */
+/* Standard Workspace UI Classes - Sage & Obsidian Theme */
+.card {
+  @apply bg-white/95 backdrop-blur-sm border border-[#D5DED8] rounded-2xl shadow-xs p-6;
+}
+
+.card-header {
+  @apply px-6 py-4 border-b border-[#E2EAE5] flex items-center justify-between;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#202724] hover:bg-[#2D3732] text-white text-xs font-semibold uppercase tracking-wider rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-amber-400/50 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-0.5px);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-3.5 py-2 bg-white hover:bg-[#F3F7F4] text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-xl border border-[#D5DED8] shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-amber {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50;
+}
+
+.badge {
+  @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.input {
+  @apply w-full px-3.5 py-2 rounded-xl border border-[#D5DED8] bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#44544C] focus:border-[#44544C] transition-shadow;
+}
+
+/* Gantt Timeline utilities */
 .gantt-bar-critical {
-  background: #BA1A1A;
+  background: linear-gradient(90deg, #EA580C 0%, #DC2626 100%);
   border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.25);
 }
 
 .gantt-bar-standard {
-  background: #0B57D0;
+  background: linear-gradient(90deg, #475569 0%, #334155 100%);
   border-radius: 6px;
 }
 
-/* Scrollbar refinement */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F8FAFD;
+  background: #E5ECE7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C4C7C5;
+  background: #B6C4BC;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8E918F;
+  background: #97A89F;
 }
-
