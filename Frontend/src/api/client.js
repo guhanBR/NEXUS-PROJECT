@@ -1,35 +1,97 @@
 /**
- * Centralized API Client for RebalanceX Backend
+ * Centralized API Client for Ryzen Matrix & RebalanceX Backend
+ * Native Capacitor & Web adaptive configuration
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+import { Capacitor } from '@capacitor/core';
+
+const STORAGE_KEY_API_BASE = 'rebalancex_custom_api_base';
+
+export function isNativeApp() {
+  try {
+    return Capacitor.isNativePlatform();
+  } catch {
+    return typeof window !== 'undefined' && (
+      window.location.protocol === 'capacitor:' ||
+      window.location.protocol === 'ionic:' ||
+      window.location.hostname === 'localhost' && window.navigator.userAgent.includes('Android')
+    );
+  }
+}
+
+export function getApiBaseUrl() {
+  if (typeof window !== 'undefined') {
+    const custom = localStorage.getItem(STORAGE_KEY_API_BASE);
+    if (custom && custom.trim()) return custom.trim().replace(/\/+$/, '');
+  }
+
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/+$/, '');
+
+  // If running inside native Android WebView / Emulator and no URL provided
+  if (isNativeApp()) {
+    // 10.0.2.2 is the default Android emulator loopback to host machine
+    return 'http://10.0.2.2:8000';
+  }
+
+  // Standard web relative path (proxied by Vite in dev or served on same domain)
+  return '';
+}
+
+export function setApiBaseUrl(url) {
+  if (typeof window !== 'undefined') {
+    if (!url) {
+      localStorage.removeItem(STORAGE_KEY_API_BASE);
+    } else {
+      localStorage.setItem(STORAGE_KEY_API_BASE, url.trim().replace(/\/+$/, ''));
+    }
+  }
+}
 
 async function request(url, options = {}) {
+  const base = getApiBaseUrl();
+  const fullUrl = `${base}${url}`;
+
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE}${url}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers,
+    });
 
-  if (!response.ok) {
-    let errorDetail = 'API request failed';
-    try {
-      const errJson = await response.json();
-      errorDetail = errJson.detail || errJson.message || errorDetail;
-    } catch {
-      // fallback
+    if (!response.ok) {
+      let errorDetail = `API request failed with status ${response.status}`;
+      try {
+        const errJson = await response.json();
+        errorDetail = errJson.detail || errJson.message || errorDetail;
+      } catch {
+        // fallback
+      }
+      throw new Error(errorDetail);
     }
-    throw new Error(errorDetail);
-  }
 
-  return response.json();
+    return await response.json();
+  } catch (err) {
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      const hint = isNativeApp()
+        ? ` Cannot reach backend at ${fullUrl}. If using an emulator, ensure backend is running at http://127.0.0.1:8000 on your PC. If on a physical phone, set your PC's LAN IP in Settings.`
+        : '';
+      throw new Error(`Network connection error.${hint}`);
+    }
+    throw err;
+  }
 }
 
 export const api = {
+  // Base configuration helpers
+  getBaseUrl: getApiBaseUrl,
+  setBaseUrl: setApiBaseUrl,
+  isNative: isNativeApp,
+
   // Health
   getHealth: () => request('/health'),
   getDatabaseHealth: () => request('/health/database'),
@@ -44,6 +106,7 @@ export const api = {
   createMember: (data) => request('/api/members', { method: 'POST', body: JSON.stringify(data) }),
 
   // Team Formation (PS#11)
+  formTeam: (projectId, data) => request(`/api/projects/${projectId}/team/recommend`, { method: 'POST', body: JSON.stringify(data) }),
   recommendTeam: (projectId, data) => request(`/api/projects/${projectId}/team/recommend`, { method: 'POST', body: JSON.stringify(data) }),
   confirmTeam: (projectId, data) => request(`/api/projects/${projectId}/team/confirm`, { method: 'POST', body: JSON.stringify(data) }),
 

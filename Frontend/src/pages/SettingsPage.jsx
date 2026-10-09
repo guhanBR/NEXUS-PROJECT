@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useProject } from '../context/ProjectContext';
+import { api } from '../api/client';
 import { Sliders, Database, UserPlus, ChevronDown, ChevronUp, Info, Zap } from 'lucide-react';
 import { AddMemberModal } from '../components/modals/AddMemberModal';
 
@@ -127,6 +128,47 @@ export function SettingsPage() {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Mobile & Network Configuration */}
+          <div className="bg-white/95 backdrop-blur-xs rounded-2xl border border-[#D5DED8] p-5 shadow-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-500" />
+                Backend API &amp; Android Network Endpoint
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                {api.isNative() ? 'Android Native (Capacitor)' : 'Web Client'}
+              </span>
+            </div>
+            <p className="text-xs text-slate-500">
+              Current API Endpoint: <strong className="text-slate-900 font-mono">{api.getBaseUrl() || '(Same-Origin Relative)'}</strong>
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                id="custom-api-input"
+                defaultValue={api.getBaseUrl()}
+                placeholder="e.g. http://10.0.2.2:8000 or http://192.168.1.50:8000"
+                className="flex-1 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const input = document.getElementById('custom-api-input');
+                  if (input) {
+                    api.setBaseUrl(input.value);
+                    window.location.reload();
+                  }
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition"
+              >
+                Save &amp; Reload
+              </button>
+            </div>
+            <p className="text-[10px] text-slate-400">
+              Default for Android Studio Emulator is <code>http://10.0.2.2:8000</code>. For physical Android devices on Wi-Fi, enter your PC LAN IP.
+            </p>
           </div>
 
           {/* Expandable Technical Details */}

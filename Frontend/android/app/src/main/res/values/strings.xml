@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ryzen Matrix</string>
+    <string name="title_activity_main">Ryzen Matrix</string>
+    <string name="package_name">com.ryzenmatrix.app</string>
+    <string name="custom_url_scheme">com.ryzenmatrix.app</string>
+</resources>

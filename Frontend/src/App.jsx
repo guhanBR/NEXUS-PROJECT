@@ -20,6 +20,8 @@ import { PerformanceAllocationPage } from './pages/PerformanceAllocationPage';
 import { OvertimeManagementPage } from './pages/OvertimeManagementPage';
 import { ProgressMonitorPage } from './pages/ProgressMonitorPage';
 
+import { NativeLifecycleHandler } from './components/native/NativeLifecycleHandler';
+
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
@@ -35,6 +37,7 @@ export function App() {
   return (
     <AuthProvider>
       <ProjectProvider>
+        <NativeLifecycleHandler />
         <Routes>
           {/* Public Landing Page */}
           <Route path="/" element={<LandingPage />} />

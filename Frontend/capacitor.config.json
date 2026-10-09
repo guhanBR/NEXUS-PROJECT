@@ -1,0 +1,20 @@
+{
+  "appId": "com.ryzenmatrix.app",
+  "appName": "Ryzen Matrix",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "body",
+      "style": "dark",
+      "resizeOnFullScreen": true
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#18191E"
+    }
+  }
+}
